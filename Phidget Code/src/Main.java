@@ -70,30 +70,21 @@ public class Main {
             /*
             Test code for Smart Lighting
             */
-
+/*
             Lighting    lighting = new Lighting(interfaceKitPhidget);
             System.out.println("Lighting created");
             Light       light    = new Light(interfaceKitPhidget, 0);
+
 
             int val = 0;
 
             while(true){
                 val = light.refreshLight();
-                switch (val){
-                    case 0 :
-                        lighting.setMaxPower();
-                        break;
-                    case 1 :
-                        if (lighting.isAtMax()) lighting.decreasePower();
-                        if (lighting.isAtMin()) lighting.increasePower();
-                        break;
-                    case 2 :
-                        lighting.setLightingOff();
-                        break;
-                }
+                lighting.updatePower(val);
                 System.out.println("Ambient Light : " + val);
 
-            }
+
+            }*/
 /*
             */
 
@@ -117,8 +108,69 @@ public class Main {
             }
  */
 
+            /**
+             * Code for roof.
+             */
+/*
+            Roof roof = new Roof();
+            if(roof.isOpen()){
+                roof.actionateRoofMotor();
+            }
+
+            WeatherStation weatherStation = new WeatherStation(interfaceKitPhidget, 1);
+
+            weatherStation.refreshWeather();
+            weatherStation.refreshSunPhases();
+
+            Weather weather = weatherStation.getWeather();
+
+            System.out.println("Weather : " + weather + " ++ Température : " + weatherStation.refreshHeat());
+
+            if(roof.isOpen()) roof.actionateRoofMotor();
+            System.out.println("Ouvert ? : " + roof.isOpen());
+
+            switch (weather) {
+                case RAIN:
+                    if(roof.isOpen()) roof.actionateRoofMotor();
+                    break;
+
+                case CLOUD:
+                    if(weatherStation.refreshHeat() < 2) {
+                        if (roof.isOpen()) roof.actionateRoofMotor();
+                    } else {
+                        if (!roof.isOpen()) roof.actionateRoofMotor();
+                    }
+                    break;
+
+                case SNOW:
+                    if(roof.isOpen()) roof.actionateRoofMotor();
+                    break;
+
+                case SUN:
+                    if(weatherStation.refreshHeat() < 2){
+                        if(roof.isOpen()) roof.actionateRoofMotor();
+                    } else {
+                        if(weatherStation.refreshHeat() > 28){
+                            if(roof.isOpen()) roof.actionateRoofMotor();
+                        } else {
+                            if(!roof.isOpen()) roof.actionateRoofMotor();
+                        }
+                    }
+                    break;
+
+            }
+            System.out.println("Ouvert ? : " + roof.isOpen());
+*/
+            /*Code for Goal*/
+
+            Goal goal = new Goal(interfaceKitPhidget, 3, 4);
+
+            while (true){
+
+            }
+
         } catch(Exception e) {
-            System.out.println(e);
+            System.out.println(e + e.getLocalizedMessage());
         }
 
     }

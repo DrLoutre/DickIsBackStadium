@@ -8,7 +8,7 @@ import com.phidgets.event.*;
  * Created by bri_e on 21-02-17.
  */
 public class Light{
-    private static int INTENSITY_STEP = 4;
+    private static int INTENSITY_STEP = 5;
     private static double MAX_INTENSITY = 1000.00;
 
 
@@ -39,20 +39,7 @@ public class Light{
         } catch(PhidgetException e) {
             System.out.println("Error while getting light sensor value : " + e);
         }
-        //System.out.println("Light intensity : " + x);
-        if (0.00 <= x && x <= (MAX_INTENSITY/INTENSITY_STEP)){
-            return 0;
-        }
-        if ((MAX_INTENSITY/INTENSITY_STEP) <= x && x <= (2*MAX_INTENSITY/INTENSITY_STEP)){
-            return 1;
-        }
-        if ((2*MAX_INTENSITY/INTENSITY_STEP) <= x && x <=(3*MAX_INTENSITY/INTENSITY_STEP)){
-            return 2;
-        }
-        if ((3*MAX_INTENSITY/INTENSITY_STEP) <= x && x <= MAX_INTENSITY){
-            return 3;
-        }
-        return 0;
+        return (int)(x/10) +1;
     }
 
 }

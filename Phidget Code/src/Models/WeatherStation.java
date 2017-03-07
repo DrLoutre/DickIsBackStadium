@@ -59,6 +59,8 @@ public class WeatherStation {
 
             String weather = weatherInfos.getJSONArray("weather").getJSONObject(0).getString("main");
 
+            System.out.println(weather.toString());
+
             switch (weather.toLowerCase()) {
                 case "rain" :
                     this.weather = Weather.RAIN;
