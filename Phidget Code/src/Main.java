@@ -162,12 +162,88 @@ public class Main {
             System.out.println("Ouvert ? : " + roof.isOpen());
 */
             /*Code for Goal*/
-
+/*
             Goal goal = new Goal(interfaceKitPhidget, 3, 4);
 
             while (true){
-
             }
+*/
+            /*Code for Automatic field*/
+
+            Roof roof = new Roof();
+            if(roof.isOpen()){
+                roof.actionateRoofMotor();
+            }
+            Field field = new Field();
+
+            WeatherStation weatherStation = new WeatherStation(interfaceKitPhidget, 1);
+
+            weatherStation.refreshWeather();
+            weatherStation.refreshSunPhases();
+
+            Heat heat = new Heat(interfaceKitPhidget, 1);
+            if (roof.isOpen()) {
+                switch (weatherStation.getWeather()) {
+                    case RAIN:
+                        field.setWatering(false);
+                        if ((heat.refreshHeat()) < 5 )
+                            field.setHeating(true);
+                        break;
+                    case SUN:
+                        if ((heat.refreshHeat()) > 20) {
+                            field.setWatering(true);
+                        } else {
+                            field.setWatering(false);
+                            if ((heat.refreshHeat()) < 5){
+                                field.setHeating(true);
+                            }
+                        }
+                        break;
+                    case CLOUD:
+                        if ((heat.refreshHeat()) > 35) {
+                            field.setWatering(true);
+                        } else {
+                            field.setWatering(false);
+                            if ((heat.refreshHeat()) < 5){
+                                field.setHeating(true);
+                            }
+                        }
+                        break;
+                    case SNOW:
+                        field.setHeating(true);
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+                switch (weatherStation.getWeather()) {
+                    case RAIN:
+                        if ((heat.refreshHeat()) > 30)
+                            field.setWatering(true);
+                        else
+                            field.setWatering(false);
+                        break;
+                    case SUN:
+                        if ((heat.refreshHeat()) > 30) {
+                            field.setWatering(true);
+                        } else {
+                            field.setWatering(false);
+                        }
+                        break;
+                    case CLOUD:
+                        if ((heat.refreshHeat()) > 35) {
+                            field.setWatering(true);
+                        } else {
+                            field.setWatering(false);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                if(heat.refreshHeat() < 5) field.setHeating(true);
+            }
+            System.out.println("Etat chauffage : " + field.isHeating() + "   Etat arrosage : " + field.isWatering());
+
 
         } catch(Exception e) {
             System.out.println(e + e.getLocalizedMessage());
