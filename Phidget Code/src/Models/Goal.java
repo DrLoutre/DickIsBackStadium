@@ -53,7 +53,7 @@ public class Goal {
                             System.out.println("Exception à la lecture du phidget de vibration : " + e);
                         }
                         if(((vibrationHappend-passageHappend)<10)){
-                            if((int)(System.currentTimeMillis()-lastGoal)>20000){
+                            if((int)(System.currentTimeMillis()-lastGoal)>8000){
                                 lastGoal = System.currentTimeMillis();
                                 goal++;
                                 System.out.println("Gooaaaaaaaaaaal !!!!!!  " + getGoal());

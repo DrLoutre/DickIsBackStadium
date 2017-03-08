@@ -40,8 +40,8 @@
       <file leaf-file-name="Goal.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Models/Goal.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="154">
-              <caret line="55" column="75" lean-forward="false" selection-start-line="55" selection-start-column="75" selection-end-line="55" selection-end-column="75" />
+            <state relative-caret-position="330">
+              <caret line="54" column="61" lean-forward="false" selection-start-line="54" selection-start-column="61" selection-end-line="54" selection-end-column="61" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -85,6 +85,7 @@
     </findStrings>
   </component>
   <component name="Git.Settings">
+    <option name="PUSH_AUTO_UPDATE" value="true" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="GradleLocalSettings">
@@ -697,7 +698,7 @@
       <workItem from="1488893171496" duration="7500000" />
       <workItem from="1488907883302" duration="654000" />
       <workItem from="1488908649927" duration="75000" />
-      <workItem from="1488965586470" duration="2599000" />
+      <workItem from="1488965586470" duration="2979000" />
     </task>
     <task id="LOCAL-00001" summary="Météo + et goals">
       <created>1488908213198</created>
@@ -706,11 +707,18 @@
       <option name="project" value="LOCAL" />
       <updated>1488908213198</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Goals fonctionnels">
+      <created>1488969686301</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1488969686301</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="49686000" />
+    <option name="totallyTimeSpent" value="50066000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
@@ -755,7 +763,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Météo + et goals" />
-    <option name="LAST_COMMIT_MESSAGE" value="Météo + et goals" />
+    <MESSAGE value="Goals fonctionnels" />
+    <option name="LAST_COMMIT_MESSAGE" value="Goals fonctionnels" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1264,8 +1273,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Models/Goal.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="55" column="75" lean-forward="false" selection-start-line="55" selection-start-column="75" selection-end-line="55" selection-end-column="75" />
+        <state relative-caret-position="330">
+          <caret line="54" column="61" lean-forward="false" selection-start-line="54" selection-start-column="61" selection-end-line="54" selection-end-column="61" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
