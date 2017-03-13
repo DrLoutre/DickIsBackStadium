@@ -169,12 +169,12 @@ public class Main {
             }
 */
             /*Code for Automatic field*/
-
+/*
             Roof roof = new Roof();
             if(roof.isOpen()){
                 roof.actionateRoofMotor();
             }
-            Field field = new Field();
+            Field field = new Field(interfaceKitPhidget, 8, 7, 6);
 
             WeatherStation weatherStation = new WeatherStation(interfaceKitPhidget, 1);
 
@@ -242,8 +242,7 @@ public class Main {
                 }
                 if(heat.refreshHeat() < 5) field.setHeating(true);
             }
-            System.out.println("Etat chauffage : " + field.isHeating() + "   Etat arrosage : " + field.isWatering());
-
+            System.out.println("Etat chauffage : " + field.isHeating() + "   Etat arrosage : " + field.isWatering());*/
 
         } catch(Exception e) {
             System.out.println(e + e.getLocalizedMessage());
