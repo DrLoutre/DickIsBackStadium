@@ -1,4 +1,4 @@
-package Models;
+package Models.In;
 
 import sun.awt.image.ImageWatched;
 

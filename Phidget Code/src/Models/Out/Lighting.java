@@ -1,4 +1,4 @@
-package Models;
+package Models.Out;
 
 import com.phidgets.InterfaceKitPhidget;
 import com.phidgets.PhidgetException;

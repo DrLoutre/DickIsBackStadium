@@ -1,6 +1,6 @@
 import Models.*;
+import Models.In.Goal;
 import com.phidgets.InterfaceKitPhidget;
-import com.phidgets.event.*;
 
 public class Main {
 
@@ -8,6 +8,10 @@ public class Main {
 
         try {
 
+            InterfaceKitPhidget interfaceKitPhidget = new InterfaceKitPhidget();
+
+            /*
+                                            ==> Tenter avec ça en commentaires.
             AttachListener attachListener;
             DetachListener detachListener;
             ErrorListener errorListener;
@@ -56,15 +60,18 @@ public class Main {
                 }
             };
 
-            InterfaceKitPhidget interfaceKitPhidget = new InterfaceKitPhidget();
             interfaceKitPhidget.addAttachListener(attachListener);
             interfaceKitPhidget.addDetachListener(detachListener);
             interfaceKitPhidget.addErrorListener(errorListener);
             interfaceKitPhidget.addInputChangeListener(inputChangeListener);
             interfaceKitPhidget.addOutputChangeListener(outputChangeListener);
             interfaceKitPhidget.addSensorChangeListener(sensorChangeListener);
+            */
+
             interfaceKitPhidget.open(329107);
             interfaceKitPhidget.waitForAttachment();
+
+            BlackBox blackbox = new BlackBox();
 
 
             /*
@@ -162,12 +169,12 @@ public class Main {
             System.out.println("Ouvert ? : " + roof.isOpen());
 */
             /*Code for Goal*/
-/*
-            Goal goal = new Goal(interfaceKitPhidget, 3, 4);
+
+            Goal goal = new Goal(interfaceKitPhidget, 3, 4, blackbox);
 
             while (true){
             }
-*/
+
             /*Code for Automatic field*/
 /*
             Roof roof = new Roof();

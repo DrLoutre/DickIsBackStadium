@@ -1,4 +1,4 @@
-package Models;
+package Models.Out;
 
 import com.phidgets.AdvancedServoPhidget;
 import com.phidgets.PhidgetException;

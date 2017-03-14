@@ -1,5 +1,6 @@
-package Models;
+package Models.In;
 
+import Models.In.Weather;
 import com.phidgets.InterfaceKitPhidget;
 import com.phidgets.PhidgetException;
 import org.json.JSONException;

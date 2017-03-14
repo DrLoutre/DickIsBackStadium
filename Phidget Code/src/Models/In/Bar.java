@@ -1,4 +1,4 @@
-package Models;
+package Models.In;
 
 import com.phidgets.InterfaceKitPhidget;
 import com.phidgets.Phidget;
