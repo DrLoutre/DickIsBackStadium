@@ -2,7 +2,8 @@ package Models.In;
 
 import Events.EventType;
 import Events.PassageEvent;
-import Models.BlackBox;
+import Events.VibrationEvent;
+import Models.BlackBox.BlackBox;
 import com.phidgets.InterfaceKitPhidget;
 import com.phidgets.PhidgetException;
 import com.phidgets.event.SensorChangeEvent;
@@ -13,7 +14,7 @@ import com.phidgets.event.SensorChangeListener;
  */
 public class Goal {
 
-    private static int MILI_INTERVAL = 1000;
+    private static int MILI_INTERVAL = 100;
 
     private double vibrationHappend;
     private double passageHappend;
@@ -29,8 +30,6 @@ public class Goal {
         interfaceKitPhidget = ifk;
         indexIRSensor = indexPassage;
         indexVibrationSensor = indexVibration;
-        passageHappend = 0;
-        vibrationHappend = 0;
         goal = 0;
         lastGoal=0;
         ifk.addSensorChangeListener(new SensorChangeListener() {
@@ -39,33 +38,28 @@ public class Goal {
                 switch(sensorChangeEvent.getIndex()) {
                     case 3 :
                         //System.out.println("Passage !");
-                        if ((blackBox.getLast(EventType.PASSAGE_EVENT).getTime() - System.currentTimeMillis()) > MILI_INTERVAL){
-                            new PassageEvent(System.currentTimeMillis());
-                            try {
-                                if (ifk.getSensorValue(indexIRSensor) < 100) {
-                                    passageHappend = System.currentTimeMillis();
+                        try {
+                            if (ifk.getSensorValue(indexIRSensor) < 100) {
+                                if ((blackBox.noEvent(EventType.PASSAGE_EVENT)) || ((System.currentTimeMillis() - blackBox.getLast(EventType.PASSAGE_EVENT).removeLast().getTime()) > MILI_INTERVAL)) {
+                                    PassageEvent passageEvent = new PassageEvent(System.currentTimeMillis());
+                                    blackBox.processElement(passageEvent);
                                 }
-                            } catch (PhidgetException e) {
-                                System.out.println("Exception à la lecture du phidget de proximité : " + e);
                             }
+                        } catch (PhidgetException e) {
+                            System.out.println("Exception à la lecture du phidget de proximité : " + e);
                         }
                         break;
                     case 4:
                         //System.out.println("Vibration !");
-                        if((blackBox.getLast(EventType.VIBRATION_EVENT).getTime() - System.currentTimeMillis()) > MILI_INTERVAL) {
+                        if((blackBox.noEvent(EventType.VIBRATION_EVENT))||((System.currentTimeMillis() - blackBox.getLast(EventType.VIBRATION_EVENT).removeLast().getTime()) > MILI_INTERVAL)) {
+
                             try {
-                                if (ifk.getSensorValue(indexVibrationSensor) > 700) {
-                                    vibrationHappend = System.currentTimeMillis();
+                                if (ifk.getSensorValue(indexVibrationSensor) > 500) {
+                                    VibrationEvent vibrationEvent = new VibrationEvent(System.currentTimeMillis());
+                                    blackBox.processElement(vibrationEvent);
                                 }
                             } catch (PhidgetException e) {
                                 System.out.println("Exception à la lecture du phidget de vibration : " + e);
-                            }
-                            if (((vibrationHappend - passageHappend) < 10)) {
-                                if ((int) (System.currentTimeMillis() - lastGoal) > 8000) {
-                                    lastGoal = System.currentTimeMillis();
-                                    goal++;
-                                    System.out.println("Gooaaaaaaaaaaal !!!!!!  " + getGoal());
-                                }
                             }
                         }
                         break;
@@ -80,6 +74,16 @@ public class Goal {
 
     public int getGoal(){
         return goal;
+    }
+
+    public double getLastGoal(){
+        return lastGoal;
+    }
+
+    public void incrementGoal(double time){
+        goal++;
+        lastGoal = time;
+        System.out.println("Goal ! : " + this.getGoal() + " at " + lastGoal);
     }
 
 

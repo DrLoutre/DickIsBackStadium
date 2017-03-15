@@ -8,9 +8,7 @@ public class Event {
     private EventType eventType;
     private double time;
 
-    public Event() {
-
-    }
+    public Event(){}
 
     public Event(double evenTime, EventType evnt){
         time = evenTime;

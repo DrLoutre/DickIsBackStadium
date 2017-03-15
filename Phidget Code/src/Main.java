@@ -1,4 +1,4 @@
-import Models.*;
+import Models.BlackBox.BlackBox;
 import Models.In.Goal;
 import com.phidgets.InterfaceKitPhidget;
 
@@ -71,7 +71,7 @@ public class Main {
             interfaceKitPhidget.open(329107);
             interfaceKitPhidget.waitForAttachment();
 
-            BlackBox blackbox = new BlackBox();
+            BlackBox blackbox = new BlackBox(interfaceKitPhidget);
 
 
             /*
@@ -170,7 +170,7 @@ public class Main {
 */
             /*Code for Goal*/
 
-            Goal goal = new Goal(interfaceKitPhidget, 3, 4, blackbox);
+            //Goal goal = new Goal(interfaceKitPhidget, 3, 4, blackbox);
 
             while (true){
             }

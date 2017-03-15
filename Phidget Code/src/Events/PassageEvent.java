@@ -9,6 +9,7 @@ public class PassageEvent extends Event {
 
     public PassageEvent(double time) {
         super(time, PASSAGE_EVENT);
+        //System.out.println("Creation passage event " + this.getTime());
     }
 
 }
