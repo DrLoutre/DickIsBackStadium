@@ -168,12 +168,7 @@ public class Main {
             }
             System.out.println("Ouvert ? : " + roof.isOpen());
 */
-            /*Code for Goal*/
 
-            //Goal goal = new Goal(interfaceKitPhidget, 3, 4, blackbox);
-
-            while (true){
-            }
 
             /*Code for Automatic field*/
 /*
@@ -251,6 +246,8 @@ public class Main {
             }
             System.out.println("Etat chauffage : " + field.isHeating() + "   Etat arrosage : " + field.isWatering());*/
 
+            while (true){
+            }
         } catch(Exception e) {
             System.out.println(e + e.getLocalizedMessage());
         }

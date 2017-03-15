@@ -4,6 +4,7 @@ import Events.Event;
 import Events.EventType;
 import Events.PassageEvent;
 import Events.VibrationEvent;
+import Models.In.Bar;
 import Models.In.Goal;
 import com.phidgets.InterfaceKitPhidget;
 import com.phidgets.PhidgetException;
@@ -30,13 +31,18 @@ public class BlackBox {
     //Phidgets Object that react on events or cases.
     private InterfaceKitPhidget interfaceKitPhidget;
     private Goal goal;
+    private Bar barSouth;
+    private Bar barNorth;
 
 
     public BlackBox(InterfaceKitPhidget interfaceKitPhidget){
         eventList = new LinkedList<>();
         this.interfaceKitPhidget = interfaceKitPhidget;
         try {
-            goal = new Goal(interfaceKitPhidget,INDEX_PRECISION_IR_SENSOR,INDEX_VIBRATION_SENSOR, this);
+            goal     = new Goal(interfaceKitPhidget,INDEX_PRECISION_IR_SENSOR,INDEX_VIBRATION_SENSOR, this);
+            barNorth = new Bar(interfaceKitPhidget, INDEX_SLIDER_1, this);
+            barSouth = new Bar(interfaceKitPhidget, INDEX_SLIDER_2, this);
+
         } catch(PhidgetException e) {
             System.out.println("Error while loading phidgets objects : " + e);
         }
@@ -47,7 +53,12 @@ public class BlackBox {
         eventList.add(event);
         switch (event.getType()) {
             case BAR_EVENT:
-                log += "change in Bar population";
+                try {
+                    log += "change in Bar population : BSouth = " + barSouth.getAffluence() + " and BNorth = " + barNorth.getAffluence();
+                } catch(PhidgetException e) {
+                    System.out.println("Error while updating bars : " + e);
+                }
+                System.out.println(log);
                 break;
             case HEAT_EVENT:
                 log += "change in Temperature";

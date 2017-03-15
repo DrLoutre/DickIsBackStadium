@@ -16,8 +16,6 @@ public class Goal {
 
     private static int MILI_INTERVAL = 100;
 
-    private double vibrationHappend;
-    private double passageHappend;
     private int indexIRSensor;
     private int indexVibrationSensor;
     private int goal;
@@ -40,7 +38,8 @@ public class Goal {
                         //System.out.println("Passage !");
                         try {
                             if (ifk.getSensorValue(indexIRSensor) < 100) {
-                                if ((blackBox.noEvent(EventType.PASSAGE_EVENT)) || ((System.currentTimeMillis() - blackBox.getLast(EventType.PASSAGE_EVENT).removeLast().getTime()) > MILI_INTERVAL)) {
+                                if ((blackBox.noEvent(EventType.PASSAGE_EVENT))
+                                        || ((System.currentTimeMillis() - blackBox.getLast(EventType.PASSAGE_EVENT).removeLast().getTime()) > MILI_INTERVAL)) {
                                     PassageEvent passageEvent = new PassageEvent(System.currentTimeMillis());
                                     blackBox.processElement(passageEvent);
                                 }
