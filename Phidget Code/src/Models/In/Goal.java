@@ -50,7 +50,8 @@ public class Goal {
                         break;
                     case 4:
                         //System.out.println("Vibration !");
-                        if((blackBox.noEvent(EventType.VIBRATION_EVENT))||((System.currentTimeMillis() - blackBox.getLast(EventType.VIBRATION_EVENT).removeLast().getTime()) > MILI_INTERVAL)) {
+                        if((blackBox.noEvent(EventType.VIBRATION_EVENT))
+                                ||((System.currentTimeMillis() - blackBox.getLast(EventType.VIBRATION_EVENT).removeLast().getTime()) > MILI_INTERVAL)) {
 
                             try {
                                 if (ifk.getSensorValue(indexVibrationSensor) > 500) {

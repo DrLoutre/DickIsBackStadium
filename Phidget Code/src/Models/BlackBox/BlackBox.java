@@ -6,6 +6,7 @@ import Events.PassageEvent;
 import Events.VibrationEvent;
 import Models.In.Bar;
 import Models.In.Goal;
+import Models.In.Heat;
 import com.phidgets.InterfaceKitPhidget;
 import com.phidgets.PhidgetException;
 
@@ -17,8 +18,8 @@ import java.util.LinkedList;
 public class BlackBox {
     private static int INDEX_PRECISION_IR_SENSOR =  3;
     private static int INDEX_VIBRATION_SENSOR =     4;
-    private static int INDEX_LIGHT_SENSOR =         1;
-    private static int INDEX_TEMPERATURE_SENSOR =   2;
+    private static int INDEX_LIGHT_SENSOR =         0;
+    private static int INDEX_TEMPERATURE_SENSOR =   1;
     private static int INDEX_SLIDER_1 =             6;
     private static int INDEX_SLIDER_2 =             7;
 
@@ -30,9 +31,10 @@ public class BlackBox {
 
     //Phidgets Object that react on events or cases.
     private InterfaceKitPhidget interfaceKitPhidget;
-    private Goal goal;
-    private Bar barSouth;
-    private Bar barNorth;
+    private Goal    goal;
+    private Bar     barSouth;
+    private Bar     barNorth;
+    private Heat    heat;
 
 
     public BlackBox(InterfaceKitPhidget interfaceKitPhidget){
@@ -42,6 +44,7 @@ public class BlackBox {
             goal     = new Goal(interfaceKitPhidget,INDEX_PRECISION_IR_SENSOR,INDEX_VIBRATION_SENSOR, this);
             barNorth = new Bar(interfaceKitPhidget, INDEX_SLIDER_1, this);
             barSouth = new Bar(interfaceKitPhidget, INDEX_SLIDER_2, this);
+            heat     = new Heat(interfaceKitPhidget, INDEX_TEMPERATURE_SENSOR, this);
 
         } catch(PhidgetException e) {
             System.out.println("Error while loading phidgets objects : " + e);
@@ -61,10 +64,17 @@ public class BlackBox {
                 System.out.println(log);
                 break;
             case HEAT_EVENT:
-                log += "change in Temperature";
+                try {
+                    heat.refreshHeat();
+                } catch (PhidgetException e) {
+                    System.out.println("Error while updating heat : " + e);
+                }
+                log += "change in Temperature : " + heat.getHeat();
+                System.out.println(log);
+                //TODO : Here call the API in order to decide if 1) it is time to water the field 2) what to do with the roof.
                 break;
             case LIGHT_EVENT:
-                log += "change in brightness";
+                log += "change in brightness : + ";
                 break;
             case PASSAGE_EVENT:
                 goalCase = new GoalCase((PassageEvent) event);
