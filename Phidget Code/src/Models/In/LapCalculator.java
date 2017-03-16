@@ -1,5 +1,7 @@
 package Models.In;
 
+import Events.TurnEvent;
+import Models.BlackBox.BlackBox;
 import com.phidgets.PhidgetException;
 import com.phidgets.RFIDPhidget;
 import com.phidgets.event.*;
@@ -21,10 +23,12 @@ public class LapCalculator {
     private TagLossListener tagLossListener;
     private OutputChangeListener outputChangeListener;
     private long timeScanning;
+    private BlackBox blackBox;
 
-    public LapCalculator()throws PhidgetException{
+    public LapCalculator(BlackBox bbx)throws PhidgetException{
         runners = new Runners();
         rfidPhidget = new RFIDPhidget();
+        blackBox = bbx;
         setListeners();
         rfidPhidget.addAttachListener(attachListener);
         rfidPhidget.addDetachListener(detachListener);
@@ -38,7 +42,7 @@ public class LapCalculator {
         System.out.println("Attached !");
     }
 
-    public void onScan(String id){
+    private void onScan(String id){
         runners.scanned(id);
         long lastLapTime = runners.getIdPerfs(id).get(runners.getIdLapsNumber(id)-1);
         long lapTime = runners.getIdPerfs(id).getLast();
@@ -87,6 +91,7 @@ public class LapCalculator {
                 System.out.println(oe);
                 if(Math.abs(timeScanning - clock) > MINIMUM_PASSING_TIME_IN_MILLI) {
                     onScan(oe.getValue());
+                    blackBox.processElement(new TurnEvent(clock));
                 }
                 timeScanning = Long.parseLong("0.00");
             }

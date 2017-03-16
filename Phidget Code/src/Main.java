@@ -74,47 +74,6 @@ public class Main {
             BlackBox blackbox = new BlackBox(interfaceKitPhidget);
 
 
-            /*
-            Test code for Smart Lighting
-            */
-/*
-            Lighting    lighting = new Lighting(interfaceKitPhidget);
-            System.out.println("Lighting created");
-            Light       light    = new Light(interfaceKitPhidget, 0);
-
-
-            int val = 0;
-
-            while(true){
-                val = light.refreshLight();
-                lighting.updatePower(val);
-                System.out.println("Ambient Light : " + val);
-
-
-            }*/
-/*
-            */
-
-            /*
-            Test Code for Smart LapCounter
-             */
-            /*
-            LapCalculator lapCalculator = new LapCalculator();
-            while(true){
-
-            }
-
-
-
-            Bar bar1 = new Bar(interfaceKitPhidget, 7);
-            Bar bar2 = new Bar(interfaceKitPhidget, 6);
-
-            while(true){
-                System.out.println("Affluence Bar 1 = " + bar1.refreshAttendance());
-                System.out.println("Affluence Bar 2 = " + bar2.refreshAttendance());
-            }
- */
-
             /**
              * Code for roof.
              */

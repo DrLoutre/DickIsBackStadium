@@ -1,5 +1,7 @@
 package Models.In;
 
+import Events.StandEvent;
+import Models.BlackBox.BlackBox;
 import com.phidgets.InterfaceKitPhidget;
 import com.phidgets.event.InputChangeEvent;
 import com.phidgets.event.InputChangeListener;
@@ -10,14 +12,16 @@ import com.phidgets.event.InputChangeListener;
 public class Stand {
 
     private InterfaceKitPhidget interfaceKitPhidget;
+    private BlackBox blackBox;
     private String standName;
     private boolean[] seats;
     private int numberOfSeats;
 
 
-    public Stand(InterfaceKitPhidget ifk, String name, int nbrSeats){
+    public Stand(InterfaceKitPhidget ifk, String name, int nbrSeats,BlackBox bbx){
         standName = name;
         interfaceKitPhidget = ifk;
+        blackBox = bbx;
         numberOfSeats = nbrSeats;
         seats = new boolean[numberOfSeats];
         interfaceKitPhidget.addInputChangeListener(new InputChangeListener() {
@@ -31,12 +35,20 @@ public class Stand {
                     seats[seatOfConcern] = true;
                     System.out.println("Siège n°" + seatOfConcern + " occupé dans la tribune " + standName);
                 }
+                blackBox.processElement(new StandEvent(System.currentTimeMillis()));
             }
         });
     }
 
+    public int getNumberOfSeats() {
+        return numberOfSeats;
+    }
 
+    public String getStandName() {
+        return standName;
+    }
 
-
-
+    public boolean[] getSeats() {
+        return seats;
+    }
 }
