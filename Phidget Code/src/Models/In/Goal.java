@@ -23,8 +23,8 @@ public class Goal {
     private BlackBox blackBox;
     private InterfaceKitPhidget interfaceKitPhidget;
 
-    public Goal(InterfaceKitPhidget ifk, int indexPassage, int indexVibration, BlackBox bbox) throws PhidgetException {
-        blackBox = bbox;
+    public Goal(InterfaceKitPhidget ifk, int indexPassage, int indexVibration, BlackBox bbx) throws PhidgetException {
+        blackBox = bbx;
         interfaceKitPhidget = ifk;
         indexIRSensor = indexPassage;
         indexVibrationSensor = indexVibration;

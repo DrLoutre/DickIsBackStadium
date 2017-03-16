@@ -7,6 +7,8 @@ import Events.VibrationEvent;
 import Models.In.Bar;
 import Models.In.Goal;
 import Models.In.Heat;
+import Models.In.Light;
+import Models.Out.Lighting;
 import com.phidgets.InterfaceKitPhidget;
 import com.phidgets.PhidgetException;
 
@@ -31,20 +33,24 @@ public class BlackBox {
 
     //Phidgets Object that react on events or cases.
     private InterfaceKitPhidget interfaceKitPhidget;
-    private Goal    goal;
-    private Bar     barSouth;
-    private Bar     barNorth;
-    private Heat    heat;
+    private Goal     goal;
+    private Bar      barSouth;
+    private Bar      barNorth;
+    private Heat     heat;
+    private Light    light;
+    private Lighting lighting;
 
 
     public BlackBox(InterfaceKitPhidget interfaceKitPhidget){
         eventList = new LinkedList<>();
         this.interfaceKitPhidget = interfaceKitPhidget;
         try {
-            goal     = new Goal(interfaceKitPhidget,INDEX_PRECISION_IR_SENSOR,INDEX_VIBRATION_SENSOR, this);
-            barNorth = new Bar(interfaceKitPhidget, INDEX_SLIDER_1, this);
-            barSouth = new Bar(interfaceKitPhidget, INDEX_SLIDER_2, this);
-            heat     = new Heat(interfaceKitPhidget, INDEX_TEMPERATURE_SENSOR, this);
+            goal     = new Goal(interfaceKitPhidget,    INDEX_PRECISION_IR_SENSOR,  INDEX_VIBRATION_SENSOR,this);
+            barNorth = new Bar(interfaceKitPhidget,     INDEX_SLIDER_1,                                    this);
+            barSouth = new Bar(interfaceKitPhidget,     INDEX_SLIDER_2,                                    this);
+            heat     = new Heat(interfaceKitPhidget,    INDEX_TEMPERATURE_SENSOR,                          this);
+            light    = new Light(interfaceKitPhidget,   INDEX_LIGHT_SENSOR,                                this);
+            lighting = new Lighting(interfaceKitPhidget);
 
         } catch(PhidgetException e) {
             System.out.println("Error while loading phidgets objects : " + e);
@@ -74,7 +80,14 @@ public class BlackBox {
                 //TODO : Here call the API in order to decide if 1) it is time to water the field 2) what to do with the roof.
                 break;
             case LIGHT_EVENT:
-                log += "change in brightness : + ";
+                try {
+                    light.refreshLight();
+                    lighting.updatePower(light.getIntensityStep());
+                } catch(PhidgetException e) {
+                    System.out.println("Error while updating light and lighting : " + e);
+                }
+                log += "change in brightness : + " + light.getIntensityStep();
+                System.out.println(log);
                 break;
             case PASSAGE_EVENT:
                 goalCase = new GoalCase((PassageEvent) event);
