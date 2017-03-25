@@ -48,5 +48,6 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+/.idea
 
 # End of https://www.gitignore.io/api/maven,netbeans,java,git
