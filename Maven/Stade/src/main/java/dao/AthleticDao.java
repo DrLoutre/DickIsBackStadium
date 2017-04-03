@@ -5,6 +5,7 @@
  */
 package dao;
 
+import beans.Athletic;
 import exceptions.IntegrityException;
 import exceptions.NotFoundException;
 
@@ -16,6 +17,8 @@ public interface AthleticDao {
     
     void addAthletic(String NFC, String firstName, String lastName, int age, 
             String sex, String password) throws IntegrityException;
+    
+    Athletic getAthletic(String NFC) throws NotFoundException;
     
     boolean athleticExists(String NFC);
     

@@ -5,6 +5,7 @@
  */
 package dao.impl;
 
+import beans.Athletic;
 import core.Assert;
 import dao.AthleticDao;
 import dao.Dao;
@@ -44,6 +45,21 @@ public class AthleticDaoImpl extends Dao implements AthleticDao {
         closeConnection();
         
         Assert.isTrue(rows == 1);
+    }
+    
+    @Override
+    public Athletic getAthletic(String NFC) throws NotFoundException {
+        Assert.notNull(NFC);
+        Assert.isTrue(NFC.length() > 0);
+        
+        AthleticData data = queryFactory.selectFrom(ATHLETIC)
+                .where(ATHLETIC.nfc.eq(NFC)).fetchFirst();
+        closeConnection();
+        
+        if(data == null) throw new NotFoundException("Athletic " + NFC 
+                + " has not been found in the database");
+        
+        return toAthletic(data);
     }
     
     @Override
@@ -126,5 +142,17 @@ public class AthleticDaoImpl extends Dao implements AthleticDao {
         data.setSex(sex);
         
         return data;
+    }
+    
+    private Athletic toAthletic(AthleticData data){
+        Athletic returnValue = new Athletic();
+        returnValue.setAge(data.getAge());
+        returnValue.setMDP(data.getPassword());
+        returnValue.setNFC(data.getNfc());
+        returnValue.setNom(data.getLastName());
+        returnValue.setPrenom(data.getFirstName());
+        returnValue.setSex(data.getSex());
+        
+        return returnValue;
     }
 }
