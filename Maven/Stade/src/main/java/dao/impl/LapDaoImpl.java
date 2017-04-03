@@ -5,6 +5,7 @@
  */
 package dao.impl;
 
+import beans.Lap;
 import com.querydsl.sql.dml.SQLUpdateClause;
 import core.Assert;
 import dao.Dao;
@@ -55,6 +56,20 @@ public class LapDaoImpl extends Dao implements LapDao{
         closeConnection();
         
         Assert.isTrue(rows == 1);
+    }
+    
+    @Override
+    public Lap getLap(int ID) throws NotFoundException {
+        Assert.isTrue(ID >= 0);
+        
+        LapData data = queryFactory.selectFrom(LAP)
+                .where(LAP.id.eq(ID)).fetchFirst();
+        closeConnection();
+        
+        if(data == null) throw new NotFoundException("Lap "+ ID 
+                + " has not been found in the database");
+        
+        return toLap(data);
     }
 
     @Override
@@ -134,5 +149,14 @@ public class LapDaoImpl extends Dao implements LapDao{
         closeConnection();
         
         return data.getIdScore();
+    }
+    
+    private Lap toLap(LapData data){
+        Lap returnValue = new Lap();
+        returnValue.setID(data.getId());
+        returnValue.setIdRace(data.getIdScore());
+        returnValue.setTemp(data.getTemp(), data.getTempMs());
+        
+        return returnValue;
     }
 }
