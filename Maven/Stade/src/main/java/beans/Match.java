@@ -32,7 +32,7 @@ public class Match {
     }
     
     public Pair<Integer,Integer> getTeamID(){
-        return new Pair(id_team_1,id_team_2);
+        return new Pair<Integer, Integer>(id_team_1,id_team_2);
     }
     
     public void setTeamID(int idTeam1, int idTeam2){
@@ -57,7 +57,7 @@ public class Match {
     }
     
     public Pair<Integer,Integer> getGoals(){
-        return new Pair(goals_1,goals_2);
+        return new Pair<Integer, Integer>(goals_1,goals_2);
     }
     
     public void setGoals(int goals1, int goals2){

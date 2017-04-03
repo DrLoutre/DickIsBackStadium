@@ -1,7 +1,13 @@
 package com.example.gecko.smartstadium.api;
 
+import com.example.gecko.smartstadium.classes.Athletic;
+import com.example.gecko.smartstadium.classes.Credentials;
+import com.example.gecko.smartstadium.interfaces.IStadium;
+
 import okhttp3.OkHttpClient;
+import retrofit2.Call;
 import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class StadiumClient {
 
@@ -18,8 +24,14 @@ public class StadiumClient {
 
     private StadiumClient() {
         mRetrofit = new Retrofit.Builder()
+                .addConverterFactory(JacksonConverterFactory.create())
                 .baseUrl(BASE_URL)
                 .client(new OkHttpClient())
                 .build();
+    }
+
+    public Call<Athletic> postLogin(Credentials credentials) {
+        IStadium iStadium = mRetrofit.create(IStadium.class);
+        return iStadium.postLogin(credentials);
     }
 }

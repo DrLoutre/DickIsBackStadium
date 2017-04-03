@@ -26,7 +26,7 @@ public class Team {
     }
     
     public List<String> getPlayerList(){
-        List<String> returnValue = new LinkedList();
+        List<String> returnValue = new LinkedList<String>();
         for(String player_id : players){
             returnValue.add(player_id);
         }
@@ -34,7 +34,7 @@ public class Team {
     }
     
     public void setPlayerList(List<String> id_list){
-        List<String> returnValue = new LinkedList();
+        List<String> returnValue = new LinkedList<String>();
         for(String player_id : id_list){
             returnValue.add(player_id);
         }
