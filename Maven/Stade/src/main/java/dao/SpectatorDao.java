@@ -5,6 +5,7 @@
  */
 package dao;
 
+import beans.Spectator;
 import exceptions.IntegrityException;
 import exceptions.NotFoundException;
 import javafx.util.Pair;
@@ -20,6 +21,8 @@ public interface SpectatorDao {
     void addSpetator(int ID, String lastName, String firstName, 
             String tribuneNFC, int IDMatch) 
             throws IntegrityException,NotFoundException;
+    
+    Spectator getSpectator(int ID) throws NotFoundException;
     
     String getTribune(int ID) throws NotFoundException;
     

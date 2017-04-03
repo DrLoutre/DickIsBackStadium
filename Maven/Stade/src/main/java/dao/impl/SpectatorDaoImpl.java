@@ -5,6 +5,7 @@
  */
 package dao.impl;
 
+import beans.Spectator;
 import core.Assert;
 import dao.Dao;
 import dao.MatchDao;
@@ -73,6 +74,21 @@ public class SpectatorDaoImpl extends Dao implements SpectatorDao{
         
         Assert.isTrue(rows == 1);
     }
+    
+    @Override
+    public Spectator getSpectator(int ID) throws NotFoundException {
+        Assert.isTrue(ID >= 0);
+        
+        SpectatorData data = queryFactory.selectFrom(SPECTATOR)
+                .where(SPECTATOR.idSpec.eq(ID))
+                .fetchFirst();
+        closeConnection();
+        
+        if(data==null) throw new NotFoundException("The spectator " 
+                + ID + " does not exists in the database");
+        
+        return toSpectator(data);
+    }
 
     @Override
     public String getTribune(int ID) throws NotFoundException {
@@ -139,4 +155,14 @@ public class SpectatorDaoImpl extends Dao implements SpectatorDao{
         return data;
     }
     
+    private Spectator toSpectator(SpectatorData data){
+        Spectator returnValue = new Spectator();
+        returnValue.setFirstName(data.getFirstName());
+        returnValue.setID(data.getIdSpec());
+        returnValue.setIDMatch(data.getIdMatch());
+        returnValue.setLastName(data.getLastName());
+        returnValue.setTribuneNFC(data.getTribuneNFC());
+        
+        return returnValue;
+    }
 }
