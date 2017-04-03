@@ -5,6 +5,7 @@
  */
 package dao.impl;
 
+import beans.Refreshment;
 import com.querydsl.sql.dml.SQLUpdateClause;
 import core.Assert;
 import dao.Dao;
@@ -38,6 +39,20 @@ public class RefreshmentDaoImpl extends Dao implements RefreshmentDao{
         closeConnection();
         
         Assert.isTrue(rows == 1);
+    }
+    
+    @Override
+    public Refreshment getRefreshment(int ID) throws NotFoundException {
+        Assert.isTrue(ID >= 0);
+        
+        RefreshmentData data = queryFactory.selectFrom(REFRESHMENT)
+                .where(REFRESHMENT.id.eq(ID)).fetchFirst();
+        closeConnection();
+        
+        if(data == null) throw new NotFoundException("Refreshement " 
+                + ID + " has not been found in the database");
+        
+        return toRefreshment(data);
     }
 
     @Override
@@ -112,4 +127,12 @@ public class RefreshmentDaoImpl extends Dao implements RefreshmentDao{
         return data;
     }
     
+    private Refreshment toRefreshment(RefreshmentData data){
+        Refreshment returnValue = new Refreshment();
+        returnValue.setAttendance(data.getAttendance());
+        returnValue.setId(data.getId());
+        returnValue.setLocalisation(data.getLocalisation());
+        
+        return returnValue;
+    }
 }
