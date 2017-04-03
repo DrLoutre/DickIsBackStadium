@@ -1,13 +1,12 @@
 package beans;
 
-public class Buvette {
+public class Refreshment {
 
     private int Id;
-    private float Frequentation;
+    private float Attendance;
     private String Localisation;
 
-    public Buvette() {
-
+    public Refreshment() {
     }
 
     public int getId() {
@@ -18,12 +17,12 @@ public class Buvette {
         Id = id;
     }
 
-    public float getFrequentation() {
-        return Frequentation;
+    public float getAttendance() {
+        return Attendance;
     }
 
-    public void setFrequentation(float frequentation) {
-        Frequentation = frequentation;
+    public void setAttendance(float attendance) {
+        Attendance = attendance;
     }
 
     public String getLocalisation() {
