@@ -5,6 +5,7 @@
  */
 package dao.impl;
 
+import beans.Match;
 import core.Assert;
 import dao.Dao;
 import dao.MatchDao;
@@ -51,6 +52,20 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         
         Assert.isTrue(rows == 1);
     }
+    
+    @Override
+    public Match getMatch(int ID) throws NotFoundException {
+        Assert.isTrue(ID >= 0);
+        
+        MatchsData data = queryFactory.selectFrom(MATCH)
+                .where(MATCH.idMatch.eq(ID)).fetchFirst();
+        closeConnection();
+        
+        if (data == null) throw new NotFoundException("Match "+ ID 
+                + " has not been found in the database");
+        
+        return toMatch(data);
+    }
 
     @Override
     public boolean matchExists(int ID) {
@@ -93,5 +108,14 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         data.setGoal1(goals1);
         data.setGoal2(goals2);
         return data;
+    }
+    
+    private Match toMatch(MatchsData data){
+        Match returnValue = new Match();
+        returnValue.setGoals(data.getGoal1(), data.getGoal2());
+        returnValue.setTeamID(data.getIdTeam1(), data.getIdTeam2());
+        returnValue.setID(data.getIdMatch());
+        
+        return returnValue;
     }
 }
