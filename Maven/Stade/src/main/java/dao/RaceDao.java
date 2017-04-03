@@ -5,6 +5,7 @@
  */
 package dao;
 
+import beans.Race;
 import exceptions.IntegrityException;
 import exceptions.NotFoundException;
 
@@ -15,6 +16,8 @@ import exceptions.NotFoundException;
 public interface RaceDao {
     
     void addRace(int ID, String NFC) throws IntegrityException;
+    
+    Race getRace(int ID) throws NotFoundException;
     
     boolean raceExists(int ID);
     

@@ -5,6 +5,7 @@
  */
 package dao.impl;
 
+import beans.Race;
 import com.querydsl.sql.dml.SQLUpdateClause;
 import core.Assert;
 import dao.Dao;
@@ -37,10 +38,25 @@ public class RaceDaoImpl extends Dao implements RaceDao{
         
         Assert.isTrue(rows == 1);
     }
+    
+    @Override
+    public Race getRace(int ID) throws NotFoundException {
+        Assert.isTrue(ID >= 0);
+        
+        RaceData data = queryFactory.selectFrom(RACE)
+                .where(RACE.idScore.eq(ID)).fetchFirst();
+        closeConnection();
+        
+        if (data == null) throw new NotFoundException("Race "+ ID 
+                + " has not been found in the database");
+        
+        return toRace(data);
+    }
 
     @Override
     public boolean raceExists(int ID) {
         Assert.isTrue(ID >= 0);
+        
         RaceData data = queryFactory.selectFrom(RACE)
                 .where(RACE.idScore.eq(ID)).fetchFirst();
         closeConnection();
@@ -75,5 +91,13 @@ public class RaceDaoImpl extends Dao implements RaceDao{
         data.setIdScore(ID);
         data.setNfc(NFC);
         return data;
+    }
+    
+    private Race toRace(RaceData data){
+        Race returnValue = new Race();
+        returnValue.setId(data.getIdScore());
+        returnValue.setNFC(data.getNfc());
+        
+        return returnValue;
     }
 }
