@@ -5,6 +5,7 @@
  */
 package dao.impl;
 
+import beans.Team;
 import core.Assert;
 import dao.Dao;
 import dao.TeamDao;
@@ -47,6 +48,20 @@ public class TeamDaoImpl extends Dao implements TeamDao{
         
         return (data != null);
     }
+    
+    @Override
+    public Team getTeam(int ID) throws NotFoundException {
+        Assert.isTrue(ID >= 0);
+        
+        TeamData data = queryFactory.selectFrom(TEAM)
+                .where(TEAM.idTeam.eq(ID)).fetchFirst();
+        closeConnection();
+        
+        if (data==null) throw new NotFoundException("Team "+ ID 
+                + " has not been found in the database");
+        
+        return toTeam(data);
+    }
 
     @Override
     public String getName(int ID) throws NotFoundException {
@@ -70,5 +85,13 @@ public class TeamDaoImpl extends Dao implements TeamDao{
         data.setIdTeam(ID);
         data.setTeamName(Name);
         return data;
+    }
+
+    private Team toTeam(TeamData data){
+        Team returnValue = new Team();
+        returnValue.setId(data.getIdTeam());
+        returnValue.setNom(data.getTeamName());
+        
+        return returnValue;
     }
 }

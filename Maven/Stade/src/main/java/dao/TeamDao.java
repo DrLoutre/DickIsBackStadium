@@ -5,6 +5,7 @@
  */
 package dao;
 
+import beans.Team;
 import exceptions.IntegrityException;
 import exceptions.NotFoundException;
 
@@ -17,6 +18,8 @@ public interface TeamDao {
     void addTeam(int ID, String Name) throws IntegrityException;
     
     boolean teamExists(int ID);
+    
+    Team getTeam(int ID) throws NotFoundException;
     
     String getName(int ID) throws NotFoundException;
 }
