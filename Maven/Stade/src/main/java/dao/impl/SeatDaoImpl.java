@@ -5,6 +5,7 @@
  */
 package dao.impl;
 
+import beans.Seat;
 import core.Assert;
 import dao.Dao;
 import dao.SeatDao;
@@ -62,6 +63,21 @@ public class SeatDaoImpl extends Dao implements SeatDao{
         
         Assert.isTrue(rows == 1);
     }
+    
+    @Override
+    public Seat getSeat(int ID) throws NotFoundException {
+        Assert.isTrue(ID >= 0);
+        
+        SeatData data = queryFactory.selectFrom(SEAT)
+                .where(SEAT.id.eq(ID))
+                .fetchFirst();
+        closeConnection();
+        
+        if(data == null) throw new NotFoundException("The seat " + ID 
+                + " does not exist in the database");
+        
+        return toSeat(data);
+    }
 
     @Override
     public void setOccupiedState(int ID, boolean occupied) 
@@ -113,5 +129,14 @@ public class SeatDaoImpl extends Dao implements SeatDao{
         data.setOccupied(occupied);
         data.setTribuneNFC(tribuneNFC);
         return data;
+    }
+    
+    private Seat toSeat(SeatData data){
+        Seat returnValue = new Seat();
+        returnValue.setID(data.getId());
+        returnValue.setOccupied(data.getOccupied());
+        returnValue.setTribuneNFC(data.getTribuneNFC());
+        
+        return returnValue;
     }
 }

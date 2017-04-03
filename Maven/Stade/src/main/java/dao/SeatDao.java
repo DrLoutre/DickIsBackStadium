@@ -5,6 +5,7 @@
  */
 package dao;
 
+import beans.Seat;
 import exceptions.IntegrityException;
 import exceptions.NotFoundException;
 import java.util.List;
@@ -19,6 +20,8 @@ public interface SeatDao {
     
     void addSeat(int ID, String tribuneNFC, boolean occupied) 
             throws IntegrityException, NotFoundException;
+    
+    Seat getSeat(int ID) throws NotFoundException;
     
     void setOccupiedState(int ID, boolean occupied) throws NotFoundException;
     
