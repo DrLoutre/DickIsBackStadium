@@ -5,6 +5,7 @@
  */
 package dao.impl;
 
+import beans.Tribune;
 import core.Assert;
 import dao.Dao;
 import dao.TribuneDao;
@@ -53,6 +54,22 @@ public class TribuneDaoImpl extends Dao implements TribuneDao{
         closeConnection();
         
         Assert.isTrue(rows == 1);
+    }
+    
+    @Override
+    public Tribune getTribune(String NFC) throws NotFoundException {
+        Assert.notNull(NFC);
+        Assert.isTrue(NFC.length() > 0);
+        
+        TribuneData data = queryFactory.selectFrom(TRIBUNE)
+                .where(TRIBUNE.nfc.eq(NFC))
+                .fetchFirst();
+        closeConnection();
+        
+        if(data == null) throw new NotFoundException("The tribune " 
+                + NFC + " does not exists in the database");
+        
+        return toTribune(data);
     }
 
     @Override
@@ -135,5 +152,15 @@ public class TribuneDaoImpl extends Dao implements TribuneDao{
         data.setPlaces(places);
         data.setTexteExplanation(texteExplanation);
         return data;
+    }
+
+    private Tribune toTribune(TribuneData data){
+        Tribune returnValue = new Tribune();
+        returnValue.setDescription(data.getTexteExplanation());
+        returnValue.setLocalisation(data.getLocalisation());
+        returnValue.setNFC(data.getNfc());
+        returnValue.setPlaces(data.getPlaces());
+        
+        return returnValue;
     }
 }
