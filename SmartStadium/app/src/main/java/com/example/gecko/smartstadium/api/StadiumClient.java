@@ -24,8 +24,8 @@ public class StadiumClient {
 
     private StadiumClient() {
         mRetrofit = new Retrofit.Builder()
-                .addConverterFactory(JacksonConverterFactory.create())
-                .baseUrl(BASE_URL)
+                //.addConverterFactory(JacksonConverterFactory.create())
+                //.baseUrl(BASE_URL)
                 .client(new OkHttpClient())
                 .build();
     }
