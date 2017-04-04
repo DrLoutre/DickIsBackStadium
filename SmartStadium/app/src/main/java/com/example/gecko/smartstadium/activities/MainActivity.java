@@ -1,8 +1,13 @@
 package com.example.gecko.smartstadium.activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +27,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        int MyVersion = Build.VERSION.SDK_INT;
+        if (MyVersion > Build.VERSION_CODES.LOLLIPOP_MR1) {
+            if (!checkIfAlreadyHavePermission()) {
+                requestForSpecificPermission();
+            }
+        }
         credential = CredentialSingletion.getInstance();
         NFCButton = (Button) findViewById(R.id.loginButtonNFC);
         QRButton = (Button) findViewById(R.id.loginButtonQRcode);
@@ -32,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //todo changer pour aller vers le lecteur NFC
-                Intent i = new Intent(MainActivity.this, QRCodeActivity.class);
+                Intent i = new Intent(MainActivity.this, LoginActivity.class);
                 startActivityForResult(i, NFC_SCANNER);
             }
         });
@@ -40,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
         QRButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, QRCodeActivity.class);
+                //todo changer PublicActivity par QRCodeActivity
+                Intent i = new Intent(MainActivity.this, PublicActivity.class);
                 startActivityForResult(i, QR_CODE);
             }
         });
@@ -59,4 +71,23 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
+    /**
+     * Verify is the application has the require permissions
+     *
+     * @return true if the permissions are granted
+     */
+    private boolean checkIfAlreadyHavePermission() {
+        int result = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+        return result == PackageManager.PERMISSION_GRANTED;
+    }
+
+    /**
+     * Make the request for the permissions
+     */
+    private void requestForSpecificPermission() {
+        ActivityCompat
+                .requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.INTERNET}, 101);
+    }
+
 }

@@ -10,6 +10,11 @@
         android:name="android.hardware.nfc"
         android:required="true" />
 
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
         android:name=".application.StadiumApplication"
         android:allowBackup="true"
@@ -25,8 +30,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.QRCodeActivity" />
-        <activity android:name=".activities.NFRScannerActivity"></activity>
-        <activity android:name=".activities.PublicActivity"></activity>
+        <activity android:name=".activities.NFRScannerActivity" />
+        <activity android:name=".activities.PublicActivity" />
+        <activity android:name=".activities.LoginActivity" />
     </application>
 
 </manifest>

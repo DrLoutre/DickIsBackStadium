@@ -9,4 +9,19 @@
     <string name="publicLocalistionInfo">Erreur lors du chargement du lieu</string>
     <string name="publicTmp">Je sais   \npas quoi écrir  ici \nmais je voulais pas  \nque ca reste vide   \nFaudrait mettre des stats ou quoi</string>
     <string name="publicQuestion">Que cherchez vous ?</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Mot de passe</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">Mot de passe trop court</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="loginTitle">Zone réservée aux atlètes.</string>
 </resources>

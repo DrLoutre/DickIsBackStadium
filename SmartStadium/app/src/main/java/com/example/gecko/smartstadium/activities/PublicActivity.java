@@ -2,6 +2,7 @@ package com.example.gecko.smartstadium.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -39,7 +40,13 @@ public class PublicActivity extends AppCompatActivity {
         buvetteButon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(findViewById(android.R.id.content), "Pas encore d'activité pour trouver la buvette", Snackbar.LENGTH_LONG).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(PublicActivity.this);
+                builder.setTitle("Pour aller à la buvette:")
+                        // todo actualiser le message avec la bonne info
+                        .setMessage("* Tourner à gauche \n* Deuxième à droite \n* 30m et vous y êtes");
+                // Create the AlertDialog object and return it
+                builder.create();
+                builder.show();
             }
         });
     }
