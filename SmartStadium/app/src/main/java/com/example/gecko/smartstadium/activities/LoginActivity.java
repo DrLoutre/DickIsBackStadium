@@ -1,5 +1,6 @@
 package com.example.gecko.smartstadium.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -89,7 +90,8 @@ public class LoginActivity extends AppCompatActivity { //implements LoaderCallba
             mPasswordView.setError(getString(R.string.error_invalid_password));
             Snackbar.make(findViewById(android.R.id.content), "Erreur", Snackbar.LENGTH_LONG).show();
         } else if (connection(password, credentialSingletion.getId())) {
-            Snackbar.make(findViewById(android.R.id.content), "Connection :D", Snackbar.LENGTH_LONG).show();
+            Intent intend = new Intent(LoginActivity.this, StatActivity.class);
+            startActivity(intend);
         }
     }
 

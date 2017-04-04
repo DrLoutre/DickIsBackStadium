@@ -33,6 +33,7 @@
         <activity android:name=".activities.NFRScannerActivity" />
         <activity android:name=".activities.PublicActivity" />
         <activity android:name=".activities.LoginActivity" />
+        <activity android:name=".activities.StatActivity"></activity>
     </application>
 
 </manifest>
