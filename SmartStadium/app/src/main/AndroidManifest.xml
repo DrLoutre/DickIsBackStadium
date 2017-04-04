@@ -25,9 +25,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.QRCodeActivity" />
-        <activity android:name=".activities.NFRScannerActivity">
-
-        </activity>
+        <activity android:name=".activities.NFRScannerActivity"></activity>
+        <activity android:name=".activities.PublicActivity"></activity>
     </application>
 
 </manifest>

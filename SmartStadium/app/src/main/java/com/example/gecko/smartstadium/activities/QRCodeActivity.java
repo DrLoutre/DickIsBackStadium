@@ -66,9 +66,9 @@ public class QRCodeActivity extends Activity implements QRCodeReaderView.OnQRCod
      */
     public void onQRCodeRead(String text, PointF[] points) {
 
-        Intent returnIntent = new Intent(); //todo déffinir vers ou aller
+        Intent returnIntent = new Intent();
         returnIntent.putExtra("result", text);
-        startActivity(returnIntent);
+        setResult(Activity.RESULT_OK, returnIntent);
         finish();
     }
 

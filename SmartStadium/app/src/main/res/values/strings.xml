@@ -3,4 +3,10 @@
     <string name="loginMainTitle">Smardium</string>
     <string name="loginTextIntro"> Bienvenu sur l\'application pour le statde de Metzert \"Smardium\".  \nNous espérons que l\'expérience de ce stade hight tech va vous éblouire.</string>
     <string name="loginTextInfo">Pour commencer, veillez choisir le moyen d\'authentification:</string>
+    <string name="publicTitle">Bienvenu</string>
+    <string name="publicName">Name</string>
+    <string name="publicLocalisationTitle">Localisation:</string>
+    <string name="publicLocalistionInfo">Erreur lors du chargement du lieu</string>
+    <string name="publicTmp">Je sais   \npas quoi écrir  ici \nmais je voulais pas  \nque ca reste vide   \nFaudrait mettre des stats ou quoi</string>
+    <string name="publicQuestion">Que cherchez vous ?</string>
 </resources>

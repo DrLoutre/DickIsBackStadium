@@ -7,9 +7,12 @@ import com.example.gecko.smartstadium.R;
 
 public class NFRScannerActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nfrscanner);
     }
+
+
 }
