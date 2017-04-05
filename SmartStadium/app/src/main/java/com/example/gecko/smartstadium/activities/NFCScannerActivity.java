@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.example.gecko.smartstadium.R;
 
-public class NFRScannerActivity extends AppCompatActivity {
+public class NFCScannerActivity extends AppCompatActivity {
 
 
     @Override

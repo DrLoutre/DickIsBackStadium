@@ -23,10 +23,11 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int NFC_SCANNER = 1;
     private static final int QR_CODE = 2;
-    private Bus mBus = BusProvider.getInstance();
     CredentialSingletion credential;
+    private Bus mBus = BusProvider.getInstance();
     private Button NFCButton;
     private Button QRButton;
+    private Button PublicButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
         credential = CredentialSingletion.getInstance();
         NFCButton = (Button) findViewById(R.id.loginButtonNFC);
         QRButton = (Button) findViewById(R.id.loginButtonQRcode);
+        PublicButton = (Button) findViewById(R.id.loginButtonPublic);
+
 
         //todo ajouter la demande de permission
 
@@ -60,6 +63,14 @@ public class MainActivity extends AppCompatActivity {
                 //todo changer PublicActivity par QRCodeActivity
                 Intent i = new Intent(MainActivity.this, PublicActivity.class);
                 startActivityForResult(i, QR_CODE);
+            }
+        });
+
+        PublicButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, PublicActivity.class);
+                startActivity(intent);
             }
         });
     }

@@ -1,7 +1,6 @@
 package com.example.gecko.smartstadium.activities;
 
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -33,7 +32,13 @@ public class PublicActivity extends AppCompatActivity {
         placeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(findViewById(android.R.id.content), "Pas encore d'activité pour les places ...", Snackbar.LENGTH_LONG).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(PublicActivity.this);
+                builder.setTitle("Place libre ")
+                        // todo actualiser le message avec la bonne info
+                        .setMessage("En tribune D: 15D, 16D, 20D");
+                // Create the AlertDialog object and return it
+                builder.create();
+                builder.show();
             }
         });
 
