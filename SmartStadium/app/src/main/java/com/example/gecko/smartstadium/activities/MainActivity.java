@@ -13,11 +13,17 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.gecko.smartstadium.R;
+import com.example.gecko.smartstadium.bus.BusProvider;
+import com.example.gecko.smartstadium.events.AthleticEvent;
+import com.example.gecko.smartstadium.events.GetAthleticIdEvent;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int NFC_SCANNER = 1;
     private static final int QR_CODE = 2;
+    private Bus mBus = BusProvider.getInstance();
     CredentialSingletion credential;
     private Button NFCButton;
     private Button QRButton;
@@ -67,9 +73,24 @@ public class MainActivity extends AppCompatActivity {
             final String result = data.getStringExtra("result");
             //todo requète api ici pour capter les info
 
+            mBus.post(new GetAthleticIdEvent(result));
+
+            /*
             Intent intent = new Intent(MainActivity.this, PublicActivity.class);
             startActivity(intent);
+            */
         }
+    }
+
+    @Subscribe
+    public void AthleticEvent(AthleticEvent athleticEvent) {
+        Intent intent;
+        if (athleticEvent.getAthletic() != null) {
+            intent = new Intent(MainActivity.this, LoginActivity.class);
+        } else {
+            intent = new Intent(MainActivity.this, PublicActivity.class);
+        }
+        startActivity(intent);
     }
 
     /**

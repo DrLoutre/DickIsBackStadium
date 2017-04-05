@@ -34,4 +34,9 @@ public class StadiumClient {
         IStadium iStadium = mRetrofit.create(IStadium.class);
         return iStadium.postLogin(credentials);
     }
+
+    public Call<Athletic> getAthletic(String id) {
+        IStadium iStadium = mRetrofit.create(IStadium.class);
+        return iStadium.getAthletic(id);
+    }
 }
