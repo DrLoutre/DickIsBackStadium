@@ -9,12 +9,12 @@ import com.example.gecko.smartstadium.utils.ClearancesEnum;
 
 public class CredentialSingletion {
     private static final CredentialSingletion ourInstance = new CredentialSingletion();
-    private int id;
+    private String id;
     private String name;
     private ClearancesEnum clearance;
 
     private CredentialSingletion() {
-        id = 6717;
+        id = String.valueOf(6717);
         name = "Quentin";
         clearance = ClearancesEnum.Public;
 
@@ -24,11 +24,11 @@ public class CredentialSingletion {
         return ourInstance;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

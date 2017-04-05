@@ -4,24 +4,24 @@ import com.example.gecko.smartstadium.classes.Athletic;
 import com.example.gecko.smartstadium.classes.Credentials;
 import com.example.gecko.smartstadium.interfaces.IStadium;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class StadiumClient {
 
-    public final static String BASE_URL = "";
+    public final static String BASE_URL = "http://10.0.2.2/";
 
     private static StadiumClient mStadiumClient;
     private static Retrofit mRetrofit;
 
     private StadiumClient() {
-        /* todo commenté pour compiler
         mRetrofit = new Retrofit.Builder()
-                //.addConverterFactory(JacksonConverterFactory.create())
-                //.baseUrl(BASE_URL)
+                .addConverterFactory(JacksonConverterFactory.create())
+                .baseUrl(BASE_URL)
                 .client(new OkHttpClient())
                 .build();
-                */
     }
 
     public static StadiumClient getClient() {

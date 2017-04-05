@@ -13,12 +13,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.gecko.smartstadium.R;
+import com.example.gecko.smartstadium.bus.BusProvider;
+import com.example.gecko.smartstadium.classes.Credentials;
+import com.example.gecko.smartstadium.events.LoginEvent;
+import com.example.gecko.smartstadium.events.PostLoginEvent;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 
 /**
  * Created by Quentin Jacquemotte
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity { //implements LoaderCallbacks<Cursor> {
+
+    private Bus mBus = BusProvider.getInstance();
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -72,6 +80,18 @@ public class LoginActivity extends AppCompatActivity { //implements LoaderCallba
         mProgressView = findViewById(R.id.login_progress);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mBus.register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mBus.unregister(this);
+    }
+
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
@@ -89,20 +109,28 @@ public class LoginActivity extends AppCompatActivity { //implements LoaderCallba
         if (!isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             Snackbar.make(findViewById(android.R.id.content), "Erreur", Snackbar.LENGTH_LONG).show();
-        } else if (connection(password, credentialSingletion.getId())) {
-            Intent intend = new Intent(LoginActivity.this, StatActivity.class);
-            startActivity(intend);
+        } else {
+            connection(password, credentialSingletion.getId());
         }
     }
 
-    private Boolean connection(String password, int id) {
-        //todo Jo fait sa magie
-        return true;
+    private void connection(String password, String id) {
+        mBus.post(new PostLoginEvent(new Credentials(id, password)));
     }
 
     // Check the lenght of the password
     private boolean isPasswordValid(String password) {
         return password.length() > 4;
+    }
+
+    @Subscribe
+    public void onLoginEvent(LoginEvent loginEvent) {
+        if (loginEvent.getAthletic() != null) {
+            Intent intend = new Intent(LoginActivity.this, StatActivity.class);
+            startActivity(intend);
+        } else {
+            Snackbar.make(findViewById(android.R.id.content), "Le mot de passe est incorrect", Snackbar.LENGTH_LONG).show();
+        }
     }
 }
 

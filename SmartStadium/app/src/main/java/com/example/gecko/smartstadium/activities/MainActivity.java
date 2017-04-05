@@ -64,6 +64,18 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mBus.register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mBus.unregister(this);
+    }
+
     /**
      * Result of the QRCode scanner
      */

@@ -43,7 +43,7 @@ public class PublicActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(PublicActivity.this);
                 builder.setTitle("Pour aller à la buvette:")
                         // todo actualiser le message avec la bonne info
-                        .setMessage("* Tourner à gauche \n* Deuxième à droite \n* 30m et vous y êtes");
+                        .setMessage("* Tournez à gauche \n* Deuxième à droite \n* 30m et vous y êtes");
                 // Create the AlertDialog object and return it
                 builder.create();
                 builder.show();
