@@ -24,12 +24,14 @@ public class AtheleticWebService {
     @GET
     @Path("/{id}")
     public Response getAthletic(@PathParam("id") String id) {
+        
+        Athletic athletic;
         try {
-            Athletic athletic = athleticDao.getAthletic(id);
-            return Response.ok(athletic).build();
+            athletic = athleticDao.getAthletic(id);
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+        return Response.ok(athletic).build();
     }
 
     @POST
@@ -39,8 +41,17 @@ public class AtheleticWebService {
         String username = credentials.getUsername();
 
         //Get athlectics from DB
-        Athletic athletic = new Athletic();
+        Athletic athletic;
+        try {
+            athletic = athleticDao.getAthletic(username);
+        } catch (NotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
 
-        return Response.status(Response.Status.CREATED).entity(athletic).build();
+        if (athletic.getMDP().equals(credentials.getPassword())) {
+            return Response.status(Response.Status.CREATED).entity(athletic).build();
+        } else {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
     }
 }
