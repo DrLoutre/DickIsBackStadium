@@ -8,6 +8,19 @@
         <servlet-name>Result</servlet-name>
         <servlet-class>servlets.Result</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Smart Stadium</servlet-name>
+        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>jersey.config.server.provider.packages</param-name>
+            <param-value>be.unamur.info.api</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Registration</servlet-name>
         <url-pattern>/Registration</url-pattern>
@@ -15,6 +28,10 @@
     <servlet-mapping>
         <servlet-name>Result</servlet-name>
         <url-pattern>/Result</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Smart Stadium</servlet-name>
+        <url-pattern>/api/v1/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
