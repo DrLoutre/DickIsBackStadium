@@ -108,7 +108,7 @@
 
                 <configuration>
                     <driver>com.mysql.jdbc.Driver</driver>
-                    <url>jdbc:mysql://localhost:3306/stade_g4</url>
+                    <url>jdbc:mysql://localhost:3306/stade</url>
                     <username>stade</username>
                     <password>stade</password>
                 </configuration>
@@ -206,7 +206,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <url>jdbc:mysql://localhost:3306/stade_g4</url>
+                    <url>jdbc:mysql://localhost:3306/stade</url>
                     <user>stade</user>
                     <password>stade</password>
                 </configuration>
@@ -235,7 +235,7 @@
                     <beanSuffix>Data</beanSuffix>
                     <exportBeans>true</exportBeans>
                     <jdbcDriver>com.mysql.jdbc.Driver</jdbcDriver>
-                    <jdbcUrl>jdbc:mysql://localhost:3306/stade_g4</jdbcUrl>
+                    <jdbcUrl>jdbc:mysql://localhost:3306/stade</jdbcUrl>
                     <jdbcUser>stade</jdbcUser>
                     <jdbcPassword>stade</jdbcPassword>
                     <packageName>stade.data</packageName>
