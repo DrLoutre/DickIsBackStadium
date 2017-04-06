@@ -1,14 +1,8 @@
 CREATE TABLE Refreshment(
     ID INTEGER NOT NULL,
     Attendance FLOAT NOT NULL,
-    Localisation VARCHAR(20) NOT NULL,
+    Localisation VARCHAR(100) NOT NULL,
     PRIMARY KEY (ID)
-);
-
-CREATE TABLE Race(
-    Id_Score INTEGER NOT NULL,
-    NFC VARCHAR(50) NOT NULL,
-    PRIMARY KEY (Id_Score)
 );
 
 CREATE TABLE Lap(
@@ -28,6 +22,13 @@ CREATE TABLE Athletic(
     Sex VARCHAR(10) NOT NULL,
     Password VARCHAR(50) NOT NULL,
     PRIMARY KEY(NFC)
+);
+
+CREATE TABLE Race(
+    Id_Score INTEGER NOT NULL,
+    NFC VARCHAR(50) NOT NULL,
+    PRIMARY KEY (Id_Score),
+    FOREIGN KEY (NFC) REFERENCES Athletic(NFC);
 );
 
 CREATE TABLE Team(
@@ -81,3 +82,8 @@ CREATE TABLE Spectator(
     FOREIGN KEY (TribuneNFC) REFERENCES Tribune(NFC),
     FOREIGN KEY (Id_Match) REFERENCES Matchs(Id_Match)
 );
+
+INSERT INTO `Refreshment` (`ID`, `Attendance`, `Localisation`);
+VALUES (1, 0.35, 'C''est pas ici');
+VALUES (2, 0.75, 'C''est pas ici non plus');
+

@@ -15,11 +15,12 @@ import exceptions.NotFoundException;
  */
 public interface RaceDao {
     
-    void addRace(int ID, String NFC) throws IntegrityException;
+    void addRace(int ID, String athleticNFC) 
+            throws IntegrityException,NotFoundException;
     
     Race getRace(int ID) throws NotFoundException;
     
     boolean raceExists(int ID);
     
-    void setNFC(int ID, String NFC) throws NotFoundException;
+    void setAthleticNFC(int ID, String athleticNFC) throws NotFoundException;
 }
