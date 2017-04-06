@@ -1,8 +1,12 @@
 package Models.In;
 
-import Models.In.Weather;
+import Events.EventType;
+import Events.HeatEvent;
+import Models.BlackBox.BlackBox;
 import com.phidgets.InterfaceKitPhidget;
 import com.phidgets.PhidgetException;
+import com.phidgets.event.SensorChangeEvent;
+import com.phidgets.event.SensorChangeListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,6 +19,8 @@ import java.util.Date;
 
 public class WeatherStation {
 
+    private static double MILI_INTERVAL = 1000;
+
     private Weather weather;
     private Date sunset;
     private Date sunrise;
@@ -22,20 +28,51 @@ public class WeatherStation {
     private double heat;
     private int sensorIndex;
     private InterfaceKitPhidget interfaceKitPhidget;
+    private BlackBox blackBox;
 
-    public WeatherStation(InterfaceKitPhidget ifk, int index) throws PhidgetException {
+    public WeatherStation(InterfaceKitPhidget ifk, int index, BlackBox bbx) throws PhidgetException {
         interfaceKitPhidget = ifk;
+        blackBox = bbx;
         sensorIndex = index;
-        heat = retHeat();
+        heat = refreshHeat();
+        try {
+            refreshSunPhases();
+            refreshWeather();
+        } catch(JSONException e) {
+            System.out.println("Error while listening Weather API");
+        }
+        interfaceKitPhidget.addSensorChangeListener(new SensorChangeListener() {
+            @Override
+            public void sensorChanged(SensorChangeEvent sensorChangeEvent) {
+                if (sensorChangeEvent.getIndex() == sensorIndex) {
+                    double newval = 0;
+                    try {
+                        newval = refreshHeat();
+                    } catch (PhidgetException e) {
+                        System.out.println("Error while listening Phidget : " + e);
+                    }
+                    //System.out.println("new val = " + newval + " vs old val = " + heat);
+                    if (Math.abs(newval - heat) > 0.5) {
+                        if ((blackBox.noEvent(EventType.HEAT_EVENT))
+                                || ((System.currentTimeMillis() - blackBox.getLast(EventType.HEAT_EVENT).removeLast().getTime()) > MILI_INTERVAL)) {
+                            heat = newval;
+                            try {
+                                blackBox.processElement(new HeatEvent(System.currentTimeMillis()));
+                            } catch(PhidgetException e) {
+                                System.out.println("Error while processing event");
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
-    public double refreshHeat() throws PhidgetException {
-        heat = retHeat();
+    public double getHeat() {
         return heat;
     }
 
-
-    private double retHeat() throws PhidgetException {
+    public double refreshHeat() throws PhidgetException {
         int sensorvalue = interfaceKitPhidget.getSensorValue(sensorIndex);
         double roomtemp = (sensorvalue * 0.22222) - 61.11;
         return roomtemp;
@@ -77,6 +114,34 @@ public class WeatherStation {
                     break;
             }
         }
+    }
+
+    public boolean isDay(){
+        try {
+            refreshSunPhases();
+        } catch(JSONException e) {
+            System.out.println("Error while getting Sun Phases");
+        }
+        Date now = new Date();
+        Date sunSet  = this.getSunset();
+        Date sunRise = this.getSunrise();
+        if (now.getDay() != sunset.getDay()) {
+            System.out.println("Error, current day is different from sunset");
+        }
+        if (now.compareTo(sunRise) > 0) {
+            //We're after sunrise.
+            if (now.compareTo(sunSet) > 0){
+                //We're after sunset
+                return false;
+            } else {
+                //We're before sunset
+                return true;
+            }
+        } else {
+            //We're before sunrise
+            return false;
+        }
+
     }
 
     public Weather getWeather() {

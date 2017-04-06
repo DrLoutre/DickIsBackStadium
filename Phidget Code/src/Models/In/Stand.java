@@ -3,6 +3,7 @@ package Models.In;
 import Events.StandEvent;
 import Models.BlackBox.BlackBox;
 import com.phidgets.InterfaceKitPhidget;
+import com.phidgets.PhidgetException;
 import com.phidgets.event.InputChangeEvent;
 import com.phidgets.event.InputChangeListener;
 
@@ -27,15 +28,21 @@ public class Stand {
         interfaceKitPhidget.addInputChangeListener(new InputChangeListener() {
             @Override
             public void inputChanged(InputChangeEvent inputChangeEvent) {
-                int seatOfConcern = inputChangeEvent.getIndex();
-                if (seats[seatOfConcern]) {
-                    seats[seatOfConcern] = false;
-                    System.out.println("Siège n°" + seatOfConcern + " libéré dans la tribune " + standName);
-                } else {
-                    seats[seatOfConcern] = true;
-                    System.out.println("Siège n°" + seatOfConcern + " occupé dans la tribune " + standName);
+                if (inputChangeEvent.getState()) {
+                    int seatOfConcern = inputChangeEvent.getIndex();
+                    if (seats[seatOfConcern]) {
+                        seats[seatOfConcern] = false;
+                        System.out.println("Siège n°" + seatOfConcern + " libéré dans la tribune " + standName);
+                    } else {
+                        seats[seatOfConcern] = true;
+                        System.out.println("Siège n°" + seatOfConcern + " occupé dans la tribune " + standName);
+                    }
+                    try {
+                        blackBox.processElement(new StandEvent(System.currentTimeMillis()));
+                    } catch(PhidgetException e) {
+                        System.out.println("Error while processing event");
+                    }
                 }
-                blackBox.processElement(new StandEvent(System.currentTimeMillis()));
             }
         });
     }

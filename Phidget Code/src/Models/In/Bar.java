@@ -4,12 +4,9 @@ import Events.BarEvent;
 import Events.EventType;
 import Models.BlackBox.BlackBox;
 import com.phidgets.InterfaceKitPhidget;
-import com.phidgets.Phidget;
 import com.phidgets.PhidgetException;
 import com.phidgets.event.SensorChangeEvent;
 import com.phidgets.event.SensorChangeListener;
-
-import java.time.format.SignStyle;
 
 /**
  * Created by bri_e on 28-02-17.
@@ -34,7 +31,11 @@ public class Bar {
                 if (sensorChangeEvent.getIndex() == sensorIndex) {
                     if (blackBox.noEvent(EventType.BAR_EVENT)
                             || ((System.currentTimeMillis() - blackBox.getLast(EventType.BAR_EVENT).removeLast().getTime()) > MILI_INTERVAL)) {
-                        blackBox.processElement(new BarEvent(System.currentTimeMillis()));
+                        try {
+                            blackBox.processElement(new BarEvent(System.currentTimeMillis()));
+                        } catch(PhidgetException e) {
+                            System.out.println("Error while processing event");
+                        }
                     }
                 }
             }

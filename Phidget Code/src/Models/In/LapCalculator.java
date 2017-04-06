@@ -91,7 +91,11 @@ public class LapCalculator {
                 System.out.println(oe);
                 if(Math.abs(timeScanning - clock) > MINIMUM_PASSING_TIME_IN_MILLI) {
                     onScan(oe.getValue());
-                    blackBox.processElement(new TurnEvent(clock));
+                    try {
+                        blackBox.processElement(new TurnEvent(clock));
+                    } catch (PhidgetException e) {
+                        System.out.println("Error while processing event");
+                    }
                 }
                 timeScanning = Long.parseLong("0.00");
             }

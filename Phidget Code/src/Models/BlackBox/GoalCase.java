@@ -18,7 +18,7 @@ public class GoalCase {
 
     public boolean hasGoalHappened(VibrationEvent secondEvent){
         vibrationEvent = secondEvent;
-        if((vibrationEvent.getTime() - passageEvent.getTime())<30){
+        if((vibrationEvent.getTime() - passageEvent.getTime())<1000){
             return true;
         } else {
             return false;

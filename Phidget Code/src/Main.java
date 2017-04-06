@@ -1,5 +1,4 @@
 import Models.BlackBox.BlackBox;
-import Models.In.Goal;
 import com.phidgets.InterfaceKitPhidget;
 
 public class Main {
@@ -7,9 +6,11 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
 
         try {
+            System.out.print("Initialising the InterfaceKit Phidget...");
 
             InterfaceKitPhidget interfaceKitPhidget = new InterfaceKitPhidget();
 
+            System.out.println("  ... done !");
             /*
                                             ==> Tenter avec ça en commentaires.
             AttachListener attachListener;
@@ -71,8 +72,11 @@ public class Main {
             interfaceKitPhidget.open(329107);
             interfaceKitPhidget.waitForAttachment();
 
+            System.out.print("Initialising the blackbox...");
+
             BlackBox blackbox = new BlackBox(interfaceKitPhidget);
 
+            System.out.println("  ... done ! ");
 
             /**
              * Code for roof.
@@ -205,8 +209,7 @@ public class Main {
             }
             System.out.println("Etat chauffage : " + field.isHeating() + "   Etat arrosage : " + field.isWatering());*/
 
-            while (true){
-            }
+            Thread.sleep(60000000);
         } catch(Exception e) {
             System.out.println(e + e.getLocalizedMessage());
         }

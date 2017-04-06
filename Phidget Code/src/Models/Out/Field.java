@@ -3,9 +3,6 @@ package Models.Out;
 import com.phidgets.InterfaceKitPhidget;
 import com.phidgets.PhidgetException;
 
-import javax.xml.parsers.FactoryConfigurationError;
-import java.awt.*;
-
 /**
  * Created by bri_e on 08-03-17.
  */
@@ -30,6 +27,7 @@ public class Field {
     public void setWatering(boolean state){
         isWatering = state;
         if (isWatering) isHeating = false;
+        setLight();
     }
 
     public boolean isWatering(){
@@ -39,6 +37,7 @@ public class Field {
     public void setHeating(boolean state){
         isHeating = state;
         if (isHeating) isWatering = false;
+        setLight();
     }
 
     public boolean isHeating(){

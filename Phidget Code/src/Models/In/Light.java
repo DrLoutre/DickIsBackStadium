@@ -1,12 +1,12 @@
 package Models.In;
 
 import Events.EventType;
-import Events.HeatEvent;
 import Events.LightEvent;
 import Models.BlackBox.BlackBox;
 import com.phidgets.InterfaceKitPhidget;
 import com.phidgets.PhidgetException;
-import com.phidgets.event.*;
+import com.phidgets.event.SensorChangeEvent;
+import com.phidgets.event.SensorChangeListener;
 
 /**
  * Created by bri_e on 21-02-17.
@@ -32,7 +32,11 @@ public class Light{
             public void sensorChanged(SensorChangeEvent sensorChangeEvent) {
                 if ((blackBox.noEvent(EventType.LIGHT_EVENT))
                         || ((System.currentTimeMillis() - blackBox.getLast(EventType.LIGHT_EVENT).removeLast().getTime()) > MILI_INTERVAL)) {
-                    blackBox.processElement(new LightEvent(System.currentTimeMillis()));
+                    try {
+                        blackBox.processElement(new LightEvent(System.currentTimeMillis()));
+                    } catch(PhidgetException e){
+                        System.out.println("Error while processing event");
+                    }
                 }
             }
         });
