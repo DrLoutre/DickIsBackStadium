@@ -25,7 +25,7 @@ CREATE TABLE Athletic(
     LastName VARCHAR(30) NOT NULL,
     FirstName VARCHAR(30) NOT NULL,
     Age INTEGER NOT NULL,
-    Sex CHAR NOT NULL,
+    Sex VARCHAR(10) NOT NULL,
     Password VARCHAR(50) NOT NULL,
     PRIMARY KEY(NFC)
 );
