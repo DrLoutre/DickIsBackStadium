@@ -8,6 +8,7 @@ package dao.impl;
 import beans.Race;
 import com.querydsl.sql.dml.SQLUpdateClause;
 import core.Assert;
+import dao.AthleticDao;
 import dao.Dao;
 import dao.RaceDao;
 import exceptions.IntegrityException;
@@ -20,19 +21,31 @@ import stade.data.QRace;
  * @author Dwade
  */
 public class RaceDaoImpl extends Dao implements RaceDao{
-
+    
+    private final AthleticDao athleticDao;
+    
     private static final QRace RACE = QRace.race;
     
+    public RaceDaoImpl(){
+        super();
+        athleticDao = new AthleticDaoImpl();
+    }
+    
     @Override
-    public void addRace(int ID, String NFC) throws IntegrityException {
+    public void addRace(int ID, String athleticNFC) 
+            throws IntegrityException, NotFoundException {
         Assert.isTrue(ID >= 0);
-        Assert.notNull(NFC);
-        Assert.isTrue(NFC.length() > 0);
+        Assert.notNull(athleticNFC);
+        Assert.isTrue(athleticNFC.length() > 0);
         
         if(raceExists(ID)) throw new IntegrityException("A race already exists "
                 + "in the database with the ID : " + ID);
         
-        RaceData data = toData(ID,NFC);
+        if(!athleticDao.athleticExists(athleticNFC)) throw 
+                new NotFoundException("Athletic "+ athleticNFC 
+                + " has not been found in the database");
+        
+        RaceData data = toData(ID,athleticNFC);
         long rows = queryFactory.insert(RACE).populate(data).execute();
         closeConnection();
         
@@ -65,17 +78,21 @@ public class RaceDaoImpl extends Dao implements RaceDao{
     }
 
     @Override
-    public void setNFC(int ID, String NFC) throws NotFoundException {
+    public void setAthleticNFC(int ID, String athleticNFC) throws NotFoundException {
         Assert.isTrue(ID >= 0);
-        Assert.notNull(NFC);
-        Assert.isTrue(NFC.length() > 0);
+        Assert.notNull(athleticNFC);
+        Assert.isTrue(athleticNFC.length() > 0);
         
         if (!raceExists(ID)) throw new NotFoundException("Race "+ ID 
                 + " has not been found in the database");
         
+        if(!athleticDao.athleticExists(athleticNFC)) throw 
+                new NotFoundException("Athletic "+ athleticNFC 
+                + " has not been found in the database");
+        
         SQLUpdateClause update = queryFactory.update(RACE);
         
-        long rows = update.set(RACE.nfc, NFC)
+        long rows = update.set(RACE.nfc, athleticNFC)
                 .where(RACE.idScore.eq(ID)).execute();
         closeConnection();
         
