@@ -45,9 +45,12 @@ public class Roof {
     public void actionateRoofMotor()throws PhidgetException{
         if (open) {
             servo.setPosition(SERVO_INDEX, VAL_ROOF_CLOSED);
+            System.out.print("      ======> roof closed");
+
             open = false;
         } else {
             servo.setPosition(SERVO_INDEX, VAL_ROOF_OPEN);
+            System.out.print("      ======> roof opened");
             open = true;
         }
     }

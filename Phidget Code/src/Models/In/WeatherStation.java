@@ -125,20 +125,10 @@ public class WeatherStation {
         Date now = new Date();
         Date sunSet  = this.getSunset();
         Date sunRise = this.getSunrise();
-        if (now.getDay() != sunset.getDay()) {
-            System.out.println("Error, current day is different from sunset");
-        }
-        if (now.compareTo(sunRise) > 0) {
-            //We're after sunrise.
-            if (now.compareTo(sunSet) > 0){
-                //We're after sunset
-                return false;
-            } else {
-                //We're before sunset
-                return true;
-            }
+
+        if (now.after(sunRise) && now.before(sunSet)) {
+            return true;
         } else {
-            //We're before sunrise
             return false;
         }
 
