@@ -6,6 +6,7 @@
 package dao.impl;
 
 import beans.Match;
+import com.sun.tools.corba.se.idl.constExpr.Not;
 import core.Assert;
 import dao.Dao;
 import dao.MatchDao;
@@ -65,6 +66,19 @@ public class MatchDaoImpl extends Dao implements MatchDao{
                 + " has not been found in the database");
         
         return toMatch(data);
+    }
+
+    @Override
+    public void deleteMatch(int ID) throws NotFoundException {
+        Assert.isTrue(ID >= 0);
+
+        if(matchExists(ID)) throw new IntegrityException("A match already "
+                + "exists in the database with the ID : " + ID);
+
+        long rows = queryFactory.delete(MATCH).where(MATCH.idMatch.eq(ID)).execute();
+        closeConnection();
+
+        Assert.isTrue(rows == 1);
     }
 
     @Override

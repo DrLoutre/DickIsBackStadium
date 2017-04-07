@@ -20,6 +20,8 @@ public interface MatchDao {
             throws IntegrityException, NotFoundException;
     
     Match getMatch(int ID) throws NotFoundException;
+
+    void deleteMatch(int ID) throws NotFoundException;
     
     boolean matchExists(int ID);
     

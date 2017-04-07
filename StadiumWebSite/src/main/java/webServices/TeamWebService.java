@@ -49,7 +49,11 @@ public class TeamWebService {
     @DELETE
     @Path("/{id}")
     public Response deleteTeam(@PathParam("id") int id) {
-        //TODO : Delete team
-        return Response.status(Response.Status.NOT_FOUND).build();
+        try {
+            teamDao.deleteTeam(id);
+        } catch (NotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.status(Response.Status.NO_CONTENT).build();
     }
 }

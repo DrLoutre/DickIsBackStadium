@@ -64,6 +64,18 @@ public class TeamDaoImpl extends Dao implements TeamDao{
     }
 
     @Override
+    public void deleteTeam(int ID) throws NotFoundException {
+        Assert.isTrue(ID >= 0);
+
+        if (!teamExists(ID)) throw new NotFoundException("Team " + ID
+                + " has not been found in the database");
+
+        long rows = queryFactory.delete(TEAM).where(TEAM.idTeam.eq(ID)).execute();
+
+        Assert.isTrue(rows == 1);
+    }
+
+    @Override
     public String getName(int ID) throws NotFoundException {
         Assert.isTrue(ID > 0);
         

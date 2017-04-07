@@ -66,7 +66,11 @@ public class AtheleticWebService {
     @DELETE
     @Path("/{id}")
     public Response deleteAthletic(@PathParam("id") String id) {
-        //TODO : Delete athl
-        return Response.status(Response.Status.NOT_FOUND).build();
+        try {
+            athleticDao.deleteAthletic(id);
+        } catch (NotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.status(Response.Status.NO_CONTENT).build();
     }
 }

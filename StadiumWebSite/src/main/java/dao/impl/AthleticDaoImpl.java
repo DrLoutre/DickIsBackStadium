@@ -118,6 +118,21 @@ public class AthleticDaoImpl extends Dao implements AthleticDao {
         
         return data.getPassword();
     }
+
+    @Override
+    public void deleteAthletic(String NFC) throws NotFoundException {
+        Assert.notNull(NFC);
+        Assert.isTrue(NFC.length() > 0);
+
+        if(!athleticExists(NFC)) throw new NotFoundException("Athletic " + NFC
+                + " has not been found in the database");
+
+        long rows = queryFactory.delete(ATHLETIC)
+                .where(ATHLETIC.nfc.eq(NFC)).execute();
+        closeConnection();
+
+        Assert.isTrue(rows == 1);
+    }
     
     private AthleticData toData(String NFC, String firstName, String lastName, 
             int age, String sex, String password){

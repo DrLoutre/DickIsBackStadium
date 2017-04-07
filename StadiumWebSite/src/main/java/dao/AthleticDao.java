@@ -21,6 +21,8 @@ public interface AthleticDao {
     Athletic getAthletic(String NFC) throws NotFoundException;
     
     boolean athleticExists(String NFC);
+
+    void deleteAthletic(String NFC) throws NotFoundException;
     
     String getFirstName(String NFC) throws NotFoundException;
     
