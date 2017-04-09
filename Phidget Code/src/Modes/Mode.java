@@ -13,6 +13,11 @@ public class Mode {
         mode = ModeType.NORMAL_MODE;
     }
 
+    public Mode(ModeType mo, boolean ma){
+        match = ma;
+        mode  = mo;
+    }
+
     public void setMode(ModeType mo, boolean ma){
         match = ma;
         mode  = mo;
@@ -32,7 +37,7 @@ public class Mode {
 
     public ModeType getModeType(){
         return mode;
-        
+
     }
 
 }

@@ -1,7 +1,5 @@
 package Models.In;
 
-import Modes.Mode;
-
 import java.util.Date;
 
 /**
@@ -13,7 +11,6 @@ public class CommunicationListener {
 
     public CommunicationListener(){
         //Todo : install a communication listener and when a new match is received, add it to the event processing.
-        //Todo : add the demo phase processing in this listener
     }
 
     public void addReceivedMatch(MatchPlanning planning) {
@@ -21,10 +18,6 @@ public class CommunicationListener {
         planning.addMatchToList(new Date(), new Date());
     }
 
-    public Mode getNewDemoPhase(){
-        return new Mode();
-        //Todo : parse from the received demo phase and returns it (change return type)
-    }
 
 
 }

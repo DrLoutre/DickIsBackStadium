@@ -13,12 +13,7 @@ import com.phidgets.InterfaceKitPhidget;
 import com.phidgets.PhidgetException;
 import org.json.JSONException;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
-import java.util.Locale;
 
 /**
  * Created by bri_e on 10-03-17.
@@ -27,11 +22,14 @@ public class BlackBox {
     private static int INDEX_LIGHT_SENSOR =         0;
     private static int INDEX_TEMPERATURE_SENSOR =   1;
     private static int INDEX_PRECISION_IR_SENSOR =  3;
-    private static int SEATS_NUMBER =               4;
-    private static int INDEX_R =                    5;
     private static int INDEX_VIBRATION_SENSOR =     4;
+    private static int INDEX_MODE_POT =             5;
     private static int INDEX_SLIDER_1 =             6;
     private static int INDEX_SLIDER_2 =             7;
+
+    private static int SEATS_NUMBER =               4;
+
+    private static int INDEX_R =                    5;
     private static int INDEX_G =                    6;
     private static int INDEX_B =                    7;
 
@@ -42,42 +40,46 @@ public class BlackBox {
     private GoalCase goalCase;
 
     //Phidgets Object that react on events or cases.
-    private InterfaceKitPhidget interfaceKitPhidget;
-    private Goal           goal;
-    private Bar            barSouth;
-    private Bar            barNorth;
-    private WeatherStation weather;
-    private Light          light;
-    private Lighting       lighting;
-    private Stand          stdSouth;
-    private Stand          stdNorth;
-    private LapCalculator  lapCntr;
-    private Field          field;
-    private Roof           roof;
-    private MatchPlanning  planning;
-    private CommunicationListener communicationListener;
-    private Mode curntMode;
+    private InterfaceKitPhidget     interfaceKitPhidget;
+    private Goal                    goal;
+    private Bar                     barSouth;
+    private Bar                     barNorth;
+    private WeatherStation          weather;
+    private Light                   light;
+    private Lighting                lighting;
+    private Stand                   stdSouth;
+    private Stand                   stdNorth;
+    private LapCalculator           lapCntr;
+    private Field                   field;
+    private Roof                    roof;
+    private MatchPlanning           planning;
+    private CommunicationListener   communicationListener;
+    private Mode                    curntMode;
+    private DemoModePotentiometer   demoModePot;
 
     public BlackBox(InterfaceKitPhidget interfaceKitPhidget){
         eventList = new LinkedList<>();
         this.interfaceKitPhidget = interfaceKitPhidget;
         try {
-            goal     = new Goal(interfaceKitPhidget,    INDEX_PRECISION_IR_SENSOR,  INDEX_VIBRATION_SENSOR,this);
-            barNorth = new Bar(interfaceKitPhidget,     INDEX_SLIDER_1,                                    this);
-            barSouth = new Bar(interfaceKitPhidget,     INDEX_SLIDER_2,                                    this);
-            weather  = new WeatherStation(interfaceKitPhidget,    INDEX_TEMPERATURE_SENSOR,                this);
-            light    = new Light(interfaceKitPhidget,   INDEX_LIGHT_SENSOR,                                this);
-            lighting = new Lighting(interfaceKitPhidget);
-            stdNorth = new Stand(interfaceKitPhidget, "Northen Stand",         SEATS_NUMBER,         this);
-            stdSouth = new Stand(interfaceKitPhidget, "Southen Stand",         SEATS_NUMBER,         this);
-            lapCntr  = new LapCalculator(this);
-            field    = new Field(interfaceKitPhidget,   INDEX_R,        INDEX_B,        INDEX_G);
-            roof     = new Roof();
-            planning = new MatchPlanning();
-            curntMode= new Mode();
+            goal        = new Goal(interfaceKitPhidget,    INDEX_PRECISION_IR_SENSOR,  INDEX_VIBRATION_SENSOR,this);
+            barNorth    = new Bar(interfaceKitPhidget,     INDEX_SLIDER_1,                                    this);
+            barSouth    = new Bar(interfaceKitPhidget,     INDEX_SLIDER_2,                                    this);
+            weather     = new WeatherStation(interfaceKitPhidget,    INDEX_TEMPERATURE_SENSOR,                this);
+            light       = new Light(interfaceKitPhidget,   INDEX_LIGHT_SENSOR,                                this);
+            lighting    = new Lighting(interfaceKitPhidget);
+            stdNorth    = new Stand(interfaceKitPhidget, "Northen Stand",         SEATS_NUMBER,         this);
+            stdSouth    = new Stand(interfaceKitPhidget, "Southen Stand",         SEATS_NUMBER,         this);
+            lapCntr     = new LapCalculator(this);
+            field       = new Field(interfaceKitPhidget,   INDEX_R,        INDEX_B,        INDEX_G);
+            roof        = new Roof();
+            planning    = new MatchPlanning();
+            demoModePot = new DemoModePotentiometer(interfaceKitPhidget, INDEX_MODE_POT,                      this);
+            curntMode   = demoModePot.getCurrentMode();
             communicationListener = new CommunicationListener();
 
 
+
+            /* Keeping it for Demo Method
 
             final String begin1 =   "7 avr. 2017 20:00:00";
             final String end1 =     "7 avr. 2017 23:40:00";
@@ -107,6 +109,7 @@ public class BlackBox {
                 System.out.println("Nous sommes bien en match");
             }
 
+            */
 
         } catch(PhidgetException e) {
             System.out.println("Error while loading phidgets objects : " + e);
@@ -114,63 +117,56 @@ public class BlackBox {
     }
 
     public void processElement(Event event) throws PhidgetException{
-
-
         String log;
 
-
-        boolean matchMode = curntMode.isMatch();
-
-        if(!matchMode) {
+        if(!curntMode.isMatch()) {
             log = "Proceed event : ";
         } else {
             log = "Proceeding event in Match mode : ";
         }
+
         eventList.add(event);
         switch (event.getType()) {
             case BAR_EVENT:
-                processBarEvent(log);
+                log = processBarEvent(log);
                 break;
             case HEAT_EVENT:
-                processHeatEvent(log);
+                log = processHeatEvent(log);
                 break;
             case LIGHT_EVENT:
-                processLightEvent(log);
+                log = processLightEvent(log);
                 break;
             case PASSAGE_EVENT:
-                processGoalEvent(event,log);
+                log = processGoalEvent(event,log);
                 break;
             case STAND_EVENT:
-                processStandEvent(log);
+                log = processStandEvent(log);
                 break;
             case TURN_EVENT:
-                log += "\nnew turn or player";
+                log = processTurnEvent(log);
                 break;
             case VIBRATION_EVENT:
-                processGoalEvent(event,log);
+                log = processGoalEvent(event,log);
                 break;
             case NEWMATCHPLAN_EVENT:
+                log += "\nRecieved new match ! ";
                 communicationListener.addReceivedMatch(planning);
                 break;
             case DEMOPHASE_EVENT:
-                curntMode = communicationListener.getNewDemoPhase();
-                break;
+                curntMode = demoModePot.getCurrentMode();
+                log += "New mode set : " + curntMode.getModeType();
+                   break;
             default:
                 log = "Error : Event non recognized !";
                 break;
         }
         if (eventList.size() > 50) eventList.removeLast();
-
         System.out.println(log);
-
-
     }
 
     public LinkedList<Event> getLast(EventType type){
         LinkedList<Event> temporaryList = (LinkedList<Event>)eventList.clone();
-        //System.out.println("before filter " + temporaryList);
         temporaryList.removeIf(p -> !p.getType().equals(type));
-        //System.out.println("after filter " + temporaryList);
         return temporaryList;
     }
 
@@ -304,12 +300,7 @@ public class BlackBox {
     }
 
     private String processTurnEvent(String log){
-
-        return log;
-    }
-
-    private String processComEvent(String log){
-
+        log += "\nnew turn or player";
         return log;
     }
 
