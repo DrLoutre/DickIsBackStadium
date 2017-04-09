@@ -8,6 +8,7 @@ import Models.In.*;
 import Models.Out.Field;
 import Models.Out.Lighting;
 import Models.Out.Roof;
+import Modes.Mode;
 import com.phidgets.InterfaceKitPhidget;
 import com.phidgets.PhidgetException;
 import org.json.JSONException;
@@ -54,6 +55,8 @@ public class BlackBox {
     private Field          field;
     private Roof           roof;
     private MatchPlanning  planning;
+    private CommunicationListener communicationListener;
+    private Mode curntMode;
 
     public BlackBox(InterfaceKitPhidget interfaceKitPhidget){
         eventList = new LinkedList<>();
@@ -71,6 +74,9 @@ public class BlackBox {
             field    = new Field(interfaceKitPhidget,   INDEX_R,        INDEX_B,        INDEX_G);
             roof     = new Roof();
             planning = new MatchPlanning();
+            curntMode= new Mode();
+            communicationListener = new CommunicationListener();
+
 
 
             final String begin1 =   "7 avr. 2017 20:00:00";
@@ -89,7 +95,7 @@ public class BlackBox {
 
 
             System.out.println("Ajout des matchs");
-            //planning.addMatchToList(b1,e1);
+            planning.addMatchToList(b1,e1);
 
 
             ArrayList<Match> tmp = planning.matchArrayList();
@@ -109,8 +115,11 @@ public class BlackBox {
 
     public void processElement(Event event) throws PhidgetException{
 
+
         String log;
-        boolean matchMode = planning.areWeDuringAMatch();
+
+
+        boolean matchMode = curntMode.isMatch();
 
         if(!matchMode) {
             log = "Proceed event : ";
@@ -120,127 +129,32 @@ public class BlackBox {
         eventList.add(event);
         switch (event.getType()) {
             case BAR_EVENT:
-                try {
-                    log += "\nchange in Bar population : BSouth = " + barSouth.getAffluence() + " and BNorth = " + barNorth.getAffluence();
-                } catch (PhidgetException e) {
-                    System.out.println("Error while updating bars : " + e);
-                }
+                processBarEvent(log);
                 break;
             case HEAT_EVENT:
-
-                try {
-                    weather.refreshHeat();
-                } catch (PhidgetException e) {
-                    System.out.println("Error while updating heat : " + e);
-                }
-                log += "\nchange in Temperature : " + weather.getHeat();
-                try {
-                    weather.refreshWeather();
-                    weather.refreshSunPhases();
-                } catch (JSONException e) {
-                    System.out.println("Error while accessing Weather API");
-                }
-                log += "\n       meteo statut : " + weather.getWeather();
-                Weather actualWeather = weather.getWeather();
-                if (weather.getHeat() <= 5) {
-                    field.setHeating(true);
-                } else {
-                    field.setHeating(false);
-                }
-
-                if (actualWeather.equals(Weather.SNOW) || actualWeather.equals(Weather.RAIN)) {
-                    if (roof.isOpen()) {
-                        try {
-                            roof.actionateRoofMotor();
-                        } catch (PhidgetException e) {
-                            System.out.println("Error while closing the roof.");
-                        }
-                    }
-
-                }
-                if (actualWeather.equals(Weather.RAIN) || actualWeather.equals(Weather.SUN)) {
-                    if (weather.getHeat() < 0) {
-                        if (roof.isOpen()) {
-                            try {
-                                roof.actionateRoofMotor();
-                            } catch (PhidgetException e) {
-                                System.out.println("Error while closing the roof");
-                            }
-                        }
-                    } else {
-                        if (!roof.isOpen()) {
-                            try {
-                                roof.actionateRoofMotor();
-                            } catch (PhidgetException e) {
-                                System.out.println("Error while opening the roof");
-                            }
-                        }
-                    }
-                }
-
-                if (weather.isDay()) {
-                    if (weather.equals(Weather.CLOUD) || weather.equals(Weather.SUN))
-                        field.setWatering(false);
-                    log += "\n       we're at day";
-                } else {
-                    if (weather.getHeat() > 15) {
-                        if (matchMode) {
-                            log += "\nMatch Mode, Watering Ignored";
-                        } else {
-                            field.setWatering(true);
-                        }
-                    }
-                    log += "\n       we're at night";
-                }
-
+                processHeatEvent(log);
                 break;
             case LIGHT_EVENT:
-                try {
-                    light.refreshLight();
-                    lighting.updatePower(light.getIntensityStep()); //Todo : pheraps create a match mode where there is more light during a match
-                } catch (PhidgetException e) {
-                    System.out.println("Error while updating light and lighting : " + e);
-                }
-                log += "\nchange in brightness : + " + light.getIntensityStep();
+                processLightEvent(log);
                 break;
             case PASSAGE_EVENT:
-                if (matchMode) {
-                    goalCase = new GoalCase((PassageEvent) event);
-                    log += "\npassage between the goal poles";
-                } else {
-                    log += "\nno match ongoing, goal event ignored";
-                }
+                processGoalEvent(event,log);
                 break;
             case STAND_EVENT:
-                log += "\nStands Actual State \n: ";
-                for (int i = 0; i < stdNorth.getNumberOfSeats(); i++) {
-                    log += "std north : ";
-                    if (stdNorth.getSeats()[i]) log += "taken";
-                    else log += "free";
-                    log += "\n";
-                }
-                for (int i = 0; i < stdSouth.getNumberOfSeats(); i++) {
-                    log += "std south : ";
-                    if (stdNorth.getSeats()[i]) log += "taken";
-                    else log += "free";
-                    log += "\n";
-                }
-                log += "\nthere was a change in the Stand";
+                processStandEvent(log);
                 break;
             case TURN_EVENT:
                 log += "\nnew turn or player";
                 break;
             case VIBRATION_EVENT:
-                if (matchMode) {
-                    if ((goalCase.hasGoalHappened((VibrationEvent) event)) && (System.currentTimeMillis() - goal.getLastGoal()) > 8000) {
-                        goal.incrementGoal(System.currentTimeMillis());
-                    }
-                    log += "\nvibration of the goal structure";
-                } else {
-                    log += "\nno match ongoing, goal event ignored";
-                }
+                processGoalEvent(event,log);
                 break;
-                
+            case NEWMATCHPLAN_EVENT:
+                communicationListener.addReceivedMatch(planning);
+                break;
+            case DEMOPHASE_EVENT:
+                curntMode = communicationListener.getNewDemoPhase();
+                break;
             default:
                 log = "Error : Event non recognized !";
                 break;
@@ -264,5 +178,139 @@ public class BlackBox {
         return this.getLast(type).isEmpty();
     }
 
+    private String processBarEvent(String log){
+        try {
+            log += "\nchange in Bar population : BSouth = " + barSouth.getAffluence() + " and BNorth = " + barNorth.getAffluence();
+        } catch (PhidgetException e) {
+            log = "Error while updating bars : " + e;
+        }
+        return log;
+    }
+
+    private String processHeatEvent(String log){
+        try {
+            weather.refreshHeat();
+        } catch (PhidgetException e) {
+            log = "Error while updating heat : " + e;
+        }
+        log += "\nchange in Temperature : " + weather.getHeat();
+        try {
+            weather.refreshWeather();
+            weather.refreshSunPhases();
+        } catch (JSONException e) {
+            log = "Error while accessing Weather API" + e;
+        }
+        log += "\n       meteo statut : " + weather.getWeather();
+        Weather actualWeather = weather.getWeather();
+        if (weather.getHeat() <= 5) {
+            field.setHeating(true);
+        } else {
+            field.setHeating(false);
+        }
+
+        if (actualWeather.equals(Weather.SNOW) || actualWeather.equals(Weather.RAIN)) {
+            if (roof.isOpen()) {
+                try {
+                    roof.actionateRoofMotor();
+                } catch (PhidgetException e) {
+                    log += "Error while closing the roof." + e;
+                }
+            }
+
+        }
+        if (actualWeather.equals(Weather.RAIN) || actualWeather.equals(Weather.SUN)) {
+            if (weather.getHeat() < 0) {
+                if (roof.isOpen()) {
+                    try {
+                        roof.actionateRoofMotor();
+                    } catch (PhidgetException e) {
+                        log += "Error while closing the roof" + e;
+                    }
+                }
+            } else {
+                if (!roof.isOpen()) {
+                    try {
+                        roof.actionateRoofMotor();
+                    } catch (PhidgetException e) {
+                        System.out.println("Error while opening the roof");
+                    }
+                }
+            }
+        }
+
+        if (weather.isDay()) {
+            if (actualWeather.equals(Weather.CLOUD) || actualWeather.equals(Weather.SUN))
+                field.setWatering(false);
+            log += "\n       we're at day";
+        } else {
+            if (weather.getHeat() > 15) {
+                if (curntMode.isMatch()) {
+                    log += "\nMatch Mode, Watering Ignored";
+                } else {
+                    field.setWatering(true);
+                }
+            }
+            log += "\n       we're at night";
+        }
+        return log;
+    }
+
+    private String processLightEvent(String log){
+        try {
+            light.refreshLight();
+            lighting.updatePower(light.getIntensityStep()); //Todo : pheraps create a match mode where there is more light during a match
+        } catch (PhidgetException e) {
+            log = "Error while updating light and lighting : " + e;
+        }
+        log += "\nchange in brightness : + " + light.getIntensityStep();
+        return log;
+    }
+
+    private String processGoalEvent(Event event, String log){
+        if (curntMode.isMatch()) {
+            switch(event.getType()) {
+                case VIBRATION_EVENT:
+                    if ((goalCase.hasGoalHappened((VibrationEvent) event)) && (System.currentTimeMillis() - goal.getLastGoal()) > 8000) {
+                        goal.incrementGoal(System.currentTimeMillis());
+                    }
+                    log += "\nvibration of the goal structure";
+                case PASSAGE_EVENT:
+                    goalCase = new GoalCase((PassageEvent) event);
+                    log += "\npassage between the goal poles";
+                    break;
+            }
+        } else {
+            log += "\nno match ongoing, goal event ignored";
+        }
+        return log;
+    }
+
+    private String processStandEvent(String log){
+        log += "\nStands Actual State \n: ";
+        for (int i = 0; i < stdNorth.getNumberOfSeats(); i++) {
+            log += "std north : ";
+            if (stdNorth.getSeats()[i]) log += "taken";
+            else log += "free";
+            log += "\n";
+        }
+        for (int i = 0; i < stdSouth.getNumberOfSeats(); i++) {
+            log += "std south : ";
+            if (stdNorth.getSeats()[i]) log += "taken";
+            else log += "free";
+            log += "\n";
+        }
+        log += "\nthere was a change in the Stand";
+        return log;
+    }
+
+    private String processTurnEvent(String log){
+
+        return log;
+    }
+
+    private String processComEvent(String log){
+
+        return log;
+    }
 
 }
