@@ -240,6 +240,7 @@ public class BlackBox {
                     log += "\nno match ongoing, goal event ignored";
                 }
                 break;
+                
             default:
                 log = "Error : Event non recognized !";
                 break;
