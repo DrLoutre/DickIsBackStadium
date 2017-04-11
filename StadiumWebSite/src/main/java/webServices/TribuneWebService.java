@@ -5,12 +5,10 @@ import dao.impl.SeatDaoImpl;
 import dao.impl.TribuneDaoImpl;
 import exceptions.NotFoundException;
 
-import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -19,14 +17,8 @@ import java.util.List;
 @Path("tribunes")
 public class TribuneWebService {
 
-    private TribuneDaoImpl tribuneDao;
-    private SeatDaoImpl seatDao;
-
-    @Context
-    public void setContext(ServletContext servletContext) {
-        tribuneDao = new TribuneDaoImpl();
-        seatDao = new SeatDaoImpl();
-    }
+    private TribuneDaoImpl tribuneDao =  new TribuneDaoImpl();
+    private SeatDaoImpl seatDao = new SeatDaoImpl();
 
     @GET
     @Path("/{id}")

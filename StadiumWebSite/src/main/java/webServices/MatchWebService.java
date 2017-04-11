@@ -4,9 +4,7 @@ import beans.Match;
 import dao.impl.MatchDaoImpl;
 import exceptions.NotFoundException;
 
-import javax.servlet.ServletContext;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -14,12 +12,7 @@ import javax.ws.rs.core.Response;
 @Path("matchs")
 public class MatchWebService {
 
-    private MatchDaoImpl matchDao;
-
-    @Context
-    public void setContext(ServletContext servletContext) {
-        matchDao = new MatchDaoImpl();
-    }
+    private MatchDaoImpl matchDao = new MatchDaoImpl();
 
     @GET
     @Path("/{id}")

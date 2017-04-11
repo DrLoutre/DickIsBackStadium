@@ -5,9 +5,7 @@ import beans.Credentials;
 import dao.impl.AthleticDaoImpl;
 import exceptions.NotFoundException;
 
-import javax.servlet.ServletContext;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -15,12 +13,7 @@ import javax.ws.rs.core.Response;
 @Path("athletics")
 public class AtheleticWebService {
 
-    private AthleticDaoImpl athleticDao;
-
-    @Context
-    public void setContext(ServletContext servletContext) {
-        athleticDao = new AthleticDaoImpl();
-    }
+    private AthleticDaoImpl athleticDao = new AthleticDaoImpl();
 
     @GET
     @Path("/{id}")
