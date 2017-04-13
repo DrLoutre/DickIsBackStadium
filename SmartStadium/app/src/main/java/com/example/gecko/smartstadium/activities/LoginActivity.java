@@ -21,7 +21,6 @@ import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 /**
- * Created by Quentin Jacquemotte
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity { //implements LoaderCallbacks<Cursor> {

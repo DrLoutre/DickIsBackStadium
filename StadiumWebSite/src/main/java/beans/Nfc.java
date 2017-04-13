@@ -5,10 +5,6 @@ import dao.impl.AthleticDaoImpl;
 import exceptions.NotFoundException;
 import java.util.ArrayList;
 
-/**
- *
- * @author Maxime
- */
 public class Nfc {
     
     private ArrayList<String> nfc;

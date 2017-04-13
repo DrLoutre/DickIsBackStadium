@@ -1,5 +1,8 @@
 package beans;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Refreshment {
 
     private int Id;
