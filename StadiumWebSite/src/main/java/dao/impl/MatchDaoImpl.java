@@ -6,13 +6,14 @@
 package dao.impl;
 
 import beans.Match;
-import com.sun.tools.corba.se.idl.constExpr.Not;
 import core.Assert;
 import dao.Dao;
 import dao.MatchDao;
 import dao.TeamDao;
 import exceptions.IntegrityException;
 import exceptions.NotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.util.Pair;
 import stade.data.MatchsData;
 import stade.data.QMatchs;
@@ -105,6 +106,22 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         Assert.notNull(data);
         
         return new Pair(data.getGoal1(),data.getGoal2());
+    }
+    
+    @Override
+    public ArrayList<Match> getAllMatch() throws NotFoundException {
+        List<MatchsData> data = queryFactory.selectFrom(MATCH).fetch();
+        closeConnection();
+
+        if (data.isEmpty()) throw new NotFoundException("Matchs"
+                + " has not been found in the database");
+        
+        ArrayList<Match> matchs = new ArrayList<>();
+        for (MatchsData data1 : data) {
+            matchs.add(toMatch(data1));
+        }
+                
+        return matchs;
     }
     
     private MatchsData toData(int ID, int idTeam1, int idTeam2, int goals1, 
