@@ -23,6 +23,8 @@ public interface SpectatorDao {
             throws IntegrityException,NotFoundException;
     
     Spectator getSpectator(int ID) throws NotFoundException;
+
+    void deleteSpectator(int ID) throws NotFoundException;
     
     String getTribune(int ID) throws NotFoundException;
     

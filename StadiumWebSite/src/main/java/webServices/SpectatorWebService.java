@@ -4,10 +4,7 @@ import beans.Spectator;
 import dao.impl.SpectatorDaoImpl;
 import exceptions.NotFoundException;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -29,8 +26,20 @@ public class SpectatorWebService {
         return Response.ok(spectator).build();
     }
 
+    @GET
     public Response getSpectators() {
         // Todo : Get all spectators
         return Response.ok().build();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public Response deleteSpectator(@PathParam("id") int id) {
+        try {
+            spectatorDao.deleteSpectator(id);
+        } catch (NotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.status(Response.Status.NO_CONTENT).build();
     }
 }
