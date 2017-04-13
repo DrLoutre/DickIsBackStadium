@@ -12,6 +12,7 @@ import com.example.gecko.smartstadium.events.GetAthleticIdEvent;
 import com.example.gecko.smartstadium.events.LoginEvent;
 import com.example.gecko.smartstadium.events.PostLoginEvent;
 import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 
 import java.net.HttpURLConnection;
 
@@ -31,6 +32,7 @@ public class StadiumManager {
         mStadiumClient = StadiumClient.getClient();
     }
 
+    @Subscribe
     public void onLoginEvent(PostLoginEvent postLoginEvent) {
         if (!isOnline()) {
             Toast.makeText(mContext, "Pas de connexion internet", Toast.LENGTH_SHORT).show();
@@ -43,6 +45,8 @@ public class StadiumManager {
             public void onResponse(Call<Athletic> call, Response<Athletic> response) {
                 if (response.code() == HttpURLConnection.HTTP_CREATED) {
                     mBus.post(new LoginEvent(response.body()));
+                } else {
+                    mBus.post(new LoginEvent(null));
                 }
             }
 
@@ -53,6 +57,7 @@ public class StadiumManager {
         });
     }
 
+    @Subscribe
     public void onAthleticEvent(GetAthleticIdEvent getAthleticIdEvent) {
         if (!isOnline()) {
             Toast.makeText(mContext, "Pas de connexion internet", Toast.LENGTH_SHORT).show();
