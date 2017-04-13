@@ -32,11 +32,10 @@ public class Registration extends HttpServlet {
         Verif verif = new Verif(request.getParameter("Nom"),request.getParameter("Prenom"),request.getParameter("Age"),request.getParameter("MDP"),request.getParameter("Sexe"));
         if (verif.tryTest()) {        
             request.setAttribute("correct", true);
-            AthleticDao athleticdao = new AthleticDaoImpl();
+            AthleticDao athleticDao = new AthleticDaoImpl();
             int old = Integer.parseInt(request.getParameter("Age"));
             Nfc nfc = new Nfc();
-            System.out.println(request.getParameter("Sexe"));
-            athleticdao.addAthletic(nfc.getNfc(), request.getParameter("Prenom"), request.getParameter("Nom"), old, request.getParameter("Sexe"), request.getParameter("MDP"));
+            athleticDao.addAthletic(nfc.getNfc(), request.getParameter("Prenom"), request.getParameter("Nom"), old, request.getParameter("Sexe"), request.getParameter("MDP"));
         }
         else {
             request.setAttribute("correct", false);
