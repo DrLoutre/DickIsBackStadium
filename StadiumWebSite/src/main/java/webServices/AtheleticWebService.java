@@ -16,13 +16,19 @@ public class AtheleticWebService {
     private AthleticDaoImpl athleticDao = new AthleticDaoImpl();
 
     @GET
+    public Response getAthletics() {
+        //TODO : Get all athlectics
+        return  Response.status(Response.Status.NOT_FOUND).build();
+    }
+
+    @GET
     @Path("/{id}")
     public Response getAthletic(@PathParam("id") String id) {
         Athletic athletic;
         try {
             athletic = athleticDao.getAthletic(id);
         } catch (NotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
         return Response.ok(athletic).build();
     }
@@ -33,6 +39,14 @@ public class AtheleticWebService {
         athleticDao.addAthletic(athletic.getNFC(), athletic.getPrenom(), athletic.getNom(), athletic.getAge(),
                 athletic.getSex(), athletic.getMDP());
         return Response.status(Response.Status.CREATED).entity(athletic).build();
+    }
+
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response putAthletic(@PathParam("id") String id) {
+        //TODO : Put athletic
+        return Response.status(Response.Status.NOT_FOUND).build();
     }
 
     @POST

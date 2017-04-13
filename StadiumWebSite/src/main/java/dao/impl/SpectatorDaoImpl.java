@@ -91,6 +91,20 @@ public class SpectatorDaoImpl extends Dao implements SpectatorDao{
     }
 
     @Override
+    public void deleteSpectator(int ID) throws NotFoundException {
+        Assert.isTrue(ID >= 0);
+
+        if(!spectatorExists(ID)) throw new NotFoundException("Spectator " + ID
+                + " has not been found in the database");
+
+        long rows = queryFactory.delete(SPECTATOR)
+                .where(SPECTATOR.idSpec.eq(ID)).execute();
+        closeConnection();
+
+        Assert.isTrue(rows == 1);
+    }
+
+    @Override
     public String getTribune(int ID) throws NotFoundException {
         Assert.isTrue(ID >= 0);
         
