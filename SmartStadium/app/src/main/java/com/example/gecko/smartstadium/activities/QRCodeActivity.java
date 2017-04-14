@@ -12,8 +12,6 @@ import com.example.gecko.smartstadium.R;
 
 /**
  * This activity handle the decoding of the QRcode
- *
- * @author Quentin Jacquemotte
  */
 public class QRCodeActivity extends Activity implements QRCodeReaderView.OnQRCodeReadListener {
 

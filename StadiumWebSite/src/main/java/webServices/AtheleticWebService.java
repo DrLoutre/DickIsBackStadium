@@ -53,7 +53,7 @@ public class AtheleticWebService {
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postLogin(Credentials credentials) {
-        String username = credentials.getUsername();
+        String username = credentials.getId();
 
         //Get athlectics from DB
         Athletic athletic;

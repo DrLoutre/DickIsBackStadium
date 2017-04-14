@@ -3,7 +3,6 @@ package com.example.gecko.smartstadium.activities;
 import com.example.gecko.smartstadium.utils.ClearancesEnum;
 
 /**
- * Created by Quentin Jacquemotte on 04-04-17.
  * Singleton that will hold the personnal information of the user
  */
 
