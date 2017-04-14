@@ -5,6 +5,10 @@
         <servlet-class>servlets.Registration</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>Team</servlet-name>
+        <servlet-class>servlets.Team</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>Result</servlet-name>
         <servlet-class>servlets.Result</servlet-class>
     </servlet>
@@ -24,6 +28,10 @@
     <servlet-mapping>
         <servlet-name>Registration</servlet-name>
         <url-pattern>/Registration</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Team</servlet-name>
+        <url-pattern>/Team</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Result</servlet-name>

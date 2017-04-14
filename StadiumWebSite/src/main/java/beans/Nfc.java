@@ -27,7 +27,7 @@ public class Nfc {
     
     public String getNfc() {
         while(true) {
-            int nombreAleatoire = (int)(Math.random() * (nfc.size() + 1));
+            int nombreAleatoire = (int)(Math.random() * nfc.size());
             AthleticDao athleticDao = new AthleticDaoImpl();
             try {
                 athleticDao.getAthletic(nfc.get(nombreAleatoire));

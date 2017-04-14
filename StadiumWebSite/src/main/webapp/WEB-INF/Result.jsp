@@ -20,7 +20,8 @@
                     <ul>
                         <li> <a href="../../StadiumWebSite/">Accueil</a></li>
                         <li> <a href="../../StadiumWebSite/Registration">Inscription</a> </li>
-                        <li> <a href="../../StadiumWebSite/Result">Résultats</a>
+                        <li> <a href="../../StadiumWebSite/Team">Equipes</a> </li>
+                        <li> <a href="../../StadiumWebSite/Result">Résultats</a> </li>
                     </ul>
                 </nav>
             </header>
