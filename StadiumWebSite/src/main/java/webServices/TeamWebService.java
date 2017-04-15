@@ -7,6 +7,7 @@ import exceptions.NotFoundException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Path("teams")
@@ -16,8 +17,13 @@ public class TeamWebService {
 
     @GET
     public Response getTeams() {
-        //TODO : Get all teams
-        return Response.status(Response.Status.NOT_FOUND).build();
+        ArrayList<Team> teamArrayList;
+        try {
+            teamArrayList = teamDao.getAllTeam();
+        } catch (NotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(teamArrayList).build();
     }
 
     @GET

@@ -30,7 +30,8 @@ public class MatchWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postMatch(Match match) {
         try {
-            matchDao.addMatch(match.getID(), match.getTeamID1(), match.getTeamID2());
+            matchDao.addMatch(match.getID(), match.getTeamID1(), match.getTeamID2(), match.getGoals1(), match.getGoals2(),
+                    match.getDate(), match.getEnded());
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
