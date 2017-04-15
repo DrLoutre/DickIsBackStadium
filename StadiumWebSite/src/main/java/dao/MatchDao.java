@@ -57,4 +57,6 @@ public interface MatchDao {
     ArrayList<Match> getEndedMatch() throws NotFoundException;
     
     ArrayList<Match> getNotEndedMatch() throws NotFoundException;
+    
+    void setDate(int ID, Date date) throws NotFoundException;
 }
