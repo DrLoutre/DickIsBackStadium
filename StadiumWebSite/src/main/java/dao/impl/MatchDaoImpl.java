@@ -5,6 +5,7 @@ import core.Assert;
 import dao.Dao;
 import dao.MatchDao;
 import dao.TeamDao;
+import exceptions.FailureException;
 import exceptions.IntegrityException;
 import exceptions.NotFoundException;
 import java.util.ArrayList;
@@ -135,8 +136,13 @@ public class MatchDaoImpl extends Dao implements MatchDao{
     
     private Match toMatch(MatchsData data){
         Match returnValue = new Match();
-        returnValue.setGoals(data.getGoal1(), data.getGoal2());
         returnValue.setTeamID(data.getIdTeam1(), data.getIdTeam2());
+        try {
+            returnValue.setTeamGoals(data.getIdTeam1(), data.getGoal1());
+            returnValue.setTeamGoals(data.getIdTeam2(), data.getGoal2());
+        } catch (Exception ex){
+            throw new FailureException(ex.getMessage());
+        }
         returnValue.setID(data.getIdMatch());
         
         return returnValue;

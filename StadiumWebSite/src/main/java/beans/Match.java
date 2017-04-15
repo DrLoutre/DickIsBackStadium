@@ -1,5 +1,7 @@
 package beans;
 
+import exceptions.NotFoundException;
+import java.util.Date;
 import javafx.util.Pair;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -12,6 +14,8 @@ public class Match {
     private int id_team_2;
     private int goals_1;
     private int goals_2;
+    private Date date;
+    private boolean ended;
     
     public Match(){
         
@@ -26,7 +30,7 @@ public class Match {
     }
     
     public Pair<Integer,Integer> getTeamID(){
-        return new Pair<Integer, Integer>(id_team_1,id_team_2);
+        return new Pair<>(id_team_1,id_team_2);
     }
     
     public void setTeamID(int idTeam1, int idTeam2){
@@ -51,27 +55,61 @@ public class Match {
     }
     
     public Pair<Integer,Integer> getGoals(){
-        return new Pair<Integer, Integer>(goals_1,goals_2);
+        return new Pair<>(goals_1,goals_2);
     }
     
-    public void setGoals(int goals1, int goals2){
-        goals_1 = goals1;
-        goals_2 = goals2;
+//    public void setGoals(int goals1, int goals2){
+//        goals_1 = goals1;
+//        goals_2 = goals2;
+//    }
+    
+//    public int getGoals1(){
+//        return goals_1;
+//    }
+    
+//    public void setGoals1(int goals1){
+//        goals_1 = goals1;
+//    }
+    
+//    public int getGoals2(){
+//        return goals_2;
+//    }
+    
+//    public void setGoals2(int goals2){
+//        goals_2 = goals2;
+//    }
+    
+    public void setTeamGoals(int id_team, int goals) throws NotFoundException {
+        if(id_team != id_team_1 && id_team != id_team_2) throw new
+                NotFoundException("There is not Team " + id_team 
+                        + " in this match");
+        
+        if(id_team == id_team_1) goals_1 = goals;
+        else goals_2 = goals;
     }
     
-    public int getGoals1(){
-        return goals_1;
+    public int getTeamGoals(int id_team) throws NotFoundException {
+        if(id_team != id_team_1 && id_team != id_team_2) throw new
+                NotFoundException("There is not Team " + id_team 
+                        + " in this match");
+        
+        if(id_team == id_team_1) return goals_1;
+        else return goals_2;
     }
     
-    public void setGoals1(int goals1){
-        goals_1 = goals1;
+    public Date getDate(){
+        return (Date)date.clone();
     }
     
-    public int getGoals2(){
-        return goals_2;
+    public void setDate(Date date){
+        this.date = (Date)date.clone();
     }
     
-    public void setGoals2(int goals2){
-        goals_2 = goals2;
+    public boolean getEnded(){
+        return ended;
+    }
+    
+    public void setEnded(boolean ended){
+        this.ended = ended;
     }
 }

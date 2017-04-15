@@ -51,6 +51,8 @@ CREATE TABLE Matchs(
     Id_Team_2 INTEGER NOT NULL,
     Goal_1 INTEGER NOT NULL,
     Goal_2 INTEGER NOT NULL,
+    MatchDate DATETIME NOT NULL,
+    Ended BOOLEAN NOT NULL,
     PRIMARY KEY (Id_Match),
     FOREIGN KEY (Id_Team_1) REFERENCES Team(Id_Team),
     FOREIGN KEY (Id_Team_2) REFERENCES Team(Id_Team)
