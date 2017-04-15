@@ -29,8 +29,8 @@ public class MatchDaoImpl extends Dao implements MatchDao{
     }
     
     @Override
-    public void addMatch(int ID, int idTeam1, int idTeam2, int goals1, int goals2, 
-            Date date, boolean ended) 
+    public void addMatch(int ID, int idTeam1, int idTeam2, int goals1, 
+            int goals2, Date date, boolean ended) 
             throws IntegrityException, NotFoundException {
         Assert.isTrue(ID >= 0);
         Assert.isTrue(idTeam1 >= 0);
@@ -227,6 +227,34 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         closeConnection();
         
         Assert.isTrue(rows == 1);
+    }
+    
+    @Override
+    public ArrayList<Match> getEndedMatch() throws NotFoundException {
+        ArrayList<Match> matchs = getAllMatch();
+        
+        ArrayList<Match> returnList = new ArrayList<>();
+        for(Match data : matchs){
+            if(data.getEnded()){
+                returnList.add(data);
+            }
+        }
+        
+        return returnList;
+    }
+
+    @Override
+    public ArrayList<Match> getNotEndedMatch() throws NotFoundException {
+        ArrayList<Match> matchs = getAllMatch();
+        
+        ArrayList<Match> returnList = new ArrayList<>();
+        for(Match data : matchs){
+            if(!data.getEnded()){
+                returnList.add(data);
+            }
+        }
+        
+        return returnList;
     }
     
     private MatchsData toData(Match match){

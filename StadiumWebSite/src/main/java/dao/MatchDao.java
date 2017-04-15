@@ -53,4 +53,8 @@ public interface MatchDao {
         specified id.
     */
     void setIDTeam2(int ID, int idTeam) throws NotFoundException;
+    
+    ArrayList<Match> getEndedMatch() throws NotFoundException;
+    
+    ArrayList<Match> getNotEndedMatch() throws NotFoundException;
 }
