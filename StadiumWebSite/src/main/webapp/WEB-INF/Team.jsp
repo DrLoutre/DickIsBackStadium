@@ -59,6 +59,8 @@ and open the template in the editor.
                     Le créateur du match sera inscrit dans la première équipe. <br> <br>
                     <label>Nom de la première équipe</label> : <br/> <input type="text" name="Team1" id="Team1" style="width: 500px;" required="true"/> <br/> <br/>
                     <label>Nom de la seconde équipe</label> : <br/> <input type="text" name="Team2" id="Team2" style="width: 500px;" required="true"/> <br/> <br/>
+                    <label>Date de la rencontre</label> : <br/> <input type="date" name="Date" id="Date" required="true"> <br> <br>
+                    <label>Heure de la rencontre</label> : <br/> <input type="time" name="Heure" id="Heure" required="true"> <br> <br>
                     <label>Nfc de l'athlète</label> : <br/> <input type="text" name="nfc" id="nfc" style="width: 500px;" required="true"/> <br/> <br/>
                     <div class="row">
                         <div class="col-lg-offset-9 col-lg-9">
@@ -78,8 +80,8 @@ and open the template in the editor.
                         <%for (Match match : matchs) { i = i + 1;%> 
                             <div class="container">
                                 <div class="row">
-                                    <div class="col-lg-1"><u>Match <%=i%> :</u></div>
-                                    <div class="col-lg-1"><%=team.get(Integer.toString(match.getTeamID1()))%></div>
+                                    <div class="col-lg-3"><u>Match <%=i%> :</u> <%=match.getDate()%></div> <br> <br>
+                                    <div class="col-lg-1 col-lg-offset-1"><%=team.get(Integer.toString(match.getTeamID1()))%></div>
                                     <div class="col-lg-1">-</div>
                                     <div class="col-lg-1"><%=team.get(Integer.toString(match.getTeamID2()))%> </div>
                                 </div>

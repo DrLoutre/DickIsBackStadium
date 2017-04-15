@@ -17,8 +17,13 @@ import dao.impl.TeamDaoImpl;
 import exceptions.IntegrityException;
 import exceptions.NotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -73,8 +78,10 @@ public class Team extends HttpServlet {
                     teamDao.addTeam(indexteam1, (String) request.getParameter("Team1"));
                     teamDao.addTeam(indexteam2, (String) request.getParameter("Team2"));
                     playInDao.addEntry((String) request.getParameter("nfc"), indexteam1);
-                    matchDao.addMatch(indexmatch, indexteam1, indexteam2);
-                } catch(IntegrityException | NotFoundException e) {}
+                    SimpleDateFormat sdf = new  SimpleDateFormat("dd-MM-yy hh:mm");
+                    Date date = sdf.parse(request.getParameter("Date") + " " + request.getParameter("Heure") );
+                    matchDao.addMatch(indexmatch, indexteam1, indexteam2, 0, 0, date, false);
+                } catch(IntegrityException | ParseException | NotFoundException e) {} 
             } else {
                 try {
                     playInDao.addEntry((String) request.getParameter("nfc"), Integer.parseInt(request.getParameter("match")));
