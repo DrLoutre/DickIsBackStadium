@@ -8,7 +8,9 @@ import dao.TeamDao;
 import exceptions.FailureException;
 import exceptions.IntegrityException;
 import exceptions.NotFoundException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javafx.util.Pair;
 import stade.data.MatchsData;
@@ -26,11 +28,15 @@ public class MatchDaoImpl extends Dao implements MatchDao{
     }
     
     @Override
-    public void addMatch(int ID, int idTeam1, int idTeam2) 
+    public void addMatch(int ID, int idTeam1, int idTeam2, int goals1, int goals2, 
+            Date date, boolean ended) 
             throws IntegrityException, NotFoundException {
         Assert.isTrue(ID >= 0);
         Assert.isTrue(idTeam1 >= 0);
         Assert.isTrue(idTeam2 >= 0);
+        Assert.isTrue(goals1 >= 0);
+        Assert.isTrue(goals2 >= 0);
+        Assert.notNull(date);
         
         if(matchExists(ID)) throw new IntegrityException("A match already "
                 + "exists in the database with the ID : " + ID);
@@ -40,7 +46,8 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         if(!teamDao.teamExists(idTeam2)) throw new NotFoundException("The team "
                 + "with the id " + idTeam2 + "does not exists in the database");
         
-        MatchsData data = toData(ID, idTeam1, idTeam2, 0, 0);
+        MatchsData data = toData(ID, idTeam1, idTeam2, goals1, goals2, date, 
+                ended);
         long rows = queryFactory.insert(MATCH).populate(data).execute();
         closeConnection();
         
@@ -118,12 +125,13 @@ public class MatchDaoImpl extends Dao implements MatchDao{
     }
     
     private MatchsData toData(int ID, int idTeam1, int idTeam2, int goals1, 
-            int goals2){
+            int goals2, Date date, boolean ended) {
         Assert.isTrue(ID >= 0);
         Assert.isTrue(idTeam1 >= 0);
         Assert.isTrue(idTeam2 >= 0);
         Assert.isTrue(goals1 >= 0);
         Assert.isTrue(goals2 >= 0);
+        Assert.notNull(date);
         
         MatchsData data = new MatchsData();
         data.setIdMatch(ID);
@@ -131,6 +139,8 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         data.setIdTeam2(idTeam2);
         data.setGoal1(goals1);
         data.setGoal2(goals2);
+        data.setMatchDate(new Timestamp(date.getTime()));
+        data.setEnded(ended);
         return data;
     }
     
@@ -144,6 +154,8 @@ public class MatchDaoImpl extends Dao implements MatchDao{
             throw new FailureException(ex.getMessage());
         }
         returnValue.setID(data.getIdMatch());
+        returnValue.setDate(data.getMatchDate());
+        returnValue.setEnded(data.getEnded());
         
         return returnValue;
     }
