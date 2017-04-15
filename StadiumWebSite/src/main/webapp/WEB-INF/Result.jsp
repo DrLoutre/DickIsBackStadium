@@ -6,7 +6,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="CSS/style.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="CSS/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
         <title>Résultat</title>
     </head>
     <% 
@@ -14,18 +14,28 @@
         HashMap<String, String> team = (HashMap<String, String>) request.getAttribute("team");
     %>
     <body>
-        <div class="center">
-            <header>
-                <nav>
-                    <ul>
+        <br>
+        <div class="container">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand">
+                            DickStadium
+                        </a>  
+                    </div>
+                    <ul class="nav navbar-nav">
                         <li> <a href="../../StadiumWebSite/">Accueil</a></li>
                         <li> <a href="../../StadiumWebSite/Registration">Inscription</a> </li>
                         <li> <a href="../../StadiumWebSite/Team">Equipes</a> </li>
                         <li> <a href="../../StadiumWebSite/Result">Résultats</a> </li>
                     </ul>
-                </nav>
-            </header>
-            <h1>Résultats des différents matchs</h1>
+                </div>
+            </nav>
+            <div class="text-center">
+                <header class="page-header">
+                    <h1>Résultats des différents matchs</h1>
+                </header>
+            </div>            
             <table width="800" height="128" align="center" cellspacing="0" style="border-collapse:collapse;">
                 <tr height="20">
                     <td width="500" height="42" align="center" valign="middle" style="border-width:3; border-color:black; border-style:solid;">

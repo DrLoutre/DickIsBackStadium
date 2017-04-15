@@ -53,6 +53,7 @@ public class Team extends HttpServlet {
             nfc = true;
         } catch (NotFoundException e) {
             nfc = false;
+            request.setAttribute("correct", false);
         }
         if (nfc) { 
             if(request.getParameter("Rejoindre") == null) {
@@ -77,6 +78,7 @@ public class Team extends HttpServlet {
             } else {
                 try {
                     playInDao.addEntry((String) request.getParameter("nfc"), Integer.parseInt(request.getParameter("match")));
+                    request.setAttribute("correct", true);
                 } catch(NotFoundException e) {}
             }
         }
