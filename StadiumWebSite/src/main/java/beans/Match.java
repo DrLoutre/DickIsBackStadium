@@ -58,26 +58,26 @@ public class Match {
         return new Pair<>(goals_1,goals_2);
     }
     
-//    public void setGoals(int goals1, int goals2){
-//        goals_1 = goals1;
-//        goals_2 = goals2;
-//    }
+    public void setGoals(int goals1, int goals2){
+        goals_1 = goals1;
+        goals_2 = goals2;
+    }
     
-//    public int getGoals1(){
-//        return goals_1;
-//    }
+    public int getGoals1(){
+        return goals_1;
+    }
     
-//    public void setGoals1(int goals1){
-//        goals_1 = goals1;
-//    }
+    public void setGoals1(int goals1){
+        goals_1 = goals1;
+    }
     
-//    public int getGoals2(){
-//        return goals_2;
-//    }
+    public int getGoals2(){
+        return goals_2;
+    }
     
-//    public void setGoals2(int goals2){
-//        goals_2 = goals2;
-//    }
+    public void setGoals2(int goals2){
+        goals_2 = goals2;
+    }
     
     public void setTeamGoals(int id_team, int goals) throws NotFoundException {
         if(id_team != id_team_1 && id_team != id_team_2) throw new

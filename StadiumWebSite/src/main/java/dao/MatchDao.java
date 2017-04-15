@@ -23,13 +23,13 @@ public interface MatchDao {
     
     Pair<Integer,Integer> getGoals(int ID) throws NotFoundException;
     
-//    void setGoals(int ID) throws NotFoundException;
-//    
-//    /*
-//    Throws a NotFoundException if the Match has not been found in the database
-//    Throws an IntegrityException if the Match has been found but there is no
-//        team referenced with the specified id.
-//    */
-//    void setTeamGoals(int ID, int idTeam, int goals) 
-//            throws IntegrityException, NotFoundException;
+    void setGoals(int ID, int goals1, int goals2) throws NotFoundException;
+    
+    /*
+    Throws a NotFoundException if the Match has not been found in the database
+    Throws an IntegrityException if the Match has been found but there is no
+        team referenced with the specified id.
+    */
+    void setTeamGoals(int ID, int idTeam, int goals) 
+            throws IntegrityException, NotFoundException;
 }
