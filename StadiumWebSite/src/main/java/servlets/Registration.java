@@ -23,7 +23,6 @@ public class Registration extends HttpServlet {
      
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("correct", false);
         this.getServletContext().getRequestDispatcher("/WEB-INF/Registration.jsp").forward(request, response);
     }
 
@@ -34,7 +33,10 @@ public class Registration extends HttpServlet {
             AthleticDao athleticDao = new AthleticDaoImpl();
             int old = Integer.parseInt(request.getParameter("Age"));
             Nfc nfc = new Nfc();
+            request.setAttribute("correct", true);
             athleticDao.addAthletic(nfc.getNfc(), request.getParameter("Prenom"), request.getParameter("Nom"), old, request.getParameter("Sexe"), request.getParameter("MDP"));
+        } else {
+            request.setAttribute("correct", false);
         }
         this.getServletContext().getRequestDispatcher("/WEB-INF/Registration.jsp").forward(request, response);
     }
