@@ -168,6 +168,67 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         Assert.isTrue(rows == 1);
     }
     
+    @Override
+    public void SetIDTeam(int ID, int idTeam1, int idTeam2) 
+            throws NotFoundException {
+        Assert.isTrue(ID >= 0);
+        Assert.isTrue(idTeam1 >= 0);
+        Assert.isTrue(idTeam2 >= 0);
+        
+        Match match = getMatch(ID);
+        if(!teamDao.teamExists(idTeam1)) throw new NotFoundException("The team "
+                + "with the id " + idTeam1 + "does not exists in the database");
+        if(!teamDao.teamExists(idTeam2)) throw new NotFoundException("The team "
+                + "with the id " + idTeam2 + "does not exists in the database");
+        match.setTeamID(idTeam1, idTeam2);
+        MatchsData data = toData(match);
+        SQLUpdateClause update = queryFactory.update(MATCH);
+        
+        long rows = update.set(MATCH, data).where(MATCH.idMatch.eq(ID))
+                .execute();
+        closeConnection();
+        
+        Assert.isTrue(rows == 1);
+    }
+
+    @Override
+    public void setIDTeam1(int ID, int idTeam) throws NotFoundException {
+        Assert.isTrue(ID >= 0);
+        Assert.isTrue(idTeam >= 0);
+        
+        Match match = getMatch(ID);
+        if(!teamDao.teamExists(idTeam)) throw new NotFoundException("The team "
+                + "with the id " + idTeam + "does not exists in the database");
+        match.setTeamID1(idTeam);
+        MatchsData data = toData(match);
+        SQLUpdateClause update = queryFactory.update(MATCH);
+        
+        long rows = update.set(MATCH, data).where(MATCH.idMatch.eq(ID))
+                .execute();
+        closeConnection();
+        
+        Assert.isTrue(rows == 1);
+    }
+
+    @Override
+    public void setIDTeam2(int ID, int idTeam) throws NotFoundException {
+        Assert.isTrue(ID >= 0);
+        Assert.isTrue(idTeam >= 0);
+        
+        Match match = getMatch(ID);
+        if(!teamDao.teamExists(idTeam)) throw new NotFoundException("The team "
+                + "with the id " + idTeam + "does not exists in the database");
+        match.setTeamID2(idTeam);
+        MatchsData data = toData(match);
+        SQLUpdateClause update = queryFactory.update(MATCH);
+        
+        long rows = update.set(MATCH, data).where(MATCH.idMatch.eq(ID))
+                .execute();
+        closeConnection();
+        
+        Assert.isTrue(rows == 1);
+    }
+    
     private MatchsData toData(Match match){
         try {
             return toData(match.getID(), match.getTeamID1(), match.getTeamID2(),

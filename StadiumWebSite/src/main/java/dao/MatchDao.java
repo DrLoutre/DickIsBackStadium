@@ -32,4 +32,25 @@ public interface MatchDao {
     */
     void setTeamGoals(int ID, int idTeam, int goals) 
             throws IntegrityException, NotFoundException;
+    
+    /*
+    Throws a NotFoundException if the Match has not been found in the database 
+        or if the Match has been found but there is no team referenced with at 
+        least one of the specified id.
+    */
+    void SetIDTeam(int ID, int idTeam1, int idTeam2) throws NotFoundException;
+    
+    /*
+    Throws a NotFoundException if the Match has not been found in the database 
+        or if the Match has been found but there is no team referenced with the 
+        specified id.
+    */
+    void setIDTeam1(int ID, int idTeam) throws NotFoundException;
+    
+    /*
+    Throws a NotFoundException if the Match has not been found in the database 
+        or if the Match has been found but there is no team referenced with the 
+        specified id.
+    */
+    void setIDTeam2(int ID, int idTeam) throws NotFoundException;
 }
