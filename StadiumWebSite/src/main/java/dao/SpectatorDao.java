@@ -3,6 +3,7 @@ package dao;
 import beans.Spectator;
 import exceptions.IntegrityException;
 import exceptions.NotFoundException;
+import java.util.ArrayList;
 import javafx.util.Pair;
 
 public interface SpectatorDao {
@@ -22,4 +23,14 @@ public interface SpectatorDao {
     Pair<String,String> getName(int ID) throws NotFoundException;
     
     int getMatch(int ID) throws NotFoundException;
+    
+    ArrayList<Spectator> getAllSpectator() throws NotFoundException;
+    
+    ArrayList<Spectator> getAllSpectator(String tribuneNFC) 
+            throws NotFoundException;
+    
+    ArrayList<Spectator> getAllSpectator(int matchID) throws NotFoundException;
+    
+    ArrayList<Spectator> getAllSpectator(String tribuneNFC,int matchID) 
+            throws NotFoundException;
 }
