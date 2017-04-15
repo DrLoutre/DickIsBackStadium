@@ -23,4 +23,14 @@ public interface AthleticDao {
     String getPassword(String NFC) throws NotFoundException;
     
     ArrayList<Athletic> getAllAthletic() throws NotFoundException;
+    
+    void setFirstName(String NFC, String firstName) throws NotFoundException;
+    
+    void setLastName(String NFC, String lastName) throws NotFoundException;
+    
+    void setPassword(String NFC, String password) throws NotFoundException;
+    
+    void setAge(String NFC, int age) throws NotFoundException;
+    
+    void setSex(String NFC, String sex) throws NotFoundException;
 }
