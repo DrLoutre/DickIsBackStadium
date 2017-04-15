@@ -1,6 +1,7 @@
 package dao.impl;
 
 import beans.Athletic;
+import com.querydsl.sql.dml.SQLUpdateClause;
 import core.Assert;
 import dao.AthleticDao;
 import dao.Dao;
@@ -33,7 +34,7 @@ public class AthleticDaoImpl extends Dao implements AthleticDao {
         if (athleticExists(NFC)) throw new IntegrityException("An athletic "
                 + "already exists in the database with the NFC id : " + NFC);
         
-        AthleticData data = toData(NFC, firstName, lastName, age, sex, password);
+        AthleticData data = toData(NFC, firstName, lastName, age, sex,password);
         long rows = queryFactory.insert(ATHLETIC).populate(data).execute();
         closeConnection();
         
@@ -142,6 +143,108 @@ public class AthleticDaoImpl extends Dao implements AthleticDao {
         }
                 
         return athletics;
+    }
+
+    @Override
+    public void setFirstName(String NFC, String firstName) 
+            throws NotFoundException {
+        Assert.notNull(NFC);
+        Assert.isTrue(NFC.length() > 0);
+        Assert.notNull(firstName);
+        Assert.isTrue(firstName.length() > 0);
+        
+        Athletic athletic = getAthletic(NFC);
+        athletic.setPrenom(firstName);
+        AthleticData data = toData(athletic);
+        SQLUpdateClause update = queryFactory.update(ATHLETIC);
+        
+        long rows = update.set(ATHLETIC, data).where(ATHLETIC.nfc.eq(NFC))
+                .execute();
+        closeConnection();
+        
+        Assert.isTrue(rows == 1);
+    }
+
+    @Override
+    public void setLastName(String NFC, String lastName) 
+            throws NotFoundException {
+        Assert.notNull(NFC);
+        Assert.isTrue(NFC.length() > 0);
+        Assert.notNull(lastName);
+        Assert.isTrue(lastName.length() > 0);
+        
+        Athletic athletic = getAthletic(NFC);
+        athletic.setNom(lastName);
+        AthleticData data = toData(athletic);
+        SQLUpdateClause update = queryFactory.update(ATHLETIC);
+        
+        long rows = update.set(ATHLETIC, data).where(ATHLETIC.nfc.eq(NFC))
+                .execute();
+        closeConnection();
+        
+        Assert.isTrue(rows == 1);
+    }
+
+    @Override
+    public void setPassword(String NFC, String password) 
+            throws NotFoundException {
+        Assert.notNull(NFC);
+        Assert.isTrue(NFC.length() > 0);
+        Assert.notNull(password);
+        Assert.isTrue(password.length() > 0);
+        
+        Athletic athletic = getAthletic(NFC);
+        athletic.setMDP(password);
+        AthleticData data = toData(athletic);
+        SQLUpdateClause update = queryFactory.update(ATHLETIC);
+        
+        long rows = update.set(ATHLETIC, data).where(ATHLETIC.nfc.eq(NFC))
+                .execute();
+        closeConnection();
+        
+        Assert.isTrue(rows == 1);
+    }
+
+    @Override
+    public void setAge(String NFC, int age) throws NotFoundException {
+        Assert.notNull(NFC);
+        Assert.isTrue(NFC.length() > 0);
+        Assert.isTrue(age <= 0);
+        
+        Athletic athletic = getAthletic(NFC);
+        athletic.setAge(age);
+        AthleticData data = toData(athletic);
+        SQLUpdateClause update = queryFactory.update(ATHLETIC);
+        
+        long rows = update.set(ATHLETIC, data).where(ATHLETIC.nfc.eq(NFC))
+                .execute();
+        closeConnection();
+        
+        Assert.isTrue(rows == 1);
+    }
+
+    @Override
+    public void setSex(String NFC, String sex) throws NotFoundException {
+        Assert.notNull(NFC);
+        Assert.isTrue(NFC.length() > 0);
+        Assert.notNull(sex);
+        Assert.isTrue(sex.length() == 1);
+        
+        Athletic athletic = getAthletic(NFC);
+        athletic.setSex(sex);
+        AthleticData data = toData(athletic);
+        SQLUpdateClause update = queryFactory.update(ATHLETIC);
+        
+        long rows = update.set(ATHLETIC, data).where(ATHLETIC.nfc.eq(NFC))
+                .execute();
+        closeConnection();
+        
+        Assert.isTrue(rows == 1);
+    }
+    
+    private AthleticData toData(Athletic athletic){
+        return toData(athletic.getNFC(), athletic.getPrenom(), athletic.getNom()
+                , athletic.getAge(), athletic.getSex(), athletic.getMDP());
     }
     
     private AthleticData toData(String NFC, String firstName, String lastName, 
