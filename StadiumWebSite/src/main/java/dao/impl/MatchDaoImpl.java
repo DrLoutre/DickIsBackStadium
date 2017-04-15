@@ -273,6 +273,22 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         
         Assert.isTrue(rows == 1);
     }
+
+    @Override
+    public void setState(int ID, boolean ended) throws NotFoundException {
+        Assert.isTrue(ID >= 0);
+        
+        Match match = getMatch(ID);
+        match.setEnded(ended);
+        MatchsData data = toData(match);
+        SQLUpdateClause update = queryFactory.update(MATCH);
+        
+        long rows = update.set(MATCH, data).where(MATCH.idMatch.eq(ID))
+                .execute();
+        closeConnection();
+        
+        Assert.isTrue(rows == 1);
+    }
     
     private MatchsData toData(Match match){
         try {
