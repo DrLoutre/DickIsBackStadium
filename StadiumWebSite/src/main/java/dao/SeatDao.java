@@ -25,6 +25,7 @@ public interface SeatDao {
     
     void setOccupiedState(int ID, boolean occupied) throws NotFoundException;
     
-    List<Integer> getTribuneSeats(String tribuneNFC) throws NotFoundException;
+    List<Integer> getTribuneSeatsID(String tribuneNFC) throws NotFoundException;
     
+    List<Seat> getTribuneSeats(String tribuneNFC) throws NotFoundException;
 }

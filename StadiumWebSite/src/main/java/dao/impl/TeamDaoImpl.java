@@ -44,7 +44,7 @@ public class TeamDaoImpl extends Dao implements TeamDao{
     
     @Override
     public ArrayList<Team> getAllTeam() throws NotFoundException {
-        List<TeamData> data = queryFactory.selectFrom(TEAM).fetch();
+        List<TeamData> data = queryFactory.select(TEAM).from(TEAM).fetch();
         closeConnection();
 
         if (data.isEmpty()) throw new NotFoundException("Matchs"

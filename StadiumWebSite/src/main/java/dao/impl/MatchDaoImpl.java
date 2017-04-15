@@ -102,7 +102,7 @@ public class MatchDaoImpl extends Dao implements MatchDao{
     
     @Override
     public ArrayList<Match> getAllMatch() throws NotFoundException {
-        List<MatchsData> data = queryFactory.selectFrom(MATCH).fetch();
+        List<MatchsData> data = queryFactory.select(MATCH).from(MATCH).fetch();
         closeConnection();
 
         if (data.isEmpty()) throw new NotFoundException("Matchs"
