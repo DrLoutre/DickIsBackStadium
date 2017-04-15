@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao.impl;
 
 import beans.Athletic;
@@ -11,13 +6,11 @@ import dao.AthleticDao;
 import dao.Dao;
 import exceptions.IntegrityException;
 import exceptions.NotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import stade.data.AthleticData;
 import stade.data.QAthletic;
 
-/**
- *
- * @author Dwade
- */
 public class AthleticDaoImpl extends Dao implements AthleticDao {
     
     private static final QAthletic ATHLETIC = QAthletic.athletic;
@@ -132,6 +125,23 @@ public class AthleticDaoImpl extends Dao implements AthleticDao {
         closeConnection();
 
         Assert.isTrue(rows == 1);
+    }
+
+    @Override
+    public ArrayList<Athletic> getAllAthletic() throws NotFoundException {
+        List<AthleticData> datas = queryFactory.select(ATHLETIC).from(ATHLETIC)
+                .fetch();
+        closeConnection();
+
+        if (datas.isEmpty()) throw new NotFoundException("Athletics has not "
+                + "been found in the database");
+        
+        ArrayList<Athletic> athletics = new ArrayList<>();
+        for (AthleticData athletic : datas) {
+            athletics.add(toAthletic(athletic));
+        }
+                
+        return athletics;
     }
     
     private AthleticData toData(String NFC, String firstName, String lastName, 

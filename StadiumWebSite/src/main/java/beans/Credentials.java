@@ -1,21 +1,27 @@
 package beans;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Credentials {
 
-    private String username;
+    private String id;
     private String password;
 
-    public Credentials(String username, String password) {
-        this.username = username;
+    public Credentials() {
+    }
+
+    public Credentials(String id, String password) {
+        this.id = id;
         this.password = password;
     }
 
-    public String getUsername() {
-        return username;
+    public String getId() {
+        return id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getPassword() {

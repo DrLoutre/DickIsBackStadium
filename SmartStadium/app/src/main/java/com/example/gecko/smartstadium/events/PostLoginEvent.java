@@ -7,7 +7,7 @@ public class PostLoginEvent {
     private Credentials credentials;
 
     public PostLoginEvent(Credentials credentials) {
-
+        this.credentials = credentials;
     }
 
     public Credentials getCredentials() {

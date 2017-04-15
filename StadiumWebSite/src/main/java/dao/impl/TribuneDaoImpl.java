@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao.impl;
 
 import beans.Tribune;
@@ -14,10 +9,6 @@ import exceptions.NotFoundException;
 import stade.data.QTribune;
 import stade.data.TribuneData;
 
-/**
- *
- * @author Thibaut
- */
 public class TribuneDaoImpl extends Dao implements TribuneDao{
 
     private static final QTribune TRIBUNE = QTribune.tribune;

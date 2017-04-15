@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao.impl;
 
 import beans.Seat;
@@ -17,10 +12,6 @@ import java.util.List;
 import stade.data.QSeat;
 import stade.data.SeatData;
 
-/**
- *
- * @author Thibaut
- */
 public class SeatDaoImpl extends Dao implements SeatDao{
 
     private final TribuneDao tribuneDao;
@@ -95,7 +86,7 @@ public class SeatDaoImpl extends Dao implements SeatDao{
     }
 
     @Override
-    public List<Integer> getTribuneSeats(String tribuneNFC) 
+    public List<Integer> getTribuneSeatsID(String tribuneNFC) 
             throws NotFoundException {
         Assert.notNull(tribuneNFC);
         Assert.isTrue(tribuneNFC.length() > 0);
@@ -116,6 +107,31 @@ public class SeatDaoImpl extends Dao implements SeatDao{
                 IDList.add(data.getId());
             }
             return IDList;
+        }
+    }
+    
+    @Override
+    public List<Seat> getTribuneSeats(String tribuneNFC) 
+            throws NotFoundException {
+        Assert.notNull(tribuneNFC);
+        Assert.isTrue(tribuneNFC.length() > 0);
+        
+        if(!tribuneDao.tribuneExists(tribuneNFC)) 
+            throw new NotFoundException("The tribune " + tribuneNFC 
+                    + " does not exists in the database");
+        
+        List<SeatData> datas = queryFactory.selectFrom(SEAT)
+                .where(SEAT.tribuneNFC.eq(tribuneNFC)).fetch();
+        closeConnection();
+        
+        if(datas == null || datas.isEmpty()) throw new NotFoundException("There"
+                + " is no seat referenced with this tribune in the database");
+        else {
+            List<Seat> SeatList = new LinkedList();
+            for(SeatData data : datas){
+                SeatList.add(toSeat(data));
+            }
+            return SeatList;
         }
     }
     

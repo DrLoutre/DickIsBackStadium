@@ -1,18 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import exceptions.IntegrityException;
 import exceptions.NotFoundException;
 import java.util.List;
 
-/**
- *
- * @author Thibaut
- */
 public interface PlaysInDao {
     
     boolean isPlaying(String NFC, int idTeam);

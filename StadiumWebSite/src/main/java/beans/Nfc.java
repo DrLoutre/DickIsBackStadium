@@ -5,10 +5,6 @@ import dao.impl.AthleticDaoImpl;
 import exceptions.NotFoundException;
 import java.util.ArrayList;
 
-/**
- *
- * @author Maxime
- */
 public class Nfc {
     
     private ArrayList<String> nfc;
@@ -27,7 +23,7 @@ public class Nfc {
     
     public String getNfc() {
         while(true) {
-            int nombreAleatoire = (int)(Math.random() * (nfc.size() + 1));
+            int nombreAleatoire = (int)(Math.random() * nfc.size());
             AthleticDao athleticDao = new AthleticDaoImpl();
             try {
                 athleticDao.getAthletic(nfc.get(nombreAleatoire));

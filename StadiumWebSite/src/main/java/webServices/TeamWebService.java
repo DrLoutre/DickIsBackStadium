@@ -4,27 +4,26 @@ import beans.Team;
 import dao.impl.TeamDaoImpl;
 import exceptions.NotFoundException;
 
-import javax.servlet.ServletContext;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Path("teams")
 public class TeamWebService {
 
-    private TeamDaoImpl teamDao;
-
-    @Context
-    public void setContext(ServletContext servletContext) {
-        teamDao = new TeamDaoImpl();
-    }
+    private TeamDaoImpl teamDao =  new TeamDaoImpl();
 
     @GET
     public Response getTeams() {
-        //TODO : Get all teams
-        return Response.status(Response.Status.NOT_FOUND).build();
+        ArrayList<Team> teamArrayList;
+        try {
+            teamArrayList = teamDao.getAllTeam();
+        } catch (NotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(teamArrayList).build();
     }
 
     @GET

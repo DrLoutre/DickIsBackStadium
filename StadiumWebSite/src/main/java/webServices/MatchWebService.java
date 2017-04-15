@@ -4,9 +4,7 @@ import beans.Match;
 import dao.impl.MatchDaoImpl;
 import exceptions.NotFoundException;
 
-import javax.servlet.ServletContext;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -14,12 +12,7 @@ import javax.ws.rs.core.Response;
 @Path("matchs")
 public class MatchWebService {
 
-    private MatchDaoImpl matchDao;
-
-    @Context
-    public void setContext(ServletContext servletContext) {
-        matchDao = new MatchDaoImpl();
-    }
+    private MatchDaoImpl matchDao = new MatchDaoImpl();
 
     @GET
     @Path("/{id}")
@@ -37,11 +30,20 @@ public class MatchWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postMatch(Match match) {
         try {
-            matchDao.addMatch(match.getID(), match.getTeamID1(), match.getTeamID2());
+            matchDao.addMatch(match.getID(), match.getTeamID1(), match.getTeamID2(), match.getGoals1(), match.getGoals2(),
+                    match.getDate(), match.getEnded());
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         return Response.status(Response.Status.CREATED).entity(match).build();
+    }
+
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response putMatch(@PathParam("id") int id) {
+        //TODO : Put match
+        return Response.status(Response.Status.NOT_FOUND).build();
     }
 
     @DELETE

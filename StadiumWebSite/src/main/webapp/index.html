@@ -8,28 +8,37 @@ and open the template in the editor.
     <head>
         <title>Accueil</title>
         <meta charset="UTF-8">
-        <link href="CSS/style.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="CSS/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
     </head>
     <body>
-        <div class="center">
+        <br>
+        <div class="container">
             <header>
-                <nav>
-                    <ul>
-                        <li> <a href="../../StadiumWebSite/">Accueil</a></li>
-                        <li> <a href="../../StadiumWebSite/Registration">Inscription</a> </li>
-                        <li> <a href="../../StadiumWebSite/Result">Résultats</a>
-                    </ul>
+                <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <a class="navbar-brand">
+                                DickStadium
+                            </a>  
+                        </div>
+                        <ul class="nav navbar-nav">
+                            <li> <a href="../../StadiumWebSite/">Accueil</a></li>
+                            <li> <a href="../../StadiumWebSite/Registration">Inscription</a> </li>
+                            <li> <a href="../../StadiumWebSite/Team">Equipes</a> </li>
+                            <li> <a href="../../StadiumWebSite/Result">Résultats</a> </li>
+                        </ul>
+                    </div>
                 </nav>
             </header>
-            <h1>Bienvenue sur le site du dickstadium </h1>
-            <div>
-                Bienvenue sur le site du nouveau stade intelligent. <br>
-                Il s'agit d'un des premiers stades du genre. En effet, la technologie des objets connectés permet de gérer différents choses : <br>
-                On pourra aider les différents sportifs en comptant leur nombre de tours,... <br>
-                On pourra aider les spectateurs à s'orienter dans le stade. <br>
-                On pourra aussi gérer les différents mécanismes (arrosage de la pelouse, toît,...). <br> <br>
+            <div class="text-center">
+                <header class="page-header">
+                    <h1>Bienvenue sur le site du dickstadium</h1>
+                </header>
+                Il s'agit d'un des premiers stades du genre. En effet, la technologie des objets connectés permet de gérer différents choses : <br> <br>
+                On pourra aider les différents sportifs en comptant leur nombre de tours,... <br> <br>
+                On pourra aider les spectateurs à s'orienter dans le stade. <br> <br>
+                On pourra aussi gérer les différents mécanismes (arrosage de la pelouse, toît,...). <br> <br> 
             </div>
-            <img src="CSS/stade.jpg" width="300" border="0" height="200"> <br/> 
         </div>
     </body>
 </html>

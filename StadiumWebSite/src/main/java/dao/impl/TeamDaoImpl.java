@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao.impl;
 
 import beans.Team;
@@ -11,20 +6,18 @@ import dao.Dao;
 import dao.TeamDao;
 import exceptions.IntegrityException;
 import exceptions.NotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import stade.data.QTeam;
 import stade.data.TeamData;
 
-/**
- *
- * @author Dwade
- */
 public class TeamDaoImpl extends Dao implements TeamDao{
 
     private static final QTeam TEAM = QTeam.team;
     
     @Override
     public void addTeam(int ID, String Name) throws IntegrityException {
-        Assert.isTrue(ID > 0);
+        Assert.isTrue(ID >= 0);
         Assert.notNull(Name);
         Assert.isTrue(Name.length() > 0);
         
@@ -50,6 +43,22 @@ public class TeamDaoImpl extends Dao implements TeamDao{
     }
     
     @Override
+    public ArrayList<Team> getAllTeam() throws NotFoundException {
+        List<TeamData> data = queryFactory.select(TEAM).from(TEAM).fetch();
+        closeConnection();
+
+        if (data.isEmpty()) throw new NotFoundException("Matchs"
+                + " has not been found in the database");
+        
+        ArrayList<Team> teams = new ArrayList<>();
+        for (TeamData data1 : data) {
+            teams.add(toTeam(data1));
+        }
+                
+        return teams;
+    }
+    
+    @Override
     public Team getTeam(int ID) throws NotFoundException {
         Assert.isTrue(ID >= 0);
         
@@ -70,14 +79,15 @@ public class TeamDaoImpl extends Dao implements TeamDao{
         if (!teamExists(ID)) throw new NotFoundException("Team " + ID
                 + " has not been found in the database");
 
-        long rows = queryFactory.delete(TEAM).where(TEAM.idTeam.eq(ID)).execute();
+        long rows = queryFactory.delete(TEAM).where(TEAM.idTeam.eq(ID))
+                .execute();
 
         Assert.isTrue(rows == 1);
     }
 
     @Override
     public String getName(int ID) throws NotFoundException {
-        Assert.isTrue(ID > 0);
+        Assert.isTrue(ID >= 0);
         
         TeamData data = queryFactory.selectFrom(TEAM)
                 .where(TEAM.idTeam.eq(ID)).fetchFirst();
@@ -89,7 +99,7 @@ public class TeamDaoImpl extends Dao implements TeamDao{
     }
     
     private TeamData toData(int ID, String Name){
-        Assert.isTrue(ID > 0);
+        Assert.isTrue(ID >= 0);
         Assert.notNull(Name);
         Assert.isTrue(Name.length() > 0);
         

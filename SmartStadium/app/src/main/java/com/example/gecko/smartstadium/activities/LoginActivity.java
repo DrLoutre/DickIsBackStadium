@@ -21,7 +21,6 @@ import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 /**
- * Created by Quentin Jacquemotte
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity { //implements LoaderCallbacks<Cursor> {
@@ -126,8 +125,8 @@ public class LoginActivity extends AppCompatActivity { //implements LoaderCallba
     @Subscribe
     public void onLoginEvent(LoginEvent loginEvent) {
         if (loginEvent.getAthletic() != null) {
-            Intent intend = new Intent(LoginActivity.this, StatActivity.class);
-            startActivity(intend);
+            Intent intent = new Intent(LoginActivity.this, StatActivity.class);
+            startActivity(intent);
         } else {
             Snackbar.make(findViewById(android.R.id.content), "Le mot de passe est incorrect", Snackbar.LENGTH_LONG).show();
         }

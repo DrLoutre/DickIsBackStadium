@@ -11,7 +11,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class StadiumClient {
 
-    public final static String BASE_URL = "http://10.0.2.2/";
+    public final static String BASE_URL = "http://10.0.2.2:8080/api/v1/";
 
     private static StadiumClient mStadiumClient;
     private static Retrofit mRetrofit;

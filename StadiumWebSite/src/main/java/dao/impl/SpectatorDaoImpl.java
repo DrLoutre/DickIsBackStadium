@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao.impl;
 
 import beans.Spectator;
@@ -13,14 +8,12 @@ import dao.SpectatorDao;
 import dao.TribuneDao;
 import exceptions.IntegrityException;
 import exceptions.NotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.util.Pair;
 import stade.data.QSpectator;
 import stade.data.SpectatorData;
 
-/**
- *
- * @author Thibaut
- */
 public class SpectatorDaoImpl extends Dao implements SpectatorDao{
 
     private final TribuneDao tribuneDao;
@@ -91,6 +84,20 @@ public class SpectatorDaoImpl extends Dao implements SpectatorDao{
     }
 
     @Override
+    public void deleteSpectator(int ID) throws NotFoundException {
+        Assert.isTrue(ID >= 0);
+
+        if(!spectatorExists(ID)) throw new NotFoundException("Spectator " + ID
+                + " has not been found in the database");
+
+        long rows = queryFactory.delete(SPECTATOR)
+                .where(SPECTATOR.idSpec.eq(ID)).execute();
+        closeConnection();
+
+        Assert.isTrue(rows == 1);
+    }
+
+    @Override
     public String getTribune(int ID) throws NotFoundException {
         Assert.isTrue(ID >= 0);
         
@@ -133,6 +140,85 @@ public class SpectatorDaoImpl extends Dao implements SpectatorDao{
                 + ID + " does not exists in the database");
         
         return data.getIdMatch();
+    }
+
+    @Override
+    public ArrayList<Spectator> getAllSpectator() throws NotFoundException {
+        List<SpectatorData> datas = queryFactory.select(SPECTATOR)
+                .from(SPECTATOR).fetch();
+        closeConnection();
+
+        if (datas.isEmpty()) throw new NotFoundException("Spectators has not "
+                + "been found in the database");
+        
+        ArrayList<Spectator> spectators = new ArrayList<>();
+        for (SpectatorData spectator : datas) {
+            spectators.add(toSpectator(spectator));
+        }
+                
+        return spectators;
+    }
+
+    @Override
+    public ArrayList<Spectator> getAllSpectator(String tribuneNFC) 
+            throws NotFoundException {
+        Assert.notNull(tribuneNFC);
+        
+        ArrayList<Spectator> spectators = getAllSpectator();
+        
+        ArrayList<Spectator> selectedSpectators = new ArrayList<>();
+        for (Spectator spectator : spectators) {
+            if(tribuneNFC.equals(spectator.geTribuneNFC())) 
+                selectedSpectators.add(spectator);
+        }
+        
+        if (selectedSpectators.isEmpty()) throw new NotFoundException("There "
+                + "is no Spectators of Tribune " + tribuneNFC + " in the"
+                + " database");
+        
+        return selectedSpectators;
+    }
+
+    @Override
+    public ArrayList<Spectator> getAllSpectator(int matchID) 
+            throws NotFoundException {
+        Assert.isTrue(matchID >= 0);
+        
+        ArrayList<Spectator> spectators = getAllSpectator();
+        
+        ArrayList<Spectator> selectedSpectators = new ArrayList<>();
+        for (Spectator spectator : spectators) {
+            if(matchID == spectator.getIDMatch())
+                selectedSpectators.add(spectator);
+        }
+        
+        if (selectedSpectators.isEmpty()) throw new NotFoundException("There "
+                + "is no Spectators of the Match " + matchID + " in the"
+                + " database");
+        
+        return selectedSpectators;
+    }
+
+    @Override
+    public ArrayList<Spectator> getAllSpectator(String tribuneNFC, int matchID) 
+            throws NotFoundException {
+        Assert.notNull(tribuneNFC);
+        Assert.isTrue(matchID >= 0);
+        
+        ArrayList<Spectator> spectators = getAllSpectator();
+        
+        ArrayList<Spectator> selectedSpectators = new ArrayList<>();
+        for (Spectator spectator : spectators) {
+            if(tribuneNFC.equals(spectator.geTribuneNFC()) 
+                    && matchID == spectator.getIDMatch()) 
+                selectedSpectators.add(spectator);
+        }
+        
+        if (selectedSpectators.isEmpty()) throw new NotFoundException("There "
+                + "is no Spectators of the Match " + matchID + " in the "
+                + "Tribune " + tribuneNFC + " in the database");
+        
+        return selectedSpectators;
     }
     
     SpectatorData toData(int ID, String lastName, String firstName, 
