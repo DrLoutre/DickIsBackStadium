@@ -40,7 +40,7 @@ public class TribuneWebService {
     public Response getTribuneSeats(@PathParam("id") String id) {
         List<Integer> seats;
         try {
-            seats = seatDao.getTribuneSeats(id);
+            seats = seatDao.getTribuneSeatsID(id);
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -52,7 +52,7 @@ public class TribuneWebService {
     public Response getTribuneOccupancyRate(@PathParam("id") String id) {
         List<Integer> seats;
         try {
-            seats = seatDao.getTribuneSeats(id);
+            seats = seatDao.getTribuneSeatsID(id);
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
