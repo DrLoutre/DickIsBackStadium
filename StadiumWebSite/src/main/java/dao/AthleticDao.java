@@ -3,6 +3,7 @@ package dao;
 import beans.Athletic;
 import exceptions.IntegrityException;
 import exceptions.NotFoundException;
+import java.util.ArrayList;
 
 public interface AthleticDao {
     
@@ -20,4 +21,6 @@ public interface AthleticDao {
     String getLastName(String NFC) throws NotFoundException;
     
     String getPassword(String NFC) throws NotFoundException;
+    
+    ArrayList<Athletic> getAllAthletic() throws NotFoundException;
 }

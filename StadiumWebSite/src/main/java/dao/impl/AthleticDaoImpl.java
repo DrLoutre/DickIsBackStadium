@@ -6,6 +6,8 @@ import dao.AthleticDao;
 import dao.Dao;
 import exceptions.IntegrityException;
 import exceptions.NotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import stade.data.AthleticData;
 import stade.data.QAthletic;
 
@@ -123,6 +125,23 @@ public class AthleticDaoImpl extends Dao implements AthleticDao {
         closeConnection();
 
         Assert.isTrue(rows == 1);
+    }
+
+    @Override
+    public ArrayList<Athletic> getAllAthletic() throws NotFoundException {
+        List<AthleticData> datas = queryFactory.select(ATHLETIC).from(ATHLETIC)
+                .fetch();
+        closeConnection();
+
+        if (datas.isEmpty()) throw new NotFoundException("Athletics has not "
+                + "been found in the database");
+        
+        ArrayList<Athletic> athletics = new ArrayList<>();
+        for (AthleticData athletic : datas) {
+            athletics.add(toAthletic(athletic));
+        }
+                
+        return athletics;
     }
     
     private AthleticData toData(String NFC, String firstName, String lastName, 
