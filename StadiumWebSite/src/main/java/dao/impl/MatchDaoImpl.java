@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao.impl;
 
 import beans.Match;
@@ -18,10 +13,6 @@ import javafx.util.Pair;
 import stade.data.MatchsData;
 import stade.data.QMatchs;
 
-/**
- *
- * @author Dwade
- */
 public class MatchDaoImpl extends Dao implements MatchDao{
 
     private final TeamDao teamDao;
@@ -76,7 +67,8 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         if(matchExists(ID)) throw new IntegrityException("A match already "
                 + "exists in the database with the ID : " + ID);
 
-        long rows = queryFactory.delete(MATCH).where(MATCH.idMatch.eq(ID)).execute();
+        long rows = queryFactory.delete(MATCH).where(MATCH.idMatch.eq(ID))
+                .execute();
         closeConnection();
 
         Assert.isTrue(rows == 1);

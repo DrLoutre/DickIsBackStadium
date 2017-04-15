@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao.impl;
 
 import beans.Refreshment;
@@ -15,10 +10,6 @@ import exceptions.NotFoundException;
 import stade.data.RefreshmentData;
 import stade.data.QRefreshment;
 
-/**
- *
- * @author Dwade
- */
 public class RefreshmentDaoImpl extends Dao implements RefreshmentDao{
     
     private static final QRefreshment REFRESHMENT = QRefreshment.refreshment;

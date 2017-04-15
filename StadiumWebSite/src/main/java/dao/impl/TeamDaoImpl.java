@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao.impl;
 
 import beans.Team;
@@ -16,10 +11,6 @@ import java.util.List;
 import stade.data.QTeam;
 import stade.data.TeamData;
 
-/**
- *
- * @author Dwade
- */
 public class TeamDaoImpl extends Dao implements TeamDao{
 
     private static final QTeam TEAM = QTeam.team;
@@ -88,7 +79,8 @@ public class TeamDaoImpl extends Dao implements TeamDao{
         if (!teamExists(ID)) throw new NotFoundException("Team " + ID
                 + " has not been found in the database");
 
-        long rows = queryFactory.delete(TEAM).where(TEAM.idTeam.eq(ID)).execute();
+        long rows = queryFactory.delete(TEAM).where(TEAM.idTeam.eq(ID))
+                .execute();
 
         Assert.isTrue(rows == 1);
     }

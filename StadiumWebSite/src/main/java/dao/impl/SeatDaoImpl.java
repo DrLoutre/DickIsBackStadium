@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao.impl;
 
 import beans.Seat;
@@ -17,10 +12,6 @@ import java.util.List;
 import stade.data.QSeat;
 import stade.data.SeatData;
 
-/**
- *
- * @author Thibaut
- */
 public class SeatDaoImpl extends Dao implements SeatDao{
 
     private final TribuneDao tribuneDao;
