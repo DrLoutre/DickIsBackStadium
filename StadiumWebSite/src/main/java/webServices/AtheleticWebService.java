@@ -8,6 +8,7 @@ import exceptions.NotFoundException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Path("athletics")
@@ -17,8 +18,13 @@ public class AtheleticWebService {
 
     @GET
     public Response getAthletics() {
-        //TODO : Get all athlectics
-        return  Response.status(Response.Status.NOT_FOUND).build();
+        ArrayList<Athletic> athletics;
+        try {
+            athletics = athleticDao.getAllAthletic();
+        } catch (NotFoundException e) {
+            return  Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return  Response.ok(athletics).build();
     }
 
     @GET
@@ -44,9 +50,19 @@ public class AtheleticWebService {
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response putAthletic(@PathParam("id") String id) {
-        //TODO : Put athletic
-        return Response.status(Response.Status.NOT_FOUND).build();
+    public Response putAthletic(@PathParam("id") String id, Athletic athletic1) {
+        Athletic athletic;
+        try {
+            athletic = athleticDao.getAthletic(id);
+            if (!athletic.getPrenom().equals(athletic1.getPrenom())) athleticDao.setFirstName(id, athletic1.getPrenom());
+            if (!athletic.getNom().equals(athletic1.getNom())) athleticDao.setLastName(id, athletic1.getNom());
+            if (athletic.getMDP().equals(athletic1.getMDP())) athleticDao.setPassword(id, athletic1.getMDP());
+            if (athletic.getAge() != athletic1.getAge()) athleticDao.setAge(id, athletic1.getAge());
+            if (athletic.getSex().equals(athletic1.getSex())) athleticDao.setSex(id, athletic1.getSex());
+        } catch (NotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(athletic1).build();
     }
 
     @POST

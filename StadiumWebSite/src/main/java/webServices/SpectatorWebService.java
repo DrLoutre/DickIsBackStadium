@@ -7,6 +7,7 @@ import exceptions.NotFoundException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Path("/spectators")
@@ -28,8 +29,13 @@ public class SpectatorWebService {
 
     @GET
     public Response getSpectators() {
-        // Todo : Get all spectators
-        return Response.ok().build();
+        ArrayList<Spectator> spectators;
+        try {
+            spectators = spectatorDao.getAllSpectator();
+        } catch (NotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(spectators).build();
     }
 
     @DELETE
