@@ -32,4 +32,17 @@ public class RefreshmentWebService {
         refreshmentDao.addRefreshment(refreshment.getId(), refreshment.getAttendance(), refreshment.getLocalisation());
         return Response.status(Response.Status.CREATED).entity(refreshment).build();
     }
+
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response putRefreshment(@PathParam("id") int id, Refreshment refreshment1) {
+        try {
+            Refreshment refreshment = refreshmentDao.getRefreshment(id);
+            if (refreshment.getAttendance() != refreshment1.getAttendance()) refreshmentDao.setAttendance(id, refreshment1.getAttendance());
+        } catch (NotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(refreshment1).build();
+    }
 }
