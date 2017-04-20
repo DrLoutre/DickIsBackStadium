@@ -18,6 +18,7 @@ public class CommunicationListener {
         planning.addMatchToList(new Date(), new Date());
     }
 
+    //Todo : Parse from the received request
 
 
 }
