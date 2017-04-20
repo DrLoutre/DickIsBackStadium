@@ -34,13 +34,13 @@ class DemoModePotentiometer(interfaceKitPhidget: InterfaceKitPhidget, sensorInde
     value match {
       case 0 =>
         println("Setting to normal mode ... ")
-        NormalMode(false)
+        NormalMode
       case 1 =>
         println("Setting to forced match mode ... ")
-        NormalMode(true)
+        NormalMode
       case 2 =>
         println("Setting to Demo mode 1 ... ")
-        Demo_1_Mode(false)
+        Demo_1_Mode
       case _ => println("Demo mode x not yet implemented")
     }
   }
