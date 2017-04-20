@@ -1,9 +1,36 @@
 package Models.In
 
+import BlackBox.BlackBox
+import com.phidgets.RFIDPhidget
+import com.phidgets.event.{TagGainEvent, TagGainListener, TagLossEvent, TagLossListener}
+
 /**
   * Created by bri_e on 20-04-17.
   * Class representing each runners and every turns of each runner
   */
-class LapCalculator {
+class LapCalculator(blackBox: BlackBox) {
+
+  val PHIDGET_SERIAL = 335178
+  val MIN_PASS_TIME  = 200
+  var timeScanning:Double = 0
+  val runners:Runners = new Runners
+
+  val rFIDPhidget:RFIDPhidget = new RFIDPhidget()
+  rFIDPhidget.addTagGainListener((tagGainEvent: TagGainEvent) => timeScanning = System.currentTimeMillis())
+  rFIDPhidget.addTagLossListener((tagLossEvent: TagLossEvent) => {
+    val now:Double = System.currentTimeMillis()
+    if(Math.abs(timeScanning-now)>MIN_PASS_TIME){
+      runners.scanned(tagLossEvent.getValue)
+      val lastLapTime = runners.getIdPerfs(tagLossEvent.getValue).get(runners.getIdLapsNumber(tagLossEvent.getValue) - 1)
+      val lapTime = runners.getIdPerfs(tagLossEvent.getValue).getLast
+      println("Runner Id    : " + tagLossEvent.getValue + " " +
+            "\nRunning Time : " + ())
+      //Todo:create and process new event
+    }
+  })
+  rFIDPhidget.open(PHIDGET_SERIAL)
+
+
+
 
 }
