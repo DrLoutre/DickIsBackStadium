@@ -4,7 +4,8 @@ package Models.In
   * Created by bri_e on 20-04-17.
   * Different possible weathers
   */
-abstract class Weather
+abstract class Weather()
+
 case class Rain() extends Weather {
   override def toString():String = "Pluvieux"
 }
