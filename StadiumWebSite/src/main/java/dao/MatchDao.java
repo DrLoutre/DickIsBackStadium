@@ -31,8 +31,8 @@ public interface MatchDao {
     Throws an IntegrityException if the Match has been found but there is no
         team referenced with the specified id.
     */
-    void setTeamGoals(int ID, int idTeam, int goals) 
-            throws IntegrityException, NotFoundException;
+//    void setTeamGoals(int ID, int idTeam, int goals) 
+//            throws IntegrityException, NotFoundException;
     
     /*
     Throws a NotFoundException if the Match has not been found in the database 

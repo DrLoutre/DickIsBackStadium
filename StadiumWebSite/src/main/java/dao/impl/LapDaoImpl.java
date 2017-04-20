@@ -7,7 +7,6 @@ import core.Assert;
 import dao.Dao;
 import dao.LapDao;
 import dao.RaceDao;
-import exceptions.IntegrityException;
 import exceptions.NotFoundException;
 import java.sql.Time;
 import java.util.LinkedList;
@@ -28,9 +27,8 @@ public class LapDaoImpl extends Dao implements LapDao{
     }
 
     @Override
-    public void addLap(int ID, int temp_min, int temp_sec, int temp_ms, 
-            int id_race) throws IntegrityException, NotFoundException {
-        Assert.isTrue(ID >= 0);
+    public int addLap(int temp_min, int temp_sec, int temp_ms, int id_race) 
+            throws NotFoundException {
         Assert.isTrue(temp_min >= 0);
         Assert.isTrue(temp_min < 60);
         Assert.isTrue(temp_sec >= 0);
@@ -39,17 +37,14 @@ public class LapDaoImpl extends Dao implements LapDao{
         Assert.isTrue(temp_ms < 1000);
         Assert.isTrue(id_race >= 0);
         
-        if(lapExists(ID)) throw new IntegrityException("A lap already exists "
-                + "in the database with the ID : " + ID);
-        
         if(!raceDao.raceExists(id_race)) throw new NotFoundException("The race "
                 + "with the id " + id_race + "does not exists in the database");
         
-        LapData data = toData(ID, temp_min, temp_sec, temp_ms, id_race);
-        long rows = queryFactory.insert(LAP).populate(data).execute();
+        LapData data = toData(temp_min, temp_sec, temp_ms, id_race);
+        int ID = queryFactory.insert(LAP).populate(data).executeWithKey(LAP.id);
         closeConnection();
         
-        Assert.isTrue(rows == 1);
+        return ID;
     }
     
     @Override
@@ -152,6 +147,24 @@ public class LapDaoImpl extends Dao implements LapDao{
         
         LapData data = new LapData();
         data.setId(ID);
+        Time temp = new Time(0,temp_min,temp_sec);
+        data.setTemp(temp);
+        data.setTempMs(temp_ms);
+        data.setIdScore(id_race);
+        return data;
+    }
+    
+    private LapData toData (int temp_min, int temp_sec, int temp_ms, 
+            int id_race){
+        Assert.isTrue(temp_min >= 0);
+        Assert.isTrue(temp_min < 60);
+        Assert.isTrue(temp_sec >= 0);
+        Assert.isTrue(temp_sec < 60);
+        Assert.isTrue(temp_ms >= 0);
+        Assert.isTrue(temp_ms < 1000);
+        Assert.isTrue(id_race >= 0);
+        
+        LapData data = new LapData();
         Time temp = new Time(0,temp_min,temp_sec);
         data.setTemp(temp);
         data.setTempMs(temp_ms);
