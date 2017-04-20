@@ -1,5 +1,6 @@
 package dao.impl;
 
+import beans.Match;
 import beans.Refreshment;
 import com.querydsl.sql.dml.SQLUpdateClause;
 import core.Assert;
@@ -7,8 +8,12 @@ import dao.Dao;
 import dao.RefreshmentDao;
 import exceptions.IntegrityException;
 import exceptions.NotFoundException;
+import stade.data.MatchsData;
 import stade.data.RefreshmentData;
 import stade.data.QRefreshment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RefreshmentDaoImpl extends Dao implements RefreshmentDao{
     
@@ -44,6 +49,22 @@ public class RefreshmentDaoImpl extends Dao implements RefreshmentDao{
                 + ID + " has not been found in the database");
         
         return toRefreshment(data);
+    }
+
+    @Override
+    public ArrayList<Refreshment> getAllRefreshment() throws NotFoundException {
+        List<RefreshmentData> data = queryFactory.select(REFRESHMENT).from(REFRESHMENT).fetch();
+        closeConnection();
+
+        if (data.isEmpty()) throw new NotFoundException("Refreshments"
+                + " has not been found in the database");
+
+        ArrayList<Refreshment> refreshments = new ArrayList<>();
+        for (RefreshmentData data1 : data) {
+            refreshments.add(toRefreshment(data1));
+        }
+
+        return refreshments;
     }
 
     @Override
