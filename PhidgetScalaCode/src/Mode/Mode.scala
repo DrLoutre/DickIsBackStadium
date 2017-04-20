@@ -8,10 +8,10 @@ abstract class Mode(){
 
 }
 
-case class NormalMode(){
+case class NormalMode() extends Mode {
   def forcedMatch():Boolean = false
 }
 
-case class Demo_1_Mode(){
+case class Demo_1_Mode() extends Mode {
   def forcedMatch():Boolean = true
 }
