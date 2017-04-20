@@ -1,14 +1,12 @@
 package dao;
 
 import beans.Race;
-import exceptions.IntegrityException;
 import exceptions.NotFoundException;
 import java.util.List;
 
 public interface RaceDao {
     
-    void addRace(int ID, String athleticNFC) 
-            throws IntegrityException,NotFoundException;
+    int addRace(String athleticNFC) throws NotFoundException;
     
     Race getRace(int ID) throws NotFoundException;
     

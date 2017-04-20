@@ -1,14 +1,11 @@
 package dao.impl;
 
-import beans.Match;
 import beans.Refreshment;
 import com.querydsl.sql.dml.SQLUpdateClause;
 import core.Assert;
 import dao.Dao;
 import dao.RefreshmentDao;
-import exceptions.IntegrityException;
 import exceptions.NotFoundException;
-import stade.data.MatchsData;
 import stade.data.RefreshmentData;
 import stade.data.QRefreshment;
 
@@ -20,21 +17,17 @@ public class RefreshmentDaoImpl extends Dao implements RefreshmentDao{
     private static final QRefreshment REFRESHMENT = QRefreshment.refreshment;
 
     @Override
-    public void addRefreshment(int ID, float attendance, String localisation) 
-            throws IntegrityException {
-        Assert.isTrue(ID >= 0);
+    public int addRefreshment(float attendance, String localisation){
         Assert.isTrue(attendance >= 0 && attendance <= 100);
         Assert.notNull(localisation);
         Assert.isTrue(localisation.length() > 0);
         
-        if (refreshmentExists(ID)) throw new IntegrityException("A refreshement"
-                + " already exists in the database with the ID : " + ID);
-        
-        RefreshmentData data = toData(ID, attendance, localisation);
-        long rows = queryFactory.insert(REFRESHMENT).populate(data).execute();
+        RefreshmentData data = toData(attendance, localisation);
+        int ID = queryFactory.insert(REFRESHMENT).populate(data)
+                .executeWithKey(REFRESHMENT.id);
         closeConnection();
         
-        Assert.isTrue(rows == 1);
+        return ID;
     }
     
     @Override
@@ -53,7 +46,8 @@ public class RefreshmentDaoImpl extends Dao implements RefreshmentDao{
 
     @Override
     public ArrayList<Refreshment> getAllRefreshment() throws NotFoundException {
-        List<RefreshmentData> data = queryFactory.select(REFRESHMENT).from(REFRESHMENT).fetch();
+        List<RefreshmentData> data = queryFactory.select(REFRESHMENT)
+                .from(REFRESHMENT).fetch();
         closeConnection();
 
         if (data.isEmpty()) throw new NotFoundException("Refreshments"
@@ -125,15 +119,13 @@ public class RefreshmentDaoImpl extends Dao implements RefreshmentDao{
         return data.getLocalisation();
     }
     
-    private RefreshmentData toData(int ID, float attendance, 
+    private RefreshmentData toData(float attendance, 
             String localisation){
-        Assert.isTrue(ID >= 0);
         Assert.isTrue(attendance >= 0 && attendance <= 100);
         Assert.notNull(localisation);
         Assert.isTrue(localisation.length() > 0);
         
         RefreshmentData data = new RefreshmentData();
-        data.setId(ID);
         data.setAttendance(attendance);
         data.setLocalisation(localisation);
         return data;

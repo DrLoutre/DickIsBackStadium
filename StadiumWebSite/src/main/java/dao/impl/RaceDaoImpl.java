@@ -6,7 +6,6 @@ import core.Assert;
 import dao.AthleticDao;
 import dao.Dao;
 import dao.RaceDao;
-import exceptions.IntegrityException;
 import exceptions.NotFoundException;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,24 +24,20 @@ public class RaceDaoImpl extends Dao implements RaceDao{
     }
     
     @Override
-    public void addRace(int ID, String athleticNFC) 
-            throws IntegrityException, NotFoundException {
-        Assert.isTrue(ID >= 0);
+    public int addRace(String athleticNFC) throws NotFoundException {
         Assert.notNull(athleticNFC);
         Assert.isTrue(athleticNFC.length() > 0);
-        
-        if(raceExists(ID)) throw new IntegrityException("A race already exists "
-                + "in the database with the ID : " + ID);
         
         if(!athleticDao.athleticExists(athleticNFC)) throw 
                 new NotFoundException("Athletic "+ athleticNFC 
                 + " has not been found in the database");
         
-        RaceData data = toData(ID,athleticNFC);
-        long rows = queryFactory.insert(RACE).populate(data).execute();
+        RaceData data = toData(athleticNFC);
+        int ID = queryFactory.insert(RACE).populate(data)
+                .executeWithKey(RACE.idScore);
         closeConnection();
         
-        Assert.isTrue(rows == 1);
+        return ID;
     }
     
     @Override
@@ -125,6 +120,15 @@ public class RaceDaoImpl extends Dao implements RaceDao{
         
         RaceData data = new RaceData();
         data.setIdScore(ID);
+        data.setNfc(NFC);
+        return data;
+    }
+    
+    private RaceData toData(String NFC){
+        Assert.notNull(NFC);
+        Assert.isTrue(NFC.length() > 0);
+        
+        RaceData data = new RaceData();
         data.setNfc(NFC);
         return data;
     }

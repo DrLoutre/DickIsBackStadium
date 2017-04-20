@@ -1,15 +1,13 @@
 package dao;
 
 import beans.Refreshment;
-import exceptions.IntegrityException;
 import exceptions.NotFoundException;
 
 import java.util.ArrayList;
 
 public interface RefreshmentDao {
     
-    void addRefreshment(int ID, float attendance, String localisation) 
-            throws IntegrityException;
+    int addRefreshment(float attendance, String localisation);
     
     Refreshment getRefreshment(int ID) throws NotFoundException;
 
