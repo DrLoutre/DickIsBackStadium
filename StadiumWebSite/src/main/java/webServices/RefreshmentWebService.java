@@ -9,6 +9,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Path("refreshments")
@@ -34,6 +35,17 @@ public class RefreshmentWebService {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         return Response.ok(refreshment).build();
+    }
+
+    @GET
+    public Response getRefreshments() {
+        ArrayList<Refreshment> refreshments;
+        try {
+            refreshments = refreshmentDao.getAllRefreshment();
+        } catch (NotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(refreshments).build();
     }
 
     @POST
