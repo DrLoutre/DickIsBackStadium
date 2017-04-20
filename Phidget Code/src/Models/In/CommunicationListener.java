@@ -20,5 +20,4 @@ public class CommunicationListener {
 
     //Todo : Parse from the received request
 
-
 }
