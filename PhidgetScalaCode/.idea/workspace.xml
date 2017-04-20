@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="6c4420ac-3361-402d-959b-6668598a5c94" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Models/In/LapCalculator.scala" afterPath="$PROJECT_DIR$/src/Models/In/LapCalculator.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Models/In/Runners.scala" afterPath="$PROJECT_DIR$/src/Models/In/Runners.scala" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -17,11 +15,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="DemoModePotentiometer.scala" pinned="false" current-in-tab="false">
+      <file leaf-file-name="DemoModePotentiometer.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Models/In/DemoModePotentiometer.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="399">
-              <caret line="39" column="18" lean-forward="true" selection-start-line="39" selection-start-column="18" selection-end-line="39" selection-end-column="18" />
+            <state relative-caret-position="819">
+              <caret line="39" column="18" lean-forward="false" selection-start-line="39" selection-start-column="18" selection-end-line="39" selection-end-column="18" />
               <folding>
                 <element signature="e#19#43#0" expanded="true" />
               </folding>
@@ -43,7 +41,7 @@
         <entry file="file://$PROJECT_DIR$/src/Models/In/Goal.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="167">
-              <caret line="24" column="32" lean-forward="true" selection-start-line="24" selection-start-column="32" selection-end-line="24" selection-end-column="32" />
+              <caret line="24" column="32" lean-forward="false" selection-start-line="24" selection-start-column="32" selection-end-line="24" selection-end-column="32" />
               <folding>
                 <element signature="e#19#43#0" expanded="true" />
               </folding>
@@ -63,7 +61,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LapCalculator.scala" pinned="false" current-in-tab="true">
+      <file leaf-file-name="LapCalculator.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Models/In/LapCalculator.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="170">
@@ -158,8 +156,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="832" />
-    <option name="width" value="1096" />
+    <option name="x" value="410" />
+    <option name="width" value="1518" />
     <option name="height" value="1038" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -265,6 +263,10 @@
               <option name="myItemId" value="Mode" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Mode.scala" />
+              <option name="myItemType" value="org.jetbrains.plugins.scala.components.ScalaDefsProjectViewProvider$ScalaFileTreeNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -312,9 +314,18 @@
           <option name="mySupportsDeletion" value="false" />
           <option name="myCanBeAbsent" value="false" />
           <option name="myId" value="UPDATED" />
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/../StadiumWebSite/src/main/java/beans/Match.java</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/../StadiumWebSite/src/main/java/dao/LapDao.java</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/../StadiumWebSite/src/main/java/dao/MatchDao.java</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/../StadiumWebSite/src/main/java/dao/PlaysInDao.java</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/../StadiumWebSite/src/main/java/dao/RaceDao.java</PATH>
           <PATH vcs="Git" revision="">$PROJECT_DIR$/../StadiumWebSite/src/main/java/dao/RefreshmentDao.java</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/../StadiumWebSite/src/main/java/dao/impl/LapDaoImpl.java</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/../StadiumWebSite/src/main/java/dao/impl/MatchDaoImpl.java</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/../StadiumWebSite/src/main/java/dao/impl/PlaysInDaoImpl.java</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/../StadiumWebSite/src/main/java/dao/impl/RaceDaoImpl.java</PATH>
           <PATH vcs="Git" revision="">$PROJECT_DIR$/../StadiumWebSite/src/main/java/dao/impl/RefreshmentDaoImpl.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../StadiumWebSite/src/main/java/webServices/RefreshmentWebService.java</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/../StadiumWebSite/src/main/java/webServices/AtheleticWebService.java</PATH>
         </FILE-GROUP>
         <FILE-GROUP>
           <option name="myUpdateName" value="Created" />
@@ -938,14 +949,21 @@
       <option name="project" value="LOCAL" />
       <updated>1492696457722</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="lapcalculator done">
+      <created>1492697117847</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1492697117847</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9630000" />
+    <option name="totallyTimeSpent" value="9685000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="832" y="0" width="1096" height="1038" extended-state="0" />
+    <frame x="410" y="0" width="1518" height="1038" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -962,7 +980,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298969" sideWeight="0.4958932" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21352786" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21289875" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="SonarLint" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1041,7 +1059,8 @@
     <MESSAGE value="libs" />
     <MESSAGE value="goal + modes" />
     <MESSAGE value="lapcalculator" />
-    <option name="LAST_COMMIT_MESSAGE" value="lapcalculator" />
+    <MESSAGE value="lapcalculator done" />
+    <option name="LAST_COMMIT_MESSAGE" value="lapcalculator done" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1365,28 +1384,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Models/In/DemoModePotentiometer.scala">
+    <entry file="file://$PROJECT_DIR$/src/Models/In/LapCalculator.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="39" column="18" lean-forward="true" selection-start-line="39" selection-start-column="18" selection-end-line="39" selection-end-column="18" />
-          <folding>
-            <element signature="e#19#43#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Mode/Mode.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Models/In/Goal.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
-          <caret line="24" column="32" lean-forward="true" selection-start-line="24" selection-start-column="32" selection-end-line="24" selection-end-column="32" />
+        <state relative-caret-position="170">
+          <caret line="19" column="2" lean-forward="false" selection-start-line="19" selection-start-column="2" selection-end-line="19" selection-end-column="2" />
           <folding>
             <element signature="e#19#43#0" expanded="true" />
           </folding>
@@ -1403,10 +1404,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Models/In/LapCalculator.scala">
+    <entry file="file://$PROJECT_DIR$/src/Models/In/Goal.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="19" column="2" lean-forward="false" selection-start-line="19" selection-start-column="2" selection-end-line="19" selection-end-column="2" />
+        <state relative-caret-position="167">
+          <caret line="24" column="32" lean-forward="false" selection-start-line="24" selection-start-column="32" selection-end-line="24" selection-end-column="32" />
+          <folding>
+            <element signature="e#19#43#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Mode/Mode.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Models/In/DemoModePotentiometer.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="819">
+          <caret line="39" column="18" lean-forward="false" selection-start-line="39" selection-start-column="18" selection-end-line="39" selection-end-column="18" />
           <folding>
             <element signature="e#19#43#0" expanded="true" />
           </folding>
