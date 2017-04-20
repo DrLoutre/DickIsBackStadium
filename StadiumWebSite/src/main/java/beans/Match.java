@@ -1,6 +1,6 @@
 package beans;
 
-import exceptions.NotFoundException;
+//import exceptions.NotFoundException;
 import java.util.Date;
 import javafx.util.Pair;
 
@@ -79,23 +79,23 @@ public class Match {
         goals_2 = goals2;
     }
     
-    public void setTeamGoals(int id_team, int goals) throws NotFoundException {
-        if(id_team != id_team_1 && id_team != id_team_2) throw new
-                NotFoundException("There is not Team " + id_team 
-                        + " in this match");
-        
-        if(id_team == id_team_1) goals_1 = goals;
-        else goals_2 = goals;
-    }
-    
-    public int getTeamGoals(int id_team) throws NotFoundException {
-        if(id_team != id_team_1 && id_team != id_team_2) throw new
-                NotFoundException("There is not Team " + id_team 
-                        + " in this match");
-        
-        if(id_team == id_team_1) return goals_1;
-        else return goals_2;
-    }
+//    public void setTeamGoals(int id_team, int goals) throws NotFoundException {
+//        if(id_team != id_team_1 && id_team != id_team_2) throw new
+//                NotFoundException("There is not Team " + id_team 
+//                        + " in this match");
+//        
+//        if(id_team == id_team_1) goals_1 = goals;
+//        else goals_2 = goals;
+//    }
+//    
+//    public int getTeamGoals(int id_team) throws NotFoundException {
+//        if(id_team != id_team_1 && id_team != id_team_2) throw new
+//                NotFoundException("There is not Team " + id_team 
+//                        + " in this match");
+//        
+//        if(id_team == id_team_1) return goals_1;
+//        else return goals_2;
+//    }
     
     public Date getDate(){
         return (Date)date.clone();

@@ -1,7 +1,6 @@
 package dao;
 
 import beans.Lap;
-import exceptions.IntegrityException;
 import exceptions.NotFoundException;
 import java.sql.Time;
 import java.util.List;
@@ -12,8 +11,8 @@ public interface LapDao {
     /*
         NotFoundException if the race does not exists
     */
-    void addLap(int ID, int temp_min, int temp_sec, int temp_ms, int id_race) 
-            throws IntegrityException, NotFoundException;
+    int addLap(int temp_min, int temp_sec, int temp_ms, int id_race) 
+            throws NotFoundException;
     
     Lap getLap(int ID) throws NotFoundException;
     
