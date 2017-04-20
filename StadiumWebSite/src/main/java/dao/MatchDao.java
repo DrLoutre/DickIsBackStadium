@@ -5,6 +5,7 @@ import exceptions.IntegrityException;
 import exceptions.NotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javafx.util.Pair;
 
 public interface MatchDao {
@@ -61,4 +62,6 @@ public interface MatchDao {
     void setDate(int ID, Date date) throws NotFoundException;
     
     void setState(int ID, boolean ended) throws NotFoundException;
+    
+    List<Match> getNotEndedMatch(String athleticNFC) throws NotFoundException;
 }

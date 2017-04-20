@@ -5,6 +5,7 @@ import com.querydsl.sql.dml.SQLUpdateClause;
 import core.Assert;
 import dao.Dao;
 import dao.MatchDao;
+import dao.PlaysInDao;
 import dao.TeamDao;
 import exceptions.FailureException;
 import exceptions.IntegrityException;
@@ -12,6 +13,7 @@ import exceptions.NotFoundException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import javafx.util.Pair;
 import stade.data.MatchsData;
@@ -20,12 +22,14 @@ import stade.data.QMatchs;
 public class MatchDaoImpl extends Dao implements MatchDao{
 
     private final TeamDao teamDao;
+    private final PlaysInDao playsInDao;
     
     private static final QMatchs MATCH = QMatchs.matchs;
     
     public MatchDaoImpl(){
         super();
         teamDao = new TeamDaoImpl();
+        playsInDao = new PlaysInDaoImpl();
     }
     
     @Override
@@ -288,6 +292,24 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         closeConnection();
         
         Assert.isTrue(rows == 1);
+    }
+
+    @Override
+    public List<Match> getNotEndedMatch(String athleticNFC) 
+            throws NotFoundException {
+        Assert.notNull(athleticNFC);
+        Assert.isTrue(athleticNFC.length() > 0);
+        
+        List<Integer> teamIDList = playsInDao.getAllTeamID(athleticNFC);
+        ArrayList<Match> notEndedMatchList = getNotEndedMatch();
+        List<Match> returnValue = new LinkedList();
+        for(Match match : notEndedMatchList){
+            if(teamIDList.contains(match.getTeamID1()) 
+                    || teamIDList.contains(match.getTeamID2()))
+                returnValue.add(match);
+        }
+        
+        return returnValue;
     }
     
     private MatchsData toData(Match match){

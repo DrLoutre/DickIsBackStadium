@@ -1,5 +1,6 @@
 package dao.impl;
 
+import beans.Team;
 import core.Assert;
 import dao.AthleticDao;
 import dao.Dao;
@@ -98,6 +99,28 @@ public class PlaysInDaoImpl extends Dao implements PlaysInDao{
             }
             return NFCList;
         }
+    }
+
+    @Override
+    public List<Integer> getAllTeamID(String athleticNFC) 
+            throws NotFoundException {
+        Assert.notNull(athleticNFC);
+        Assert.isTrue(athleticNFC.length() > 0);
+        
+        List<PlaysInData> datas = queryFactory.selectFrom(PLAYS_IN)
+                .where(PLAYS_IN.nfc.eq(athleticNFC)).fetch();
+        closeConnection();
+        
+        if(datas == null || datas.isEmpty()) throw new NotFoundException("There"
+                + " is no team referenced for the athletic " + athleticNFC 
+                + " in the database");
+        
+        List<Integer> returnValue = new LinkedList();
+        for(PlaysInData data : datas){
+            returnValue.add(data.getIdTeam());
+        }
+        
+        return returnValue;
     }
     
     PlaysInData toData(String NFC, int idTeam){
