@@ -37,7 +37,7 @@ class Runners {
       println("Nothing to be Reset")
   }
 
-  def getIdLapsNumber(id: String): Unit =
+  def getIdLapsNumber(id: String): Int =
     if(idList.contains(id))
       idNumber.get(idList.indexOf(id))
     else
