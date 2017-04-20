@@ -3,8 +3,11 @@ package webServices;
 import beans.Athletic;
 import beans.Credentials;
 import beans.Lap;
+import beans.Match;
+import dao.MatchDao;
 import dao.impl.AthleticDaoImpl;
 import dao.impl.LapDaoImpl;
+import dao.impl.MatchDaoImpl;
 import dao.impl.RaceDaoImpl;
 import exceptions.NotFoundException;
 
@@ -20,6 +23,7 @@ public class AtheleticWebService {
 
     private AthleticDaoImpl athleticDao = new AthleticDaoImpl();
     private LapDaoImpl lapDao = new LapDaoImpl();
+    private MatchDaoImpl matchDao = new MatchDaoImpl();
 
     @GET
     public Response getAthletics() {
@@ -56,11 +60,17 @@ public class AtheleticWebService {
         return Response.ok(laps).build();
     }
 
-    /*@GET
-    @Path("/{id}")
-    public Response getMatchUndone(@PathParam("id") String id) {
-        athleticDao.
-    }*/
+    @GET
+    @Path("/{id}/matchs/notended")
+    public Response getMatchNotEnded(@PathParam("id") String id) {
+        List<Match> matchs;
+        try {
+            matchs = matchDao.getNotEndedMatch(id);
+        } catch (NotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(matchs).build();
+    }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
