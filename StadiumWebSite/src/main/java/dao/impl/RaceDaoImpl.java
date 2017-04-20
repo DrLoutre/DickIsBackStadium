@@ -8,6 +8,8 @@ import dao.Dao;
 import dao.RaceDao;
 import exceptions.IntegrityException;
 import exceptions.NotFoundException;
+import java.util.LinkedList;
+import java.util.List;
 import stade.data.RaceData;
 import stade.data.QRace;
 
@@ -88,6 +90,32 @@ public class RaceDaoImpl extends Dao implements RaceDao{
         closeConnection();
         
         Assert.isTrue(rows == 1);
+    }
+
+    @Override
+    public List<Race> getRacesList(String athleticNFC) 
+            throws NotFoundException {
+        Assert.notNull(athleticNFC);
+        Assert.isTrue(athleticNFC.length()>0);
+        
+        if(!athleticDao.athleticExists(athleticNFC)) throw 
+                new NotFoundException("Athletic "+ athleticNFC 
+                + " has not been found in the database");
+        
+        List<RaceData> datas = queryFactory.selectFrom(RACE)
+                .where(RACE.nfc.eq(athleticNFC)).fetch();
+        closeConnection();
+        
+        if (datas == null || datas.isEmpty()) 
+            throw new NotFoundException("There is no race of the Athletic " 
+                    + athleticNFC + " in the database");
+        
+        List<Race> returnValue = new LinkedList();
+        for(RaceData data : datas){
+            returnValue.add(toRace(data));
+        }
+        
+        return returnValue;
     }
     
     private RaceData toData(int ID, String NFC){
