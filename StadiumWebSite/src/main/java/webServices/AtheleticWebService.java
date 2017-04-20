@@ -2,19 +2,24 @@ package webServices;
 
 import beans.Athletic;
 import beans.Credentials;
+import beans.Lap;
 import dao.impl.AthleticDaoImpl;
+import dao.impl.LapDaoImpl;
+import dao.impl.RaceDaoImpl;
 import exceptions.NotFoundException;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.List;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Path("athletics")
 public class AtheleticWebService {
 
     private AthleticDaoImpl athleticDao = new AthleticDaoImpl();
+    private LapDaoImpl lapDao = new LapDaoImpl();
 
     @GET
     public Response getAthletics() {
@@ -38,6 +43,24 @@ public class AtheleticWebService {
         }
         return Response.ok(athletic).build();
     }
+
+    @GET
+    @Path("/{id}/races/last/laps/last")
+    public Response getLastRaceAthletic(@PathParam("id") String id) {
+        List<Lap> laps;
+        try {
+            laps = lapDao.getLastRace(id);
+        } catch (NotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(laps).build();
+    }
+
+    /*@GET
+    @Path("/{id}")
+    public Response getMatchUndone(@PathParam("id") String id) {
+        athleticDao.
+    }*/
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
