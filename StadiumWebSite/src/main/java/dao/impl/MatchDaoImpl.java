@@ -5,6 +5,7 @@ import com.querydsl.sql.dml.SQLUpdateClause;
 import core.Assert;
 import dao.Dao;
 import dao.MatchDao;
+import dao.PlaysInDao;
 import dao.TeamDao;
 import exceptions.FailureException;
 import exceptions.IntegrityException;
@@ -12,6 +13,7 @@ import exceptions.NotFoundException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import javafx.util.Pair;
 import stade.data.MatchsData;
@@ -20,12 +22,14 @@ import stade.data.QMatchs;
 public class MatchDaoImpl extends Dao implements MatchDao{
 
     private final TeamDao teamDao;
+    private final PlaysInDao playsInDao;
     
     private static final QMatchs MATCH = QMatchs.matchs;
     
     public MatchDaoImpl(){
         super();
         teamDao = new TeamDaoImpl();
+        playsInDao = new PlaysInDaoImpl();
     }
     
     @Override
@@ -133,8 +137,10 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         Assert.isTrue(goals2 >= 0);
         
         Match match = getMatch(ID);
-        match.setTeamGoals(match.getTeamID1(), goals1);
-        match.setTeamGoals(match.getTeamID2(), goals2);
+//        match.setTeamGoals(match.getTeamID1(), goals1);
+//        match.setTeamGoals(match.getTeamID2(), goals2);
+        match.setGoals1(goals1);
+        match.setGoals1(goals2);
         MatchsData data = toData(match);
         SQLUpdateClause update = queryFactory.update(MATCH);
         
@@ -145,28 +151,28 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         Assert.isTrue(rows == 1);
     }
 
-    @Override
-    public void setTeamGoals(int ID, int idTeam, int goals) 
-            throws IntegrityException, NotFoundException {
-        Assert.isTrue(ID >= 0);
-        Assert.isTrue(idTeam >= 0);
-        Assert.isTrue(goals >= 0);
-        
-        Match match = getMatch(ID);
-        try {
-            match.setTeamGoals(idTeam, goals);
-        } catch (NotFoundException ex) {
-            throw new IntegrityException(ex.getMessage());
-        }
-        MatchsData data = toData(match);
-        SQLUpdateClause update = queryFactory.update(MATCH);
-        
-        long rows = update.set(MATCH, data).where(MATCH.idMatch.eq(ID))
-                .execute();
-        closeConnection();
-        
-        Assert.isTrue(rows == 1);
-    }
+//    @Override
+//    public void setTeamGoals(int ID, int idTeam, int goals) 
+//            throws IntegrityException, NotFoundException {
+//        Assert.isTrue(ID >= 0);
+//        Assert.isTrue(idTeam >= 0);
+//        Assert.isTrue(goals >= 0);
+//        
+//        Match match = getMatch(ID);
+//        try {
+//            match.setTeamGoals(idTeam, goals);
+//        } catch (NotFoundException ex) {
+//            throw new IntegrityException(ex.getMessage());
+//        }
+//        MatchsData data = toData(match);
+//        SQLUpdateClause update = queryFactory.update(MATCH);
+//        
+//        long rows = update.set(MATCH, data).where(MATCH.idMatch.eq(ID))
+//                .execute();
+//        closeConnection();
+//        
+//        Assert.isTrue(rows == 1);
+//    }
     
     @Override
     public void SetIDTeam(int ID, int idTeam1, int idTeam2) 
@@ -289,12 +295,29 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         
         Assert.isTrue(rows == 1);
     }
+
+    @Override
+    public List<Match> getNotEndedMatch(String athleticNFC) 
+            throws NotFoundException {
+        Assert.notNull(athleticNFC);
+        Assert.isTrue(athleticNFC.length() > 0);
+        
+        List<Integer> teamIDList = playsInDao.getAllTeamID(athleticNFC);
+        ArrayList<Match> notEndedMatchList = getNotEndedMatch();
+        List<Match> returnValue = new LinkedList();
+        for(Match match : notEndedMatchList){
+            if(teamIDList.contains(match.getTeamID1()) 
+                    || teamIDList.contains(match.getTeamID2()))
+                returnValue.add(match);
+        }
+        
+        return returnValue;
+    }
     
     private MatchsData toData(Match match){
         try {
             return toData(match.getID(), match.getTeamID1(), match.getTeamID2(),
-                    match.getTeamGoals(match.getTeamID1()), 
-                    match.getTeamGoals(match.getTeamID2()), match.getDate(), 
+                    match.getGoals1(), match.getGoals2(), match.getDate(), 
                     match.getEnded());
         } catch (Exception ex){
             throw new FailureException(ex.getMessage());
@@ -324,12 +347,14 @@ public class MatchDaoImpl extends Dao implements MatchDao{
     private Match toMatch(MatchsData data){
         Match returnValue = new Match();
         returnValue.setTeamID(data.getIdTeam1(), data.getIdTeam2());
-        try {
-            returnValue.setTeamGoals(data.getIdTeam1(), data.getGoal1());
-            returnValue.setTeamGoals(data.getIdTeam2(), data.getGoal2());
-        } catch (Exception ex){
-            throw new FailureException(ex.getMessage());
-        }
+//        try {
+//            returnValue.setTeamGoals(data.getIdTeam1(), data.getGoal1());
+//            returnValue.setTeamGoals(data.getIdTeam2(), data.getGoal2());
+//        } catch (Exception ex){
+//            throw new FailureException(ex.getMessage());
+//        }
+        returnValue.setGoals1(data.getGoal1());
+        returnValue.setGoals1(data.getGoal2());
         returnValue.setID(data.getIdMatch());
         returnValue.setDate(data.getMatchDate());
         returnValue.setEnded(data.getEnded());

@@ -2,19 +2,28 @@ package webServices;
 
 import beans.Athletic;
 import beans.Credentials;
+import beans.Lap;
+import beans.Match;
+import dao.MatchDao;
 import dao.impl.AthleticDaoImpl;
+import dao.impl.LapDaoImpl;
+import dao.impl.MatchDaoImpl;
+import dao.impl.RaceDaoImpl;
 import exceptions.NotFoundException;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.List;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Path("athletics")
 public class AtheleticWebService {
 
     private AthleticDaoImpl athleticDao = new AthleticDaoImpl();
+    private LapDaoImpl lapDao = new LapDaoImpl();
+    private MatchDaoImpl matchDao = new MatchDaoImpl();
 
     @GET
     public Response getAthletics() {
@@ -37,6 +46,30 @@ public class AtheleticWebService {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         return Response.ok(athletic).build();
+    }
+
+    @GET
+    @Path("/{id}/races/last/laps/last")
+    public Response getLastRaceAthletic(@PathParam("id") String id) {
+        List<Lap> laps;
+        try {
+            laps = lapDao.getLastRace(id);
+        } catch (NotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(laps).build();
+    }
+
+    @GET
+    @Path("/{id}/matchs/notended")
+    public Response getMatchNotEnded(@PathParam("id") String id) {
+        List<Match> matchs;
+        try {
+            matchs = matchDao.getNotEndedMatch(id);
+        } catch (NotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(matchs).build();
     }
 
     @POST

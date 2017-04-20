@@ -5,6 +5,7 @@ import exceptions.IntegrityException;
 import exceptions.NotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javafx.util.Pair;
 
 public interface MatchDao {
@@ -30,8 +31,8 @@ public interface MatchDao {
     Throws an IntegrityException if the Match has been found but there is no
         team referenced with the specified id.
     */
-    void setTeamGoals(int ID, int idTeam, int goals) 
-            throws IntegrityException, NotFoundException;
+//    void setTeamGoals(int ID, int idTeam, int goals) 
+//            throws IntegrityException, NotFoundException;
     
     /*
     Throws a NotFoundException if the Match has not been found in the database 
@@ -61,4 +62,6 @@ public interface MatchDao {
     void setDate(int ID, Date date) throws NotFoundException;
     
     void setState(int ID, boolean ended) throws NotFoundException;
+    
+    List<Match> getNotEndedMatch(String athleticNFC) throws NotFoundException;
 }
