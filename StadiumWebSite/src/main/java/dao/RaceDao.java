@@ -3,6 +3,7 @@ package dao;
 import beans.Race;
 import exceptions.IntegrityException;
 import exceptions.NotFoundException;
+import java.util.List;
 
 public interface RaceDao {
     
@@ -14,4 +15,6 @@ public interface RaceDao {
     boolean raceExists(int ID);
     
     void setAthleticNFC(int ID, String athleticNFC) throws NotFoundException;
+    
+    List<Race> getRacesList(String athleticNFC) throws NotFoundException;
 }

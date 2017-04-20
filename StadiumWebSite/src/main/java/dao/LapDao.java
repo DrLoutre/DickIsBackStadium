@@ -4,6 +4,7 @@ import beans.Lap;
 import exceptions.IntegrityException;
 import exceptions.NotFoundException;
 import java.sql.Time;
+import java.util.List;
 import javafx.util.Pair;
 
 public interface LapDao {
@@ -22,4 +23,6 @@ public interface LapDao {
             throws NotFoundException;
     
     Pair<Time,Integer> getTime(int ID) throws NotFoundException;
+    
+    List<Lap> getLastRace(String athleticNFC) throws NotFoundException;
 }

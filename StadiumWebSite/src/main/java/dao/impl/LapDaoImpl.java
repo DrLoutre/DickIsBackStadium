@@ -1,6 +1,7 @@
 package dao.impl;
 
 import beans.Lap;
+import beans.Race;
 import com.querydsl.sql.dml.SQLUpdateClause;
 import core.Assert;
 import dao.Dao;
@@ -9,6 +10,8 @@ import dao.RaceDao;
 import exceptions.IntegrityException;
 import exceptions.NotFoundException;
 import java.sql.Time;
+import java.util.LinkedList;
+import java.util.List;
 import javafx.util.Pair;
 import stade.data.LapData;
 import stade.data.QLap;
@@ -110,6 +113,30 @@ public class LapDaoImpl extends Dao implements LapDao{
         closeConnection();
         
         return new Pair(data.getTemp(),data.getTempMs());
+    }
+
+    @Override
+    public List<Lap> getLastRace(String athleticNFC) throws NotFoundException {
+        Assert.notNull(athleticNFC);
+        Assert.isTrue(athleticNFC.length()>0);
+        
+        List<Race> raceList = raceDao.getRacesList(athleticNFC);
+        
+        List<LapData> datas = queryFactory.selectFrom(LAP)
+                .where(LAP.idScore.eq(raceList.get(raceList.size()-1).getId()))
+                .fetch();
+        closeConnection();
+        
+        if(datas == null || datas.isEmpty()) 
+            throw new NotFoundException("There's not lap found "
+                    + "for the last race of the Athletics " + athleticNFC);
+        
+        List<Lap> returnValue = new LinkedList();
+        for(LapData data : datas){
+            returnValue.add(toLap(data));
+        }
+        
+        return returnValue;
     }
     
     private LapData toData (int ID, int temp_min, int temp_sec, int temp_ms, 
