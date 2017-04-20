@@ -1,7 +1,6 @@
 package dao;
 
 import beans.Refreshment;
-import exceptions.IntegrityException;
 import exceptions.NotFoundException;
 
 import java.util.ArrayList;
