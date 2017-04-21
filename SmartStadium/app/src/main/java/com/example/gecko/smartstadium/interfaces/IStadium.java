@@ -2,7 +2,10 @@ package com.example.gecko.smartstadium.interfaces;
 
 import com.example.gecko.smartstadium.classes.Athletic;
 import com.example.gecko.smartstadium.classes.Credentials;
+import com.example.gecko.smartstadium.classes.OccupancyRate;
 import com.example.gecko.smartstadium.classes.Refreshment;
+import com.example.gecko.smartstadium.classes.Seat;
+import com.example.gecko.smartstadium.classes.Tribune;
 
 import java.util.ArrayList;
 
@@ -27,4 +30,17 @@ public interface IStadium {
 
     @GET("refreshments/{id}")
     Call<Refreshment> getRefreshment(@Field("id") int id);
+
+    //SEATS
+    @GET("tribunes/{id}")
+    Call<Tribune> getTribune(@Field("id") int id);
+
+    @GET("tribunes/{id}/seats")
+    Call<ArrayList<Seat>> getTribuneSeats(@Field("id") int id);
+
+    @GET("tribunes/{id}/rate")
+    Call<OccupancyRate> getOccupancyRate(@Field("id") int id);
+
+    @GET("tribunes/{id}/available")
+    Call<ArrayList<Seat>> getTribuneSeatsAvailable(@Field("id") int id);
 }

@@ -34,7 +34,8 @@ public class RaceWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postRace(Race race) {
         try {
-            raceDao.addRace(race.getId(), race.getNFC());
+            int id = raceDao.addRace(race.getNFC());
+            race.setId(id);
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -46,8 +47,9 @@ public class RaceWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postLap(@PathParam("id") int id, Lap lap) {
         try {
-            lapDao.addLap(lap.getID(), lap.getTemp().getKey().getMinutes(), lap.getTemp().getKey().getMinutes(),
+            int idLap = lapDao.addLap(lap.getTemp().getKey().getMinutes(), lap.getTemp().getKey().getMinutes(),
                     lap.getTemp().getValue(), id);
+            lap.setID(idLap);
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }

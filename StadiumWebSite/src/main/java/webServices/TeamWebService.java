@@ -41,7 +41,8 @@ public class TeamWebService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postTeam(Team team) {
-        teamDao.addTeam(team.getId(), team.getNom());
+        int id = teamDao.addTeam(team.getNom());
+        team.setId(id);
         return Response.status(Response.Status.CREATED).entity(team).build();
     }
 

@@ -30,8 +30,9 @@ public class MatchWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postMatch(Match match) {
         try {
-            matchDao.addMatch(match.getID(), match.getTeamID1(), match.getTeamID2(), match.getGoals1(), match.getGoals2(),
+           int id =  matchDao.addMatch(match.getTeamID1(), match.getTeamID2(), match.getGoals1(), match.getGoals2(),
                     match.getDate(), match.getEnded());
+            match.setID(id);
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -50,7 +51,7 @@ public class MatchWebService {
             if (match2.getTeamID2() != match1.getTeamID2()) matchDao.setIDTeam1(id, match1.getTeamID2());
             if (!match2.getDate().equals(match1.getDate())) matchDao.setDate(id, match1.getDate());
             if (match2.getGoals1() != match2.getGoals1() ||
-                    match2.getGoals2() != match2.getGoals2()) matchDao.setTeamGoals(id, match1.getGoals1(), match1.getGoals2());
+                    match2.getGoals2() != match2.getGoals2()) matchDao.setGoals(id, match1.getGoals1(), match1.getGoals2());
             if (match2.getEnded() != match1.getEnded()) matchDao.setState(id, match1.getEnded());
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
