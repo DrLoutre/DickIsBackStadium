@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -23,13 +24,12 @@ import com.squareup.otto.Subscribe;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int NFC_SCANNER = 1;
     private static final int QR_CODE = 2;
     CredentialSingletion credential;
     private Bus mBus = BusProvider.getInstance();
-    private Button NFCButton;
+    private Button BuvetteButton;
     private Button QRButton;
-    private Button PublicButton;
+    private Button PlaceButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,36 +43,48 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         credential = CredentialSingletion.getInstance();
-        NFCButton = (Button) findViewById(R.id.loginButtonNFC);
+        BuvetteButton = (Button) findViewById(R.id.loginButtonBuvettes);
         QRButton = (Button) findViewById(R.id.loginButtonQRcode);
-        PublicButton = (Button) findViewById(R.id.loginButtonPublic);
+        PlaceButton = (Button) findViewById(R.id.loginButtonPlaces);
 
 
-        //todo ajouter la demande de permission
-
-        NFCButton.setOnClickListener(new View.OnClickListener() {
+        BuvetteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //todo changer pour aller vers le lecteur NFC
-                Intent i = new Intent(MainActivity.this, LoginActivity.class);
-                startActivityForResult(i, NFC_SCANNER);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Les buvettes sont en:")
+                        // todo JO avoir la liste des buvettes
+
+                        .setMessage("* zone 1:\n   - 10% d\'occupation\n" +
+                                "* Zone 7:\n   - 70% d\'occupation");// message test
+                // Create the AlertDialog object and return it
+                builder.create();
+                builder.show();
             }
         });
 
         QRButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //todo changer PublicActivity par QRCodeActivity
-                Intent i = new Intent(MainActivity.this, PublicActivity.class);
+                Intent i = new Intent(MainActivity.this, StatActivity.class);
                 startActivityForResult(i, QR_CODE);
             }
         });
 
-        PublicButton.setOnClickListener(new View.OnClickListener() {
+        PlaceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, PublicActivity.class);
-                startActivity(intent);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Il y a des places libre en:")
+                        // todo JO avoir la liste des places libres.
+
+                        .setMessage("* Zone 1: 4d,5d,8h" +
+                                "\n* Zone 2: 2b" +
+                                "\n* Zone 5: 1a,1b,1c,3c");// message test
+                // Create the AlertDialog object and return it
+                builder.create();
+                builder.show();
             }
         });
     }
@@ -98,13 +110,27 @@ public class MainActivity extends AppCompatActivity {
             final String result = data.getStringExtra("result");
             //todo requète api ici pour capter les info : DONE
 
-            onLoginSuccess(result);
+            if (result.contains("zone")) {
+                CalculeBuvette();
+            } else {
+                onLoginSuccess(result);
+            }
 
-            /*
-            Intent intent = new Intent(MainActivity.this, PublicActivity.class);
-            startActivity(intent);
-            */
         }
+    }
+
+    // Va calculer la buvette la plus intéressante
+    private void CalculeBuvette() {
+        // faire le calcule
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("Les buvettes sont en:")
+                // todo JO avoir la liste des buvettes
+
+                .setMessage("* zone 1:\n   - 10% d\'occupation\n" +
+                        "* Zone 7:\n   - 70% d\'occupation");// message test
+        // Create the AlertDialog object and return it
+        builder.create();
+        builder.show();
     }
 
     private void onLoginSuccess(final String result) {
@@ -126,10 +152,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent;
         if (athleticEvent.getAthletic() != null) {
             intent = new Intent(MainActivity.this, LoginActivity.class);
-        } else {
-            intent = new Intent(MainActivity.this, PublicActivity.class);
+            startActivity(intent);
         }
-        startActivity(intent);
+
     }
 
     /**
