@@ -35,9 +35,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class Team extends HttpServlet {
      
-    int indexmatch;
-    int indexteam1;
-    int indexteam2;
     boolean nfc;
     HashMap<String, String> team;
     
@@ -63,24 +60,12 @@ public class Team extends HttpServlet {
         if (nfc) { 
             if(request.getParameter("Rejoindre") == null) {
                 try {
-                    indexteam1 = teamDao.getAllTeam().size();
-                    indexteam2 = teamDao.getAllTeam().size() + 1;
-                } catch (NotFoundException e) {
-                    indexteam1 = 0;
-                    indexteam2 = 1;
-                }
-                try {
-                    indexmatch = matchDao.getAllMatch().size();
-                } catch (NotFoundException e) {
-                    indexmatch = 0;
-                }
-                try {
-                    teamDao.addTeam(indexteam1, (String) request.getParameter("Team1"));
-                    teamDao.addTeam(indexteam2, (String) request.getParameter("Team2"));
+                    int indexteam1 = teamDao.addTeam((String) request.getParameter("Team1"));
+                    int indexteam2 = teamDao.addTeam((String) request.getParameter("Team2"));
                     playInDao.addEntry((String) request.getParameter("nfc"), indexteam1);
                     SimpleDateFormat sdf = new  SimpleDateFormat("dd-MM-yy hh:mm");
                     Date date = sdf.parse(request.getParameter("Date") + " " + request.getParameter("Heure") );
-                    matchDao.addMatch(indexmatch, indexteam1, indexteam2, 0, 0, date, false);
+                    matchDao.addMatch(indexteam1, indexteam2, 0, 0, date, false);
                 } catch(IntegrityException | ParseException | NotFoundException e) {} 
             } else {
                 try {
