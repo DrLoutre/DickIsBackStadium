@@ -40,10 +40,8 @@ public class SpectatorDaoImpl extends Dao implements SpectatorDao{
     }
 
     @Override
-    public void addSpetator(int ID, String lastName, String firstName, 
-            String tribuneNFC, int IDMatch) 
-            throws IntegrityException, NotFoundException {
-        Assert.isTrue(ID >= 0);
+    public int addSpetator(String lastName, String firstName, 
+            String tribuneNFC, int IDMatch) throws NotFoundException {
         Assert.notNull(lastName);
         Assert.isTrue(lastName.length() > 0);
         Assert.notNull(firstName);
@@ -52,20 +50,18 @@ public class SpectatorDaoImpl extends Dao implements SpectatorDao{
         Assert.isTrue(tribuneNFC.length() > 0);
         Assert.isTrue(IDMatch >= 0);
         
-        if(spectatorExists(ID)) throw new IntegrityException("A spectator " 
-                + ID + " already exists in the database");
         if(!tribuneDao.tribuneExists(tribuneNFC)) throw 
-                new IntegrityException("The tribune " + tribuneNFC 
+                new NotFoundException("The tribune " + tribuneNFC 
                         + " does not exists in the database");
-        if(!matchDao.matchExists(IDMatch)) throw new IntegrityException("The "
+        if(!matchDao.matchExists(IDMatch)) throw new NotFoundException("The "
                 + "match " + IDMatch + " does not exists in the database");
         
-        SpectatorData data = toData(ID, lastName, firstName, tribuneNFC, 
-                IDMatch);
-        long rows = queryFactory.insert(SPECTATOR).populate(data).execute();
+        SpectatorData data = toData(lastName, firstName, tribuneNFC, IDMatch);
+        int ID = queryFactory.insert(SPECTATOR).populate(data)
+                .executeWithKey(SPECTATOR.idSpec);
         closeConnection();
         
-        Assert.isTrue(rows == 1);
+        return ID;
     }
     
     @Override
@@ -236,6 +232,24 @@ public class SpectatorDaoImpl extends Dao implements SpectatorDao{
         data.setFirstName(firstName);
         data.setIdMatch(IDMatch);
         data.setIdSpec(ID);
+        data.setLastName(lastName);
+        data.setTribuneNFC(tribuneNFC);
+        return data;
+    }
+    
+    SpectatorData toData(String lastName, String firstName, 
+            String tribuneNFC, int IDMatch){
+        Assert.notNull(lastName);
+        Assert.isTrue(lastName.length() > 0);
+        Assert.notNull(firstName);
+        Assert.isTrue(firstName.length() > 0);
+        Assert.notNull(tribuneNFC);
+        Assert.isTrue(tribuneNFC.length() > 0);
+        Assert.isTrue(IDMatch >= 0);
+        
+        SpectatorData data = new SpectatorData();
+        data.setFirstName(firstName);
+        data.setIdMatch(IDMatch);
         data.setLastName(lastName);
         data.setTribuneNFC(tribuneNFC);
         return data;

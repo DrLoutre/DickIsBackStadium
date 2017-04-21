@@ -113,17 +113,6 @@ public class RaceDaoImpl extends Dao implements RaceDao{
         return returnValue;
     }
     
-    private RaceData toData(int ID, String NFC){
-        Assert.isTrue(ID >= 0);
-        Assert.notNull(NFC);
-        Assert.isTrue(NFC.length() > 0);
-        
-        RaceData data = new RaceData();
-        data.setIdScore(ID);
-        data.setNfc(NFC);
-        return data;
-    }
-    
     private RaceData toData(String NFC){
         Assert.notNull(NFC);
         Assert.isTrue(NFC.length() > 0);

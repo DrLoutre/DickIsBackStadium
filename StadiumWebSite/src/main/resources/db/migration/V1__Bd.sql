@@ -69,12 +69,11 @@ CREATE TABLE Seat(
 );
 
 CREATE TABLE Spectator(
-    Id_Spec INTEGER NOT NULL,
+    Id_Spec INTEGER PRIMARY KEY AUTO_INCREMENT,
     LastName VARCHAR(30) NOT NULL,
     FirstName VARCHAR(30) NOT NULL,
     TribuneNFC VARCHAR(50) NOT NULL,
     Id_Match INTEGER NOT NULL,
-    PRIMARY KEY (Id_Spec),
     FOREIGN KEY (TribuneNFC) REFERENCES Tribune(NFC),
     FOREIGN KEY (Id_Match) REFERENCES Matchs(Id_Match)
 );
