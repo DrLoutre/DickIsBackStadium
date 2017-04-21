@@ -94,17 +94,6 @@ public class TeamDaoImpl extends Dao implements TeamDao{
         else return data.getTeamName();
     }
     
-    private TeamData toData(int ID, String Name){
-        Assert.isTrue(ID >= 0);
-        Assert.notNull(Name);
-        Assert.isTrue(Name.length() > 0);
-        
-        TeamData data = new TeamData();
-        data.setIdTeam(ID);
-        data.setTeamName(Name);
-        return data;
-    }
-    
     private TeamData toData(String Name){
         Assert.notNull(Name);
         Assert.isTrue(Name.length() > 0);
