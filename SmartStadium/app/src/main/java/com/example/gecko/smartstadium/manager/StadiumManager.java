@@ -8,7 +8,7 @@ import android.widget.Toast;
 import com.example.gecko.smartstadium.api.StadiumClient;
 import com.example.gecko.smartstadium.classes.Athletic;
 import com.example.gecko.smartstadium.events.AthleticEvent;
-import com.example.gecko.smartstadium.events.GetAthleticIdEvent;
+import com.example.gecko.smartstadium.events.IdAthleticEvent;
 import com.example.gecko.smartstadium.events.LoginEvent;
 import com.example.gecko.smartstadium.events.PostLoginEvent;
 import com.squareup.otto.Bus;
@@ -58,13 +58,13 @@ public class StadiumManager {
     }
 
     @Subscribe
-    public void onAthleticEvent(GetAthleticIdEvent getAthleticIdEvent) {
+    public void onAthleticEvent(IdAthleticEvent idAthleticEvent) {
         if (!isOnline()) {
             Toast.makeText(mContext, "Pas de connexion internet", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        Call<Athletic> call = mStadiumClient.getAthletic(getAthleticIdEvent.getId());
+        Call<Athletic> call = mStadiumClient.getAthletic(idAthleticEvent.getId());
         call.enqueue(new Callback<Athletic>() {
             @Override
             public void onResponse(Call<Athletic> call, Response<Athletic> response) {

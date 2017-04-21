@@ -1,10 +1,10 @@
 package com.example.gecko.smartstadium.events;
 
-public class GetAthleticIdEvent {
+public class IdAthleticEvent {
 
     private String id;
 
-    public GetAthleticIdEvent(String id) {
+    public IdAthleticEvent(String id) {
         this.id = id;
     }
 

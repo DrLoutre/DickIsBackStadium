@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +16,8 @@ import android.widget.Button;
 import com.example.gecko.smartstadium.R;
 import com.example.gecko.smartstadium.bus.BusProvider;
 import com.example.gecko.smartstadium.events.AthleticEvent;
-import com.example.gecko.smartstadium.events.GetAthleticIdEvent;
+import com.example.gecko.smartstadium.events.IdAthleticEvent;
+import com.example.gecko.smartstadium.utils.ConnectionUtils;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -94,14 +96,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             final String result = data.getStringExtra("result");
-            //todo requète api ici pour capter les info
+            //todo requète api ici pour capter les info : DONE
 
-            mBus.post(new GetAthleticIdEvent(result));
+            onLoginSuccess(result);
 
             /*
             Intent intent = new Intent(MainActivity.this, PublicActivity.class);
             startActivity(intent);
             */
+        }
+    }
+
+    private void onLoginSuccess(final String result) {
+        if (!ConnectionUtils.isOnline(this)) {
+            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Pas de connexion internet", Snackbar.LENGTH_SHORT);
+            snackbar.setAction("Réssayer", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onLoginSuccess(result);
+                }
+            });
+        } else {
+            mBus.post(new IdAthleticEvent(result));
         }
     }
 
