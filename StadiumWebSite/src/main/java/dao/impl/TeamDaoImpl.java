@@ -4,7 +4,6 @@ import beans.Team;
 import core.Assert;
 import dao.Dao;
 import dao.TeamDao;
-import exceptions.IntegrityException;
 import exceptions.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,19 +15,16 @@ public class TeamDaoImpl extends Dao implements TeamDao{
     private static final QTeam TEAM = QTeam.team;
     
     @Override
-    public void addTeam(int ID, String Name) throws IntegrityException {
-        Assert.isTrue(ID >= 0);
+    public int addTeam(String Name){
         Assert.notNull(Name);
         Assert.isTrue(Name.length() > 0);
         
-        if(teamExists(ID)) throw new IntegrityException("A team already exists "
-                + "in the database with the ID : " + ID);
-        
-        TeamData data = toData(ID,Name);
-        long rows = queryFactory.insert(TEAM).populate(data).execute();
+        TeamData data = toData(Name);
+        int ID = queryFactory.insert(TEAM).populate(data)
+                .executeWithKey(TEAM.idTeam);
         closeConnection();
         
-        Assert.isTrue(rows == 1);
+        return ID;
     }
 
     @Override
@@ -105,6 +101,15 @@ public class TeamDaoImpl extends Dao implements TeamDao{
         
         TeamData data = new TeamData();
         data.setIdTeam(ID);
+        data.setTeamName(Name);
+        return data;
+    }
+    
+    private TeamData toData(String Name){
+        Assert.notNull(Name);
+        Assert.isTrue(Name.length() > 0);
+        
+        TeamData data = new TeamData();
         data.setTeamName(Name);
         return data;
     }

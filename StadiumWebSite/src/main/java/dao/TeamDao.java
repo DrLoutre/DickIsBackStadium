@@ -1,13 +1,12 @@
 package dao;
 
 import beans.Team;
-import exceptions.IntegrityException;
 import exceptions.NotFoundException;
 import java.util.ArrayList;
 
 public interface TeamDao {
     
-    void addTeam(int ID, String Name) throws IntegrityException;
+    int addTeam(String Name);
     
     boolean teamExists(int ID);
     
