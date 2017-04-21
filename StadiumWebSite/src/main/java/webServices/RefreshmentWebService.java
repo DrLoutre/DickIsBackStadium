@@ -51,7 +51,8 @@ public class RefreshmentWebService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postRefreshment(Refreshment refreshment) {
-        refreshmentDao.addRefreshment(refreshment.getId(), refreshment.getAttendance(), refreshment.getLocalisation());
+        int id = refreshmentDao.addRefreshment(refreshment.getAttendance(), refreshment.getLocalisation());
+        refreshment.setId(id);
         return Response.status(Response.Status.CREATED).entity(refreshment).build();
     }
 
