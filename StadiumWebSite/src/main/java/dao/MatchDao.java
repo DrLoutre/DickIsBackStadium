@@ -1,7 +1,6 @@
 package dao;
 
 import beans.Match;
-import exceptions.IntegrityException;
 import exceptions.NotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,9 +9,8 @@ import javafx.util.Pair;
 
 public interface MatchDao {
     
-    void addMatch(int ID, int idTeam1, int idTeam2, int goals1, int goals2, 
-            Date date, boolean ended) 
-            throws IntegrityException, NotFoundException;
+    int addMatch(int idTeam1, int idTeam2, int goals1, int goals2, Date date, 
+            boolean ended) throws NotFoundException;
     
     Match getMatch(int ID) throws NotFoundException;
 

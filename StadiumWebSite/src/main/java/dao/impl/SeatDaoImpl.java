@@ -5,7 +5,6 @@ import core.Assert;
 import dao.Dao;
 import dao.SeatDao;
 import dao.TribuneDao;
-import exceptions.IntegrityException;
 import exceptions.NotFoundException;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,23 +35,21 @@ public class SeatDaoImpl extends Dao implements SeatDao{
     }
 
     @Override
-    public void addSeat(int ID, String tribuneNFC, boolean occupied) 
-            throws IntegrityException, NotFoundException {
-        Assert.isTrue(ID >= 0);
+    public int addSeat(String tribuneNFC, boolean occupied) 
+            throws NotFoundException {
         Assert.notNull(tribuneNFC);
         Assert.isTrue(tribuneNFC.length() > 0);
         
-        if(seatExists(ID)) throw new IntegrityException("A seat " + ID 
-                + " already exists in the database");
         if(!tribuneDao.tribuneExists(tribuneNFC)) 
             throw new NotFoundException("The tribune " + tribuneNFC 
                     + " does not exists in the database");
         
-        SeatData data = toData(ID,tribuneNFC,occupied);
-        long rows = queryFactory.insert(SEAT).populate(data).execute();
+        SeatData data = toData(tribuneNFC,occupied);
+        int ID = queryFactory.insert(SEAT).populate(data)
+                .executeWithKey(SEAT.id);
         closeConnection();
         
-        Assert.isTrue(rows == 1);
+        return ID;
     }
     
     @Override
@@ -142,6 +139,16 @@ public class SeatDaoImpl extends Dao implements SeatDao{
         
         SeatData data = new SeatData();
         data.setId(ID);
+        data.setOccupied(occupied);
+        data.setTribuneNFC(tribuneNFC);
+        return data;
+    }
+    
+    SeatData toData(String tribuneNFC, boolean occupied){
+        Assert.notNull(tribuneNFC);
+        Assert.isTrue(tribuneNFC.length() > 0);
+        
+        SeatData data = new SeatData();
         data.setOccupied(occupied);
         data.setTribuneNFC(tribuneNFC);
         return data;

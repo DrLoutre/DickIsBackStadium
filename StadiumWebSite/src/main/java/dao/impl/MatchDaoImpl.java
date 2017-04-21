@@ -33,30 +33,26 @@ public class MatchDaoImpl extends Dao implements MatchDao{
     }
     
     @Override
-    public void addMatch(int ID, int idTeam1, int idTeam2, int goals1, 
-            int goals2, Date date, boolean ended) 
-            throws IntegrityException, NotFoundException {
-        Assert.isTrue(ID >= 0);
+    public int addMatch(int idTeam1, int idTeam2, int goals1, int goals2, 
+            Date date, boolean ended) throws NotFoundException {
         Assert.isTrue(idTeam1 >= 0);
         Assert.isTrue(idTeam2 >= 0);
         Assert.isTrue(goals1 >= 0);
         Assert.isTrue(goals2 >= 0);
         Assert.notNull(date);
         
-        if(matchExists(ID)) throw new IntegrityException("A match already "
-                + "exists in the database with the ID : " + ID);
-        
         if(!teamDao.teamExists(idTeam1)) throw new NotFoundException("The team "
                 + "with the id " + idTeam1 + "does not exists in the database");
         if(!teamDao.teamExists(idTeam2)) throw new NotFoundException("The team "
                 + "with the id " + idTeam2 + "does not exists in the database");
         
-        MatchsData data = toData(ID, idTeam1, idTeam2, goals1, goals2, date, 
+        MatchsData data = toData(idTeam1, idTeam2, goals1, goals2, date, 
                 ended);
-        long rows = queryFactory.insert(MATCH).populate(data).execute();
+        int ID = queryFactory.insert(MATCH).populate(data)
+                .executeWithKey(MATCH.idMatch);
         closeConnection();
         
-        Assert.isTrue(rows == 1);
+        return ID;
     }
     
     @Override
@@ -335,6 +331,24 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         
         MatchsData data = new MatchsData();
         data.setIdMatch(ID);
+        data.setIdTeam1(idTeam1);
+        data.setIdTeam2(idTeam2);
+        data.setGoal1(goals1);
+        data.setGoal2(goals2);
+        data.setMatchDate(new Timestamp(date.getTime()));
+        data.setEnded(ended);
+        return data;
+    }
+    
+    private MatchsData toData(int idTeam1, int idTeam2, int goals1, 
+            int goals2, Date date, boolean ended) {
+        Assert.isTrue(idTeam1 >= 0);
+        Assert.isTrue(idTeam2 >= 0);
+        Assert.isTrue(goals1 >= 0);
+        Assert.isTrue(goals2 >= 0);
+        Assert.notNull(date);
+        
+        MatchsData data = new MatchsData();
         data.setIdTeam1(idTeam1);
         data.setIdTeam2(idTeam2);
         data.setGoal1(goals1);
