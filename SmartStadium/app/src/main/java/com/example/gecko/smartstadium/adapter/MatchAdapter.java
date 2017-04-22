@@ -34,6 +34,7 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        //todo set les bons éléments
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.domicile.setText(mDataset[position]);
