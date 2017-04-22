@@ -1,20 +1,28 @@
 package com.example.gecko.smartstadium.manager;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.widget.Toast;
 
 import com.example.gecko.smartstadium.api.StadiumClient;
 import com.example.gecko.smartstadium.classes.Athletic;
+import com.example.gecko.smartstadium.classes.Lap;
+import com.example.gecko.smartstadium.classes.Refreshment;
+import com.example.gecko.smartstadium.classes.custom.SeatsByTribune;
 import com.example.gecko.smartstadium.events.AthleticEvent;
+import com.example.gecko.smartstadium.events.GetLastRaceAthleticEvent;
+import com.example.gecko.smartstadium.events.GetRefreshmentsEvent;
+import com.example.gecko.smartstadium.events.GetSeatsTribunesEvent;
 import com.example.gecko.smartstadium.events.IdAthleticEvent;
+import com.example.gecko.smartstadium.events.LastRaceAthleticEvent;
 import com.example.gecko.smartstadium.events.LoginEvent;
 import com.example.gecko.smartstadium.events.PostLoginEvent;
+import com.example.gecko.smartstadium.events.RefreshmentsEvent;
+import com.example.gecko.smartstadium.events.SeatsTribunesEvent;
+import com.example.gecko.smartstadium.utils.ConnectionUtils;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,8 +42,8 @@ public class StadiumManager {
 
     @Subscribe
     public void onLoginEvent(PostLoginEvent postLoginEvent) {
-        if (!isOnline()) {
-            Toast.makeText(mContext, "Pas de connexion internet", Toast.LENGTH_SHORT).show();
+        if (!ConnectionUtils.isOnline(mContext)) {
+            mBus.post(new LoginEvent(null));
             return;
         }
 
@@ -52,15 +60,15 @@ public class StadiumManager {
 
             @Override
             public void onFailure(Call<Athletic> call, Throwable t) {
-                Toast.makeText(mContext, "Un problème inattendu est survenu", Toast.LENGTH_SHORT).show();
+                mBus.post(new LoginEvent(null));
             }
         });
     }
 
     @Subscribe
     public void onAthleticEvent(IdAthleticEvent idAthleticEvent) {
-        if (!isOnline()) {
-            Toast.makeText(mContext, "Pas de connexion internet", Toast.LENGTH_SHORT).show();
+        if (!ConnectionUtils.isOnline(mContext)) {
+            mBus.post(new AthleticEvent(null));
             return;
         }
 
@@ -77,15 +85,83 @@ public class StadiumManager {
 
             @Override
             public void onFailure(Call<Athletic> call, Throwable t) {
-                Toast.makeText(mContext, "Un problème inattendu est survenu", Toast.LENGTH_SHORT).show();
+                mBus.post(new AthleticEvent(null));
             }
         });
     }
 
-    private boolean isOnline() {
-        ConnectivityManager cm =
-                (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
+    @Subscribe
+    public void onRefreshmentsEvent(GetRefreshmentsEvent getRefreshmentsEvent) {
+        if (!ConnectionUtils.isOnline(mContext)) {
+            mBus.post(new RefreshmentsEvent(null));
+            return;
+        }
+
+        Call<ArrayList<Refreshment>> call = mStadiumClient.getRefreshments();
+        call.enqueue(new Callback<ArrayList<Refreshment>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Refreshment>> call, Response<ArrayList<Refreshment>> response) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    mBus.post(new RefreshmentsEvent(response.body()));
+                } else {
+                    mBus.post(new RefreshmentsEvent(null));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Refreshment>> call, Throwable t) {
+                mBus.post(new RefreshmentsEvent(null));
+            }
+        });
+    }
+
+    @Subscribe
+    public void onTribunesEvent(GetSeatsTribunesEvent getSeatsTribunesEvent) {
+        if (!ConnectionUtils.isOnline(mContext)) {
+            mBus.post(new SeatsTribunesEvent(null));
+            return;
+        }
+
+        Call<ArrayList<SeatsByTribune>> call = mStadiumClient.getSeatsTribunesAvailable();
+        call.enqueue(new Callback<ArrayList<SeatsByTribune>>() {
+            @Override
+            public void onResponse(Call<ArrayList<SeatsByTribune>> call, Response<ArrayList<SeatsByTribune>> response) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    mBus.post(new SeatsTribunesEvent(response.body()));
+                } else {
+                    mBus.post(new SeatsTribunesEvent(null));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<SeatsByTribune>> call, Throwable t) {
+                mBus.post(new SeatsTribunesEvent(null));
+            }
+        });
+    }
+
+    @Subscribe
+    public void onGetLastRaceAthleticEvent(GetLastRaceAthleticEvent getLastRaceAthleticEvent) {
+        if (!ConnectionUtils.isOnline(mContext)) {
+            mBus.post(new LastRaceAthleticEvent(null));
+            return;
+        }
+
+        Call<ArrayList<Lap>> call = mStadiumClient.getLastRaceAthletic(getLastRaceAthleticEvent.getId());
+        call.enqueue(new Callback<ArrayList<Lap>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Lap>> call, Response<ArrayList<Lap>> response) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    mBus.post(new LastRaceAthleticEvent(response.body()));
+                } else {
+                    mBus.post(new LastRaceAthleticEvent(null));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Lap>> call, Throwable t) {
+                mBus.post(new LastRaceAthleticEvent(null));
+            }
+        });
     }
 }

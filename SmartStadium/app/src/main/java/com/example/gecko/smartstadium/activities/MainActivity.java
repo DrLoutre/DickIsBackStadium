@@ -16,11 +16,20 @@ import android.widget.Button;
 
 import com.example.gecko.smartstadium.R;
 import com.example.gecko.smartstadium.bus.BusProvider;
+import com.example.gecko.smartstadium.classes.Refreshment;
+import com.example.gecko.smartstadium.classes.Seat;
+import com.example.gecko.smartstadium.classes.custom.SeatsByTribune;
 import com.example.gecko.smartstadium.events.AthleticEvent;
+import com.example.gecko.smartstadium.events.GetRefreshmentsEvent;
+import com.example.gecko.smartstadium.events.GetSeatsTribunesEvent;
 import com.example.gecko.smartstadium.events.IdAthleticEvent;
+import com.example.gecko.smartstadium.events.RefreshmentsEvent;
+import com.example.gecko.smartstadium.events.SeatsTribunesEvent;
 import com.example.gecko.smartstadium.utils.ConnectionUtils;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
+
+import java.text.NumberFormat;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,16 +60,7 @@ public class MainActivity extends AppCompatActivity {
         BuvetteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("Les buvettes sont en:")
-                        // todo JO avoir la liste des buvettes
-
-                        .setMessage("* zone 1:\n   - 10% d\'occupation\n" +
-                                "* Zone 7:\n   - 70% d\'occupation");// message test
-                // Create the AlertDialog object and return it
-                builder.create();
-                builder.show();
+                getRefreshments();
             }
         });
 
@@ -75,16 +75,7 @@ public class MainActivity extends AppCompatActivity {
         PlaceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("Il y a des places libre en:")
-                        // todo JO avoir la liste des places libres.
-
-                        .setMessage("* Zone 1: 4d,5d,8h" +
-                                "\n* Zone 2: 2b" +
-                                "\n* Zone 5: 1a,1b,1c,3c");// message test
-                // Create the AlertDialog object and return it
-                builder.create();
-                builder.show();
+                getSeatsTribunes();
             }
         });
     }
@@ -108,10 +99,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             final String result = data.getStringExtra("result");
-            //todo requète api ici pour capter les info : DONE
 
             if (result.contains("zone")) {
-                CalculeBuvette();
+                getRefreshments();
             } else {
                 onLoginSuccess(result);
             }
@@ -119,19 +109,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //USELESS NOW ! DON'T USE IT
     // Va calculer la buvette la plus intéressante
-    private void CalculeBuvette() {
+    /*private void CalculeBuvette() {
         // faire le calcule
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle("Les buvettes sont en:")
-                // todo JO avoir la liste des buvettes
-
                 .setMessage("* zone 1:\n   - 10% d\'occupation\n" +
                         "* Zone 7:\n   - 70% d\'occupation");// message test
         // Create the AlertDialog object and return it
         builder.create();
         builder.show();
-    }
+    }*/
 
     private void onLoginSuccess(final String result) {
         if (!ConnectionUtils.isOnline(this)) {
@@ -147,6 +136,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void getRefreshments() {
+        mBus.post(new GetRefreshmentsEvent());
+    }
+
+    private void getSeatsTribunes() {
+        mBus.post(new GetSeatsTribunesEvent());
+    }
+
     @Subscribe
     public void AthleticEvent(AthleticEvent athleticEvent) {
         Intent intent;
@@ -155,6 +152,84 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
+    }
+
+    @Subscribe
+    public void RefreshmentsEvent(RefreshmentsEvent refreshmentsEvent) {
+        if (refreshmentsEvent.getRefreshment() != null) {
+            StringBuilder message = new StringBuilder();
+
+            int size = refreshmentsEvent.getRefreshment().size();
+            for (Refreshment refreshment : refreshmentsEvent.getRefreshment()) {
+                size--;
+                NumberFormat defaultFormat = NumberFormat.getPercentInstance();
+                defaultFormat.setMinimumFractionDigits(1);
+
+                message.append(refreshment.getLocalisation()).append("\n  - ").
+                        append(defaultFormat.format(refreshment.getAttendance())).append(" d\'occupation");
+
+                if (size > 0) {
+                    message.append("\n");
+                }
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle("Les buvettes sont en :")
+                    .setMessage(message.toString());
+            // Create the AlertDialog object and return it
+            builder.create();
+            builder.show();
+        } else {
+            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Un problème est survenu.", Snackbar.LENGTH_INDEFINITE);
+            snackbar.setAction("Réessayer", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getRefreshments();
+                }
+            });
+            snackbar.show();
+        }
+    }
+
+    @Subscribe
+    public void TribunesEvent(SeatsTribunesEvent seatsTribunesEvent) {
+        if (seatsTribunesEvent.getSeatsByTribunes() != null) {
+            StringBuilder message = new StringBuilder();
+
+            int length = seatsTribunesEvent.getSeatsByTribunes().size();
+            for (SeatsByTribune seatsByTribune : seatsTribunesEvent.getSeatsByTribunes()) {
+                length--;
+                message.append(seatsByTribune.getTribune().getLocalisation()).append(": ");
+
+                int size = seatsByTribune.getSeats().size();
+                for (Seat seat : seatsByTribune.getSeats()) {
+                    size--;
+                    if (size == 0) {
+                        message.append(seat.getId()).append(".");
+                    } else {
+                        message.append(seat.getId()).append(", ");
+                    }
+                }
+
+                if (length > 0) {
+                    message.append("\n");
+                }
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle("Il y a une (des) place(s) libre(s) en :")
+                    .setMessage(message.toString());
+            // Create the AlertDialog object and return it
+            builder.create();
+            builder.show();
+        } else {
+            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Un problème est survenu.", Snackbar.LENGTH_INDEFINITE);
+            snackbar.setAction("Réessayer", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getSeatsTribunes();
+                }
+            });
+            snackbar.show();
+        }
     }
 
     /**

@@ -2,7 +2,13 @@ package com.example.gecko.smartstadium.api;
 
 import com.example.gecko.smartstadium.classes.Athletic;
 import com.example.gecko.smartstadium.classes.Credentials;
+import com.example.gecko.smartstadium.classes.Lap;
+import com.example.gecko.smartstadium.classes.Refreshment;
+import com.example.gecko.smartstadium.classes.Tribune;
+import com.example.gecko.smartstadium.classes.custom.SeatsByTribune;
 import com.example.gecko.smartstadium.interfaces.IStadium;
+
+import java.util.ArrayList;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -38,5 +44,20 @@ public class StadiumClient {
     public Call<Athletic> getAthletic(String id) {
         IStadium iStadium = mRetrofit.create(IStadium.class);
         return iStadium.getAthletic(id);
+    }
+
+    public Call<ArrayList<Refreshment>> getRefreshments() {
+        IStadium iStadium = mRetrofit.create(IStadium.class);
+        return iStadium.getRefreshments();
+    }
+
+    public Call<ArrayList<SeatsByTribune>> getSeatsTribunesAvailable() {
+        IStadium iStadium = mRetrofit.create(IStadium.class);
+        return iStadium.getSeatsTribunesAvailable();
+    }
+
+    public Call<ArrayList<Lap>> getLastRaceAthletic(String id) {
+        IStadium iStadium = mRetrofit.create(IStadium.class);
+        return iStadium.getLastRace(id);
     }
 }

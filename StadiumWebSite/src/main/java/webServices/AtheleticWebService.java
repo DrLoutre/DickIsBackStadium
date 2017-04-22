@@ -47,7 +47,7 @@ public class AtheleticWebService {
     }
 
     @GET
-    @Path("/{id}/races/last/laps/last")
+    @Path("/{id}/races/last/laps")
     public Response getLastRaceAthletic(@PathParam("id") String id) {
         List<Lap> laps;
         try {
