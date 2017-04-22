@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.gecko.smartstadium.R;
 import com.example.gecko.smartstadium.adapter.MatchAdapter;
 import com.example.gecko.smartstadium.bus.BusProvider;
+import com.example.gecko.smartstadium.classes.Lap;
 import com.example.gecko.smartstadium.events.AthleticEvent;
 import com.example.gecko.smartstadium.events.GetLastRaceAthleticEvent;
 import com.example.gecko.smartstadium.events.IdAthleticEvent;
@@ -31,6 +32,7 @@ public class StatActivity extends AppCompatActivity {
     private TextView prenomText;
     private TextView tempsText;
     private TextView equipeText;
+    private TextView tempsMoyen;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter matchAdapter;
@@ -45,6 +47,7 @@ public class StatActivity extends AppCompatActivity {
         prenomText = (TextView) findViewById(R.id.textFirstnameStat);
         tempsText = (TextView) findViewById(R.id.textTpsStat);
         equipeText = (TextView) findViewById(R.id.textTeamStat);
+        tempsMoyen = (TextView) findViewById(R.id.textTpsStat);
 
 
         mRecyclerView = (RecyclerView) findViewById(R.id.matchListStat);
@@ -130,7 +133,18 @@ public class StatActivity extends AppCompatActivity {
     @Subscribe
     public void onAthleticLapEvent(LastRaceAthleticEvent lastRaceAthleticEvent) {
         if (lastRaceAthleticEvent.getLaps() != null) {
-            //TODO : Calculer le temps moyen avec la liste "lastRaceAthleticEvent.getLaps()"
+            Double time = 0.0;
+            int nbr = 0;
+            for (Lap elem : lastRaceAthleticEvent.getLaps()) {
+                time = time + elem.getTemp_ms();
+            }
+            if (nbr != 0) {
+                time = time / nbr;
+                tempsMoyen.setText("" + time);
+            } else {
+                tempsMoyen.setText("indisponible");
+            }
+
         } else {
             Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Un problème est survenu.", Snackbar.LENGTH_INDEFINITE);
             snackbar.setAction("Réessayer", new View.OnClickListener() {
