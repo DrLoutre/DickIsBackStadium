@@ -137,6 +137,7 @@ public class StatActivity extends AppCompatActivity {
             int nbr = 0;
             for (Lap elem : lastRaceAthleticEvent.getLaps()) {
                 time = time + elem.getTemp_ms();
+                nbr = nbr + 1;
             }
             if (nbr != 0) {
                 time = time / nbr;
