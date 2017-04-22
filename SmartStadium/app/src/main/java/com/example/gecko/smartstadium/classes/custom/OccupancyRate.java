@@ -1,4 +1,4 @@
-package com.example.gecko.smartstadium.classes;
+package com.example.gecko.smartstadium.classes.custom;
 
 public class OccupancyRate {
 

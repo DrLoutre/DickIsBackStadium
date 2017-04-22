@@ -1,14 +1,12 @@
 package webServices;
 
 import beans.Athletic;
-import beans.Credentials;
+import beans.custom.Credentials;
 import beans.Lap;
 import beans.Match;
-import dao.MatchDao;
 import dao.impl.AthleticDaoImpl;
 import dao.impl.LapDaoImpl;
 import dao.impl.MatchDaoImpl;
-import dao.impl.RaceDaoImpl;
 import exceptions.NotFoundException;
 
 import javax.ws.rs.*;

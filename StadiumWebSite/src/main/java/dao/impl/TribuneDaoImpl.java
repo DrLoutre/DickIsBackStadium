@@ -1,13 +1,18 @@
 package dao.impl;
 
+import beans.Athletic;
 import beans.Tribune;
 import core.Assert;
 import dao.Dao;
 import dao.TribuneDao;
 import exceptions.IntegrityException;
 import exceptions.NotFoundException;
+import stade.data.AthleticData;
 import stade.data.QTribune;
 import stade.data.TribuneData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TribuneDaoImpl extends Dao implements TribuneDao{
 
@@ -61,6 +66,23 @@ public class TribuneDaoImpl extends Dao implements TribuneDao{
                 + NFC + " does not exists in the database");
         
         return toTribune(data);
+    }
+
+    @Override
+    public ArrayList<Tribune> getAllTribune() throws NotFoundException {
+        List<TribuneData> datas = queryFactory.select(TRIBUNE).from(TRIBUNE)
+                .fetch();
+        closeConnection();
+
+        if (datas.isEmpty()) throw new NotFoundException("Tribunes has not "
+                + "been found in the database");
+
+        ArrayList<Tribune> tribunes = new ArrayList<>();
+        for (TribuneData tribune : datas) {
+            tribunes.add(toTribune(tribune));
+        }
+
+        return tribunes;
     }
 
     @Override
