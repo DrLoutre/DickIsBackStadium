@@ -11,7 +11,6 @@ import exceptions.NotFoundException;
 import java.sql.Time;
 import java.util.LinkedList;
 import java.util.List;
-import javafx.util.Pair;
 import stade.data.LapData;
 import stade.data.QLap;
 
@@ -27,8 +26,10 @@ public class LapDaoImpl extends Dao implements LapDao{
     }
 
     @Override
-    public int addLap(int temp_min, int temp_sec, int temp_ms, int id_race) 
-            throws NotFoundException {
+    public int addLap(int temp_hour, int temp_min, int temp_sec, int temp_ms, 
+            int id_race) throws NotFoundException {
+        Assert.isTrue(temp_hour >= 0);
+        Assert.isTrue(temp_hour < 24);
         Assert.isTrue(temp_min >= 0);
         Assert.isTrue(temp_min < 60);
         Assert.isTrue(temp_sec >= 0);
@@ -40,7 +41,7 @@ public class LapDaoImpl extends Dao implements LapDao{
         if(!raceDao.raceExists(id_race)) throw new NotFoundException("The race "
                 + "with the id " + id_race + "does not exists in the database");
         
-        LapData data = toData(temp_min, temp_sec, temp_ms, id_race);
+        LapData data = toData(temp_hour, temp_min, temp_sec, temp_ms, id_race);
         int ID = queryFactory.insert(LAP).populate(data).executeWithKey(LAP.id);
         closeConnection();
         
@@ -73,9 +74,11 @@ public class LapDaoImpl extends Dao implements LapDao{
     }
 
     @Override
-    public void setTime(int ID, int temp_min, int temp_sec, int temp_ms) 
-            throws NotFoundException{
+    public void setTime(int ID, int temp_hour, int temp_min, int temp_sec, 
+            int temp_ms) throws NotFoundException{
         Assert.isTrue(ID >= 0);
+        Assert.isTrue(temp_hour >= 0);
+        Assert.isTrue(temp_hour < 24);
         Assert.isTrue(temp_min >= 0);
         Assert.isTrue(temp_min < 60);
         Assert.isTrue(temp_sec >= 0);
@@ -96,19 +99,19 @@ public class LapDaoImpl extends Dao implements LapDao{
         Assert.isTrue(rows == 1);
     }
     
-    @Override
-    public Pair<Time,Integer> getTime(int ID) throws NotFoundException{
-        Assert.isTrue(ID >= 0);
-        
-        if(!lapExists(ID)) throw new NotFoundException("Lap "+ ID 
-                + " has not been found in the database");
-        
-        LapData data = queryFactory.selectFrom(LAP)
-                .where(LAP.id.eq(ID)).fetchFirst();
-        closeConnection();
-        
-        return new Pair(data.getTemp(),data.getTempMs());
-    }
+//    @Override
+//    public Pair<Time,Integer> getTime(int ID) throws NotFoundException{
+//        Assert.isTrue(ID >= 0);
+//        
+//        if(!lapExists(ID)) throw new NotFoundException("Lap "+ ID 
+//                + " has not been found in the database");
+//        
+//        LapData data = queryFactory.selectFrom(LAP)
+//                .where(LAP.id.eq(ID)).fetchFirst();
+//        closeConnection();
+//        
+//        return new Pair(data.getTemp(),data.getTempMs());
+//    }
 
     @Override
     public List<Lap> getLastRace(String athleticNFC) throws NotFoundException {
@@ -134,28 +137,32 @@ public class LapDaoImpl extends Dao implements LapDao{
         return returnValue;
     }
     
-    private LapData toData (int ID, int temp_min, int temp_sec, int temp_ms, 
-            int id_race){
-        Assert.isTrue(ID >= 0);
-        Assert.isTrue(temp_min >= 0);
-        Assert.isTrue(temp_min < 60);
-        Assert.isTrue(temp_sec >= 0);
-        Assert.isTrue(temp_sec < 60);
-        Assert.isTrue(temp_ms >= 0);
-        Assert.isTrue(temp_ms < 1000);
-        Assert.isTrue(id_race >= 0);
-        
-        LapData data = new LapData();
-        data.setId(ID);
-        Time temp = new Time(0,temp_min,temp_sec);
-        data.setTemp(temp);
-        data.setTempMs(temp_ms);
-        data.setIdScore(id_race);
-        return data;
-    }
+//    private LapData toData (int ID, int temp_hour, int temp_min, int temp_sec, 
+//            int temp_ms, int id_race){
+//        Assert.isTrue(ID >= 0);
+//        Assert.isTrue(temp_hour >= 0);
+//        Assert.isTrue(temp_hour < 24);
+//        Assert.isTrue(temp_min >= 0);
+//        Assert.isTrue(temp_min < 60);
+//        Assert.isTrue(temp_sec >= 0);
+//        Assert.isTrue(temp_sec < 60);
+//        Assert.isTrue(temp_ms >= 0);
+//        Assert.isTrue(temp_ms < 1000);
+//        Assert.isTrue(id_race >= 0);
+//        
+//        LapData data = new LapData();
+//        data.setId(ID);
+//        Time temp = new Time(0,temp_min,temp_sec);
+//        data.setTemp(temp);
+//        data.setTempMs(temp_ms);
+//        data.setIdScore(id_race);
+//        return data;
+//    }
     
-    private LapData toData (int temp_min, int temp_sec, int temp_ms, 
-            int id_race){
+    private LapData toData (int temp_hour, int temp_min, int temp_sec, 
+            int temp_ms, int id_race){
+        Assert.isTrue(temp_hour >= 0);
+        Assert.isTrue(temp_hour < 24);
         Assert.isTrue(temp_min >= 0);
         Assert.isTrue(temp_min < 60);
         Assert.isTrue(temp_sec >= 0);
@@ -165,7 +172,7 @@ public class LapDaoImpl extends Dao implements LapDao{
         Assert.isTrue(id_race >= 0);
         
         LapData data = new LapData();
-        Time temp = new Time(0,temp_min,temp_sec);
+        Time temp = new Time(temp_hour,temp_min,temp_sec);
         data.setTemp(temp);
         data.setTempMs(temp_ms);
         data.setIdScore(id_race);
@@ -186,7 +193,9 @@ public class LapDaoImpl extends Dao implements LapDao{
         Lap returnValue = new Lap();
         returnValue.setID(data.getId());
         returnValue.setIdRace(data.getIdScore());
-        returnValue.setTemp(data.getTemp(), data.getTempMs());
+        returnValue.setTemp(data.getTemp().getHours(), 
+                data.getTemp().getMinutes(), data.getTemp().getSeconds(), 
+                data.getTempMs());
         
         return returnValue;
     }

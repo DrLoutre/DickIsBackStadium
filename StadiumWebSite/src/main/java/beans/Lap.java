@@ -1,15 +1,14 @@
 package beans;
 
-import java.sql.Time;
-import javafx.util.Pair;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Lap {
     
     private int ID;
-    private Time temp;
+    private int temp_hour;
+    private int temp_min;
+    private int temp_sec;
     private int temp_ms;
     private int id_race;
     
@@ -25,13 +24,26 @@ public class Lap {
         ID = id;
     }
 
-    public Pair<Time,Integer> getTemp(){
-        return new Pair<Time, Integer>(temp,temp_ms);
+    public int getTempHour(){
+        return temp_hour;
     }
 
-    public void setTemp(Time temp, int temp_ms){
-        this.temp = (Time)temp.clone();
-        this.temp_ms = temp_ms;
+    public int getTempMin(){
+        return temp_min;
+    }
+
+    public int getTempSec(){
+        return temp_sec;
+    }
+
+    public int getTempMs(){
+        return temp_ms;
+    }
+
+    public void setTemp(int hour, int min, int sec, int ms){
+        temp_min = min;
+        temp_sec = sec;
+        temp_ms = ms;
     }
 
     public int getIdRace(){
