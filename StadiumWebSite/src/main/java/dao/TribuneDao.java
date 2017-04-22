@@ -4,6 +4,8 @@ import beans.Tribune;
 import exceptions.IntegrityException;
 import exceptions.NotFoundException;
 
+import java.util.ArrayList;
+
 public interface TribuneDao {
     
     boolean tribuneExists(String NFC);
@@ -12,6 +14,8 @@ public interface TribuneDao {
             String texteExplanation) throws IntegrityException;
     
     Tribune getTribune(String NFC) throws NotFoundException;
+
+    ArrayList<Tribune> getAllTribune() throws NotFoundException;
     
     int getPlaces(String NFC) throws NotFoundException;
     

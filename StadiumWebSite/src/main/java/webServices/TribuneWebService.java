@@ -3,6 +3,7 @@ package webServices;
 import beans.OccupancyRate;
 import beans.Seat;
 import beans.Tribune;
+import beans.custom.SeatsByTribune;
 import dao.impl.SeatDaoImpl;
 import dao.impl.TribuneDaoImpl;
 import exceptions.NotFoundException;
@@ -33,6 +34,37 @@ public class TribuneWebService {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         return Response.ok(tribune).build();
+    }
+
+    @GET
+    public Response getTribunes() {
+        ArrayList<Tribune> tribunes;
+        try {
+            tribunes = tribuneDao.getAllTribune();
+        } catch (NotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(tribunes).build();
+    }
+
+    @GET
+    @Path("/seats/available")
+    public Response getSeatsTribunes() {
+        ArrayList<Tribune> tribunes;
+        ArrayList<SeatsByTribune> seatsByTribunes = new ArrayList<>();
+        try {
+            tribunes = tribuneDao.getAllTribune();
+            for (Tribune tribune : tribunes) {
+                SeatsByTribune seatsByTribune = new SeatsByTribune();
+                seatsByTribune.setTribune(tribune);
+                ArrayList<Seat> available = getAvailable(seatDao.getTribuneSeats(tribune.getNFC()));
+                seatsByTribune.setSeats(available);
+                seatsByTribunes.add(seatsByTribune);
+            }
+        } catch (NotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(seatsByTribunes).build();
     }
 
     @GET
@@ -82,6 +114,12 @@ public class TribuneWebService {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
+        ArrayList<Seat> available = getAvailable(seats);
+
+        return Response.ok(available).build();
+    }
+
+    private ArrayList<Seat> getAvailable(List<Seat> seats) {
         ArrayList<Seat> available = new ArrayList<>();
 
         for (Seat seat: seats) {
@@ -89,7 +127,6 @@ public class TribuneWebService {
                 available.add(seat);
             }
         }
-
-        return Response.ok(available).build();
+        return available;
     }
 }

@@ -1,4 +1,4 @@
-package beans;
+package beans.custom;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
