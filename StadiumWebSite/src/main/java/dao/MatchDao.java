@@ -3,13 +3,12 @@ package dao;
 import beans.Match;
 import exceptions.NotFoundException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javafx.util.Pair;
 
 public interface MatchDao {
     
-    int addMatch(int idTeam1, int idTeam2, int goals1, int goals2, Date date, 
+    int addMatch(int idTeam1, int idTeam2, int goals1, int goals2, String date, 
             boolean ended) throws NotFoundException;
     
     Match getMatch(int ID) throws NotFoundException;
@@ -57,7 +56,7 @@ public interface MatchDao {
     
     ArrayList<Match> getNotEndedMatch() throws NotFoundException;
     
-    void setDate(int ID, Date date) throws NotFoundException;
+    void setDate(int ID, String date) throws NotFoundException;
     
     void setState(int ID, boolean ended) throws NotFoundException;
     

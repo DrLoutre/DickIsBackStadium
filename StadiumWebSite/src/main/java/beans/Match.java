@@ -1,7 +1,5 @@
 package beans;
 
-//import exceptions.NotFoundException;
-import java.util.Date;
 import javafx.util.Pair;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -14,7 +12,7 @@ public class Match {
     private int id_team_2;
     private int goals_1;
     private int goals_2;
-    private Date date;
+    private String date;
     private boolean ended;
     
     public Match(){
@@ -97,12 +95,12 @@ public class Match {
 //        else return goals_2;
 //    }
     
-    public Date getDate(){
-        return (Date)date.clone();
+    public String getDate(){
+        return date;
     }
     
-    public void setDate(Date date){
-        this.date = (Date)date.clone();
+    public void setDate(String date){
+        this.date = date;
     }
     
     public boolean getEnded(){

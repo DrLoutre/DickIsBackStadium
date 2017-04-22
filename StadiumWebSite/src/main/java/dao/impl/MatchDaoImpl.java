@@ -11,8 +11,10 @@ import exceptions.FailureException;
 import exceptions.IntegrityException;
 import exceptions.NotFoundException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import javafx.util.Pair;
@@ -34,12 +36,13 @@ public class MatchDaoImpl extends Dao implements MatchDao{
     
     @Override
     public int addMatch(int idTeam1, int idTeam2, int goals1, int goals2, 
-            Date date, boolean ended) throws NotFoundException {
+            String date, boolean ended) throws NotFoundException {
         Assert.isTrue(idTeam1 >= 0);
         Assert.isTrue(idTeam2 >= 0);
         Assert.isTrue(goals1 >= 0);
         Assert.isTrue(goals2 >= 0);
         Assert.notNull(date);
+        Assert.isTrue(date.length() > 0);
         
         if(!teamDao.teamExists(idTeam1)) throw new NotFoundException("The team "
                 + "with the id " + idTeam1 + "does not exists in the database");
@@ -260,12 +263,13 @@ public class MatchDaoImpl extends Dao implements MatchDao{
     }
 
     @Override
-    public void setDate(int ID, Date date) throws NotFoundException {
+    public void setDate(int ID, String date) throws NotFoundException {
         Assert.isTrue(ID >= 0);
         Assert.notNull(date);
         
         Match match = getMatch(ID);
-        match.setDate((Date)date.clone());
+        match.setDate(date);
+        
         MatchsData data = toData(match);
         SQLUpdateClause update = queryFactory.update(MATCH);
         
@@ -321,13 +325,14 @@ public class MatchDaoImpl extends Dao implements MatchDao{
     }
     
     private MatchsData toData(int ID, int idTeam1, int idTeam2, int goals1, 
-            int goals2, Date date, boolean ended) {
+            int goals2, String date, boolean ended) {
         Assert.isTrue(ID >= 0);
         Assert.isTrue(idTeam1 >= 0);
         Assert.isTrue(idTeam2 >= 0);
         Assert.isTrue(goals1 >= 0);
         Assert.isTrue(goals2 >= 0);
         Assert.notNull(date);
+        Assert.isTrue(date.length() > 0);
         
         MatchsData data = new MatchsData();
         data.setIdMatch(ID);
@@ -335,13 +340,18 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         data.setIdTeam2(idTeam2);
         data.setGoal1(goals1);
         data.setGoal2(goals2);
-        data.setMatchDate(new Timestamp(date.getTime()));
+        DateFormat format = new SimpleDateFormat("dd-MM-yy hh:mm");
+        try {
+            data.setMatchDate(new Timestamp(format.parse(date).getTime()));
+        } catch (ParseException ex){
+            throw new FailureException(ex.getMessage());
+        }
         data.setEnded(ended);
         return data;
     }
     
     private MatchsData toData(int idTeam1, int idTeam2, int goals1, 
-            int goals2, Date date, boolean ended) {
+            int goals2, String date, boolean ended) {
         Assert.isTrue(idTeam1 >= 0);
         Assert.isTrue(idTeam2 >= 0);
         Assert.isTrue(goals1 >= 0);
@@ -353,7 +363,12 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         data.setIdTeam2(idTeam2);
         data.setGoal1(goals1);
         data.setGoal2(goals2);
-        data.setMatchDate(new Timestamp(date.getTime()));
+        DateFormat format = new SimpleDateFormat("dd-MM-yy hh:mm");
+        try {
+            data.setMatchDate(new Timestamp(format.parse(date).getTime()));
+        } catch (ParseException ex){
+            throw new FailureException(ex.getMessage());
+        }
         data.setEnded(ended);
         return data;
     }
@@ -370,9 +385,9 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         returnValue.setGoals1(data.getGoal1());
         returnValue.setGoals1(data.getGoal2());
         returnValue.setID(data.getIdMatch());
-        returnValue.setDate(data.getMatchDate());
+        DateFormat format = new SimpleDateFormat("dd-MM-yy hh:mm");
+        returnValue.setDate(format.format(data.getMatchDate()));
         returnValue.setEnded(data.getEnded());
-        
         return returnValue;
     }
 }
