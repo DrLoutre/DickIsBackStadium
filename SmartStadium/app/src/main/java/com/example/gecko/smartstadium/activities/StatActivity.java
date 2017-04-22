@@ -19,6 +19,8 @@ import com.example.gecko.smartstadium.events.LastRaceAthleticEvent;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
+import java.util.ArrayList;
+
 public class StatActivity extends AppCompatActivity {
 
     private final Bus mBus = BusProvider.getInstance();
@@ -51,7 +53,13 @@ public class StatActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        //todo tmp il faudra mettre ca où on aura l'info
+        /*todo   il faudra mettre ca où on aura l'info
+         ca serait cool d'avoir une liste des matchs.
+         Chaque élément de la liste est une sous liste avec [date,team à domicile, team visiteur]
+        */
+        ArrayList listMatch = new ArrayList(new ArrayList());
+
+        //variable temporaire pour des tests
         String[] list = new String[5];
         list[1] = "coucou1";
         list[2] = "coucou2";
