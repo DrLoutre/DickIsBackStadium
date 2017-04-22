@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 getRefreshments();
             }
+
         });
 
         QRButton.setOnClickListener(new View.OnClickListener() {
