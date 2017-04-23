@@ -158,7 +158,7 @@ public class LapDaoImpl extends Dao implements LapDao{
 //        data.setIdScore(id_race);
 //        return data;
 //    }
-    
+
     private LapData toData (int temp_hour, int temp_min, int temp_sec, 
             int temp_ms, int id_race){
         Assert.isTrue(temp_hour >= 0);

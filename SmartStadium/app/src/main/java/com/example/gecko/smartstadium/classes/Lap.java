@@ -3,7 +3,9 @@ package com.example.gecko.smartstadium.classes;
 public class Lap {
 
     private int ID;
-    private String temp;
+    private int temp_hour;
+    private int temp_min;
+    private int temp_sec;
     private int temp_ms;
     private int id_race;
 
@@ -19,12 +21,28 @@ public class Lap {
         this.ID = ID;
     }
 
-    public String getTemp() {
-        return temp;
+    public int getTemp_hour() {
+        return temp_hour;
     }
 
-    public void setTemp(String temp) {
-        this.temp = temp;
+    public void setTemp_hour(int temp_hour) {
+        this.temp_hour = temp_hour;
+    }
+
+    public int getTemp_min() {
+        return temp_min;
+    }
+
+    public void setTemp_min(int temp_min) {
+        this.temp_min = temp_min;
+    }
+
+    public int getTemp_sec() {
+        return temp_sec;
+    }
+
+    public void setTemp_sec(int temp_sec) {
+        this.temp_sec = temp_sec;
     }
 
     public int getTemp_ms() {
