@@ -110,9 +110,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //USELESS NOW ! DON'T USE IT
-    // Va calculer la buvette la plus intéressante
-    /*private void CalculeBuvette() {
+    private void CalculeBuvette() {
         // faire le calcule
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle("Les buvettes sont en:")
@@ -121,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         // Create the AlertDialog object and return it
         builder.create();
         builder.show();
-    }*/
+    }
 
     private void onLoginSuccess(final String result) {
         if (!ConnectionUtils.isOnline(this)) {
@@ -147,10 +145,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Subscribe
     public void AthleticEvent(AthleticEvent athleticEvent) {
-        Intent intent;
         if (athleticEvent.getAthletic() != null) {
-            intent = new Intent(MainActivity.this, LoginActivity.class);
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            intent.putExtra("id", athleticEvent.getAthletic().getNFC());
             startActivity(intent);
+        } else {
+            Snackbar.make(findViewById(android.R.id.content), "Un problème de connexion.", Snackbar.LENGTH_LONG).show();
         }
 
     }

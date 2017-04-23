@@ -7,6 +7,8 @@ public class Match {
     private int id_team_2;
     private int goals_1;
     private int goals_2;
+    private String date;
+    private boolean ended;
 
     public int getID() {
         return ID;
@@ -46,5 +48,21 @@ public class Match {
 
     public void setGoals_2(int goals_2) {
         this.goals_2 = goals_2;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public boolean isEnded() {
+        return ended;
+    }
+
+    public void setEnded(boolean ended) {
+        this.ended = ended;
     }
 }

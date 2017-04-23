@@ -23,7 +23,7 @@ import com.squareup.otto.Subscribe;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity { //implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends AppCompatActivity {
 
     private Bus mBus = BusProvider.getInstance();
 

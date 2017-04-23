@@ -4,6 +4,7 @@ import com.example.gecko.smartstadium.classes.Athletic;
 import com.example.gecko.smartstadium.classes.Credentials;
 import com.example.gecko.smartstadium.classes.Lap;
 import com.example.gecko.smartstadium.classes.Match;
+import com.example.gecko.smartstadium.classes.custom.MatchNotEnded;
 import com.example.gecko.smartstadium.classes.custom.OccupancyRate;
 import com.example.gecko.smartstadium.classes.Refreshment;
 import com.example.gecko.smartstadium.classes.Seat;
@@ -28,8 +29,8 @@ public interface IStadium {
     @GET("athletics/{id}/races/last/laps/last")
     Call<Lap> getAthleticLastLapFromLastRace(@Path("id") String id);
 
-    @GET("athletics/{id}/matchs/ended")
-    Call<ArrayList<Match>> getAthleticMatchsNotEnded(@Path("id") String id);
+    @GET("athletics/{id}/matchs/notended")
+    Call<ArrayList<MatchNotEnded>> getAthleticMatchsNotEnded(@Path("id") String id);
 
     @POST("athletics/login")
     Call<Athletic> postLogin(@Body Credentials credentials);

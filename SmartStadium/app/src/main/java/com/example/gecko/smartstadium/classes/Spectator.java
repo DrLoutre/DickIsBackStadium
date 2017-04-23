@@ -1,11 +1,18 @@
 package com.example.gecko.smartstadium.classes;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Spectator {
 
+    @SerializedName("id")
     private int id;
+    @SerializedName("lastName")
     private String lastName;
+    @SerializedName("firstName")
     private String firstName;
+    @SerializedName("tribuneNFC")
     private String tribuneNFC;
+    @SerializedName("idmatch")
     private int id_Match;
 
     public int getId() {

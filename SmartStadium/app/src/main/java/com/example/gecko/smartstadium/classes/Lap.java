@@ -1,12 +1,20 @@
 package com.example.gecko.smartstadium.classes;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Lap {
 
+    @SerializedName("id")
     private int ID;
+    @SerializedName("tempHour")
     private int temp_hour;
+    @SerializedName("tempMin")
     private int temp_min;
+    @SerializedName("tempSec")
     private int temp_sec;
+    @SerializedName("tempMs")
     private int temp_ms;
+    @SerializedName("idRace")
     private int id_race;
 
     public Lap(){

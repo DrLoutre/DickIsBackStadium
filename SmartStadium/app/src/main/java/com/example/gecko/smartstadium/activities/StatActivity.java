@@ -1,6 +1,7 @@
 package com.example.gecko.smartstadium.activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,10 +14,14 @@ import com.example.gecko.smartstadium.R;
 import com.example.gecko.smartstadium.adapter.MatchAdapter;
 import com.example.gecko.smartstadium.bus.BusProvider;
 import com.example.gecko.smartstadium.classes.Lap;
+import com.example.gecko.smartstadium.classes.Match;
+import com.example.gecko.smartstadium.classes.custom.MatchNotEnded;
 import com.example.gecko.smartstadium.events.AthleticEvent;
+import com.example.gecko.smartstadium.events.GetLastMatchsNotEndedEvent;
 import com.example.gecko.smartstadium.events.GetLastRaceAthleticEvent;
 import com.example.gecko.smartstadium.events.IdAthleticEvent;
 import com.example.gecko.smartstadium.events.LastRaceAthleticEvent;
+import com.example.gecko.smartstadium.events.MatchsEvent;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -38,10 +43,15 @@ public class StatActivity extends AppCompatActivity {
     private RecyclerView.Adapter matchAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    private String id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stat);
+
+        Intent intent = getIntent();
+        id = intent.getStringExtra("id");
 
         nomText = (TextView) findViewById(R.id.textNomStat);
         prenomText = (TextView) findViewById(R.id.textFirstnameStat);
@@ -55,27 +65,6 @@ public class StatActivity extends AppCompatActivity {
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-
-        /*todo   il faudra mettre ca où on aura l'info
-         ca serait cool d'avoir une liste des matchs.
-         Chaque élément de la liste est une sous liste avec [date,team à domicile, team visiteur]
-        */
-        ArrayList listMatch = new ArrayList(new ArrayList());
-
-        //variable temporaire pour des tests
-        String[] list = new String[5];
-        list[1] = "coucou1";
-        list[2] = "coucou2";
-        list[3] = "coucou3";
-        list[4] = "coucou4";
-        list[0] = "coucou0";
-        // specify an adapter (see also next example)
-        matchAdapter = new MatchAdapter(list);
-        mRecyclerView.setAdapter(matchAdapter);
-
-
-
-
 
         dialog = new ProgressDialog(this);
         dialog.setIndeterminate(true);
@@ -108,6 +97,10 @@ public class StatActivity extends AppCompatActivity {
 
     private void getAthleticLap() {
         mBus.post(new GetLastRaceAthleticEvent("1"));
+    }
+
+    private void getMatchsNotEnded() {
+        mBus.post(new GetLastMatchsNotEndedEvent("1"));
     }
 
     @Subscribe
@@ -145,7 +138,7 @@ public class StatActivity extends AppCompatActivity {
             } else {
                 tempsMoyen.setText("indisponible");
             }
-
+            getMatchsNotEnded();
         } else {
             Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Un problème est survenu.", Snackbar.LENGTH_INDEFINITE);
             snackbar.setAction("Réessayer", new View.OnClickListener() {
@@ -155,9 +148,27 @@ public class StatActivity extends AppCompatActivity {
                 }
             });
             snackbar.show();
+            dialog.dismiss();
         }
         dialog.dismiss();
     }
 
-
+    @Subscribe
+    public void onMatchAthleticEvent(MatchsEvent matchsEvent) {
+        if (matchsEvent.getMatchs() != null) {
+            ArrayList<MatchNotEnded> listMatch = matchsEvent.getMatchs();
+            matchAdapter = new MatchAdapter(listMatch);
+            mRecyclerView.setAdapter(matchAdapter);
+        } else {
+            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Un problème est survenu.", Snackbar.LENGTH_INDEFINITE);
+            snackbar.setAction("Réessayer", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getMatchsNotEnded();
+                }
+            });
+            snackbar.show();
+        }
+        dialog.dismiss();
+    }
 }

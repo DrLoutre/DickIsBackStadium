@@ -8,17 +8,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.gecko.smartstadium.R;
+import com.example.gecko.smartstadium.classes.Match;
+import com.example.gecko.smartstadium.classes.custom.MatchNotEnded;
 
-/**
- * Created by Quentin Jacquemotte on 22-04-17.
- */
+import java.util.ArrayList;
 
 public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> {
 
-    private String[] mDataset;
+    private ArrayList<MatchNotEnded> mDataset;
 
 
-    public MatchAdapter(String[] myDataset) {
+    public MatchAdapter(ArrayList<MatchNotEnded> myDataset) {
         mDataset = myDataset;
     }
 
@@ -27,26 +27,24 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> 
     public MatchAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.match, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        //todo set les bons éléments
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.domicile.setText(mDataset[position]);
-        holder.visiteur.setText(mDataset[position]);
-        holder.date.setText(mDataset[position]);
+        holder.domicile.setText(mDataset.get(position).getTeam1());
+        holder.visiteur.setText(mDataset.get(position).getTeam2());
+        holder.date.setText(mDataset.get(position).getDate());
 
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return mDataset.size();
     }
 
     // Provide a reference to the views for each data item

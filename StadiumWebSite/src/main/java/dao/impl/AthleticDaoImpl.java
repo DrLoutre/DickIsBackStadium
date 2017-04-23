@@ -14,7 +14,7 @@ import stade.data.QAthletic;
 
 public class AthleticDaoImpl extends Dao implements AthleticDao {
     
-    private static final QAthletic ATHLETIC = QAthletic.athletic;
+    private static final QAthletic ATHLETIC = QAthletic.Athletic;
 
     @Override
     public void addAthletic(String NFC, String firstName, String lastName, 

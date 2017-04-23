@@ -1,9 +1,14 @@
 package com.example.gecko.smartstadium.classes;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Seat {
 
+    @SerializedName("id")
     private int id;
+    @SerializedName("tribuneNFC")
     private String tribuneNFC;
+    @SerializedName("occupied")
     private boolean occupied;
 
     public int getId() {

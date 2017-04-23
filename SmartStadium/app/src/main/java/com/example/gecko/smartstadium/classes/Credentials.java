@@ -1,8 +1,12 @@
 package com.example.gecko.smartstadium.classes;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Credentials {
 
+    @SerializedName("id")
     private String id;
+    @SerializedName("password")
     private String password;
 
     public Credentials(String id, String password) {

@@ -1,13 +1,22 @@
 package com.example.gecko.smartstadium.classes;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Athletic {
 
+    @SerializedName("nfc")
     private String NFC;
+    @SerializedName("nom")
     private String nom;
+    @SerializedName("prenom")
     private String prenom;
+    @SerializedName("age")
     private int age;
+    @SerializedName("sex")
     private String sex;
+    @SerializedName("mdp")
     private String MDP;
+    @SerializedName("team")
     private String team;
 
     public String getNFC() {

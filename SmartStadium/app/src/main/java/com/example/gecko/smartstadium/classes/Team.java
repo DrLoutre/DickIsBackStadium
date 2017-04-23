@@ -1,11 +1,16 @@
 package com.example.gecko.smartstadium.classes;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class Team {
 
+    @SerializedName("id")
     private int id;
+    @SerializedName("nom")
     private String nom;
+    @SerializedName("players")
     private List<String> players;
 
     public int getId() {

@@ -4,7 +4,7 @@ import com.example.gecko.smartstadium.classes.Athletic;
 import com.example.gecko.smartstadium.classes.Credentials;
 import com.example.gecko.smartstadium.classes.Lap;
 import com.example.gecko.smartstadium.classes.Refreshment;
-import com.example.gecko.smartstadium.classes.Tribune;
+import com.example.gecko.smartstadium.classes.custom.MatchNotEnded;
 import com.example.gecko.smartstadium.classes.custom.SeatsByTribune;
 import com.example.gecko.smartstadium.interfaces.IStadium;
 
@@ -13,18 +13,18 @@ import java.util.ArrayList;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class StadiumClient {
 
-    public final static String BASE_URL = "http://10.0.2.2:8080/api/v1/";
+    final static String BASE_URL = "http://10.0.2.2:8080/api/v1/";
 
     private static StadiumClient mStadiumClient;
     private static Retrofit mRetrofit;
 
     private StadiumClient() {
         mRetrofit = new Retrofit.Builder()
-                .addConverterFactory(JacksonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(BASE_URL)
                 .client(new OkHttpClient())
                 .build();
@@ -59,5 +59,10 @@ public class StadiumClient {
     public Call<ArrayList<Lap>> getLastRaceAthletic(String id) {
         IStadium iStadium = mRetrofit.create(IStadium.class);
         return iStadium.getLastRace(id);
+    }
+
+    public Call<ArrayList<MatchNotEnded>> getMatchsNotEndedAthletic(String id) {
+        IStadium iStadium = mRetrofit.create(IStadium.class);
+        return iStadium.getAthleticMatchsNotEnded(id);
     }
 }

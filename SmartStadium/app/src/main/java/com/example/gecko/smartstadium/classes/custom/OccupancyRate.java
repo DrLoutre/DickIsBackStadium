@@ -1,8 +1,12 @@
 package com.example.gecko.smartstadium.classes.custom;
 
+import com.google.gson.annotations.SerializedName;
+
 public class OccupancyRate {
 
+    @SerializedName("free")
     private double free;
+    @SerializedName("occupied")
     private double occupied;
 
     public double getFree() {

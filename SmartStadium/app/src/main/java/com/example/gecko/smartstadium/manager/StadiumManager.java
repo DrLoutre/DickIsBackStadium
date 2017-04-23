@@ -5,15 +5,19 @@ import android.content.Context;
 import com.example.gecko.smartstadium.api.StadiumClient;
 import com.example.gecko.smartstadium.classes.Athletic;
 import com.example.gecko.smartstadium.classes.Lap;
+import com.example.gecko.smartstadium.classes.Match;
 import com.example.gecko.smartstadium.classes.Refreshment;
+import com.example.gecko.smartstadium.classes.custom.MatchNotEnded;
 import com.example.gecko.smartstadium.classes.custom.SeatsByTribune;
 import com.example.gecko.smartstadium.events.AthleticEvent;
+import com.example.gecko.smartstadium.events.GetLastMatchsNotEndedEvent;
 import com.example.gecko.smartstadium.events.GetLastRaceAthleticEvent;
 import com.example.gecko.smartstadium.events.GetRefreshmentsEvent;
 import com.example.gecko.smartstadium.events.GetSeatsTribunesEvent;
 import com.example.gecko.smartstadium.events.IdAthleticEvent;
 import com.example.gecko.smartstadium.events.LastRaceAthleticEvent;
 import com.example.gecko.smartstadium.events.LoginEvent;
+import com.example.gecko.smartstadium.events.MatchsEvent;
 import com.example.gecko.smartstadium.events.PostLoginEvent;
 import com.example.gecko.smartstadium.events.RefreshmentsEvent;
 import com.example.gecko.smartstadium.events.SeatsTribunesEvent;
@@ -161,6 +165,31 @@ public class StadiumManager {
             @Override
             public void onFailure(Call<ArrayList<Lap>> call, Throwable t) {
                 mBus.post(new LastRaceAthleticEvent(null));
+            }
+        });
+    }
+
+    @Subscribe
+    public void onGetMatchNotEndedEvent(GetLastMatchsNotEndedEvent getLastMatchsNotEndedEvent) {
+        if (!ConnectionUtils.isOnline(mContext)) {
+            mBus.post(new MatchsEvent(null));
+            return;
+        }
+
+        Call<ArrayList<MatchNotEnded>> call = mStadiumClient.getMatchsNotEndedAthletic(getLastMatchsNotEndedEvent.getId());
+        call.enqueue(new Callback<ArrayList<MatchNotEnded>>() {
+            @Override
+            public void onResponse(Call<ArrayList<MatchNotEnded>> call, Response<ArrayList<MatchNotEnded>> response) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    mBus.post(new MatchsEvent(response.body()));
+                } else {
+                    mBus.post(new MatchsEvent(null));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<MatchNotEnded>> call, Throwable t) {
+                mBus.post(new MatchsEvent(null));
             }
         });
     }
