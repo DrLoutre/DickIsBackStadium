@@ -63,10 +63,9 @@ public class Team extends HttpServlet {
                     int indexteam1 = teamDao.addTeam((String) request.getParameter("Team1"));
                     int indexteam2 = teamDao.addTeam((String) request.getParameter("Team2"));
                     playInDao.addEntry((String) request.getParameter("nfc"), indexteam1);
-                    SimpleDateFormat sdf = new  SimpleDateFormat("dd-MM-yy hh:mm");
-                    Date date = sdf.parse(request.getParameter("Date") + " " + request.getParameter("Heure") );
+                    String date = request.getParameter("Date") + " " + request.getParameter("Heure");
                     matchDao.addMatch(indexteam1, indexteam2, 0, 0, date, false);
-                } catch(IntegrityException | ParseException | NotFoundException e) {} 
+                } catch(IntegrityException | NotFoundException e) {} 
             } else {
                 try {
                     playInDao.addEntry((String) request.getParameter("nfc"), Integer.parseInt(request.getParameter("match")));
