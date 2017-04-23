@@ -27,6 +27,10 @@ class BachTSimul(var bb: BachTStore) {
           }
         }
 
+        case bacht_ast_delay(prim, time) => {
+          (false, bacht_ast_delay(prim, time))
+        }
+
         case bacht_ast_agent(";", ag_i, ag_ii) => {
           run_one(ag_i) match {
             case (false, _) => (false, agent)
@@ -138,6 +142,11 @@ class BachTSimul(var bb: BachTStore) {
         {
           bacht_ast_agent("+", run_time(ag_i), run_time(ag_ii))
         }
+
+       case _ =>
+         {
+           _
+         }
      }
    }
 
