@@ -104,7 +104,7 @@ public class StatActivity extends AppCompatActivity {
         if (athleticEvent.getAthletic() != null) {
             nomText.setText(athleticEvent.getAthletic().getNom());
             prenomText.setText(athleticEvent.getAthletic().getPrenom());
-            ageText.setText(String.valueOf(athleticEvent.getAthletic().getAge()));
+            ageText.setText(String.valueOf(athleticEvent.getAthletic().getAge()) + " ans");
             getAthleticLap();
         } else {
             Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Un problème est survenu.", Snackbar.LENGTH_INDEFINITE);
