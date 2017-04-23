@@ -30,6 +30,7 @@ import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         BuvetteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getRefreshments();
+                getRefreshments(false);
             }
 
         });
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             final String result = data.getStringExtra("result");
 
             if (result.contains("zone")) {
-                getRefreshments();
+                getRefreshments(true);
             } else {
                 onLoginSuccess(result);
             }
@@ -135,8 +136,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void getRefreshments() {
-        mBus.post(new GetRefreshmentsEvent());
+    private void getRefreshments(boolean bestOne) {
+        mBus.post(new GetRefreshmentsEvent(bestOne));
     }
 
     private void getSeatsTribunes() {
@@ -156,9 +157,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void RefreshmentsEvent(RefreshmentsEvent refreshmentsEvent) {
+    public void RefreshmentsEvent(final RefreshmentsEvent refreshmentsEvent) {
         if (refreshmentsEvent.getRefreshment() != null) {
             StringBuilder message = new StringBuilder();
+
+            if (refreshmentsEvent.isBestOne()) {
+                refreshmentsEvent.setRefreshment(getFreeRefreshments(refreshmentsEvent.getRefreshment()));
+            }
 
             int size = refreshmentsEvent.getRefreshment().size();
             for (Refreshment refreshment : refreshmentsEvent.getRefreshment()) {
@@ -184,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
             snackbar.setAction("Réessayer", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getRefreshments();
+                    getRefreshments(refreshmentsEvent.isBestOne());
                 }
             });
             snackbar.show();
@@ -251,4 +256,17 @@ public class MainActivity extends AppCompatActivity {
                 .requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.INTERNET}, 101);
     }
 
+    private ArrayList<Refreshment> getFreeRefreshments(ArrayList<Refreshment> refreshments) {
+        ArrayList<Refreshment> mins = new ArrayList<>();
+        float minimum = refreshments.get(0).getAttendance();
+
+        for (Refreshment refreshment : refreshments) {
+            if (refreshment.getAttendance() < minimum) minimum = refreshment.getAttendance();
+        }
+
+        for (Refreshment refreshment : refreshments) {
+            if (refreshment.getAttendance() == minimum) mins.add(refreshment);
+        }
+        return mins;
+    }
 }

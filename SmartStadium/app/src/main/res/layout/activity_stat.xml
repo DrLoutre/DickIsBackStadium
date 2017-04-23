@@ -107,15 +107,15 @@
                     android:layout_marginLeft="50dp"
                     android:layout_marginStart="50dp"
                     android:layout_weight="1"
-                    android:text="Equipe:"
+                    android:text="Age:"
                     android:textColor="@android:color/black" />
 
                 <TextView
-                    android:id="@+id/textTeamStat"
+                    android:id="@+id/textAgeStat"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Equipe?"
+                    android:text="Age?"
                     android:textColor="@android:color/black" />
             </LinearLayout>
         </LinearLayout>

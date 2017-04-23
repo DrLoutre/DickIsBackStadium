@@ -35,8 +35,7 @@ public class StatActivity extends AppCompatActivity {
 
     private TextView nomText;
     private TextView prenomText;
-    private TextView tempsText;
-    private TextView equipeText;
+    private TextView ageText;
     private TextView tempsMoyen;
 
     private RecyclerView mRecyclerView;
@@ -55,8 +54,7 @@ public class StatActivity extends AppCompatActivity {
 
         nomText = (TextView) findViewById(R.id.textNomStat);
         prenomText = (TextView) findViewById(R.id.textFirstnameStat);
-        tempsText = (TextView) findViewById(R.id.textTpsStat);
-        equipeText = (TextView) findViewById(R.id.textTeamStat);
+        ageText = (TextView) findViewById(R.id.textAgeStat);
         tempsMoyen = (TextView) findViewById(R.id.textTpsStat);
 
 
@@ -71,8 +69,6 @@ public class StatActivity extends AppCompatActivity {
         dialog.setCanceledOnTouchOutside(false);
         dialog.setTitle("Chargement");
         dialog.setMessage("Chargement de vos données ...");
-
-        tempsText.setText("");
 
         getAthletic();
 
@@ -108,7 +104,7 @@ public class StatActivity extends AppCompatActivity {
         if (athleticEvent.getAthletic() != null) {
             nomText.setText(athleticEvent.getAthletic().getNom());
             prenomText.setText(athleticEvent.getAthletic().getPrenom());
-            equipeText.setText(athleticEvent.getAthletic().getTeam());
+            ageText.setText(String.valueOf(athleticEvent.getAthletic().getAge()));
             getAthleticLap();
         } else {
             Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Un problème est survenu.", Snackbar.LENGTH_INDEFINITE);

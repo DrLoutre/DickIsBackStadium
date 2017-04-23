@@ -95,9 +95,9 @@ public class StadiumManager {
     }
 
     @Subscribe
-    public void onRefreshmentsEvent(GetRefreshmentsEvent getRefreshmentsEvent) {
+    public void onRefreshmentsEvent(final GetRefreshmentsEvent getRefreshmentsEvent) {
         if (!ConnectionUtils.isOnline(mContext)) {
-            mBus.post(new RefreshmentsEvent(null));
+            mBus.post(new RefreshmentsEvent(null, false));
             return;
         }
 
@@ -106,15 +106,15 @@ public class StadiumManager {
             @Override
             public void onResponse(Call<ArrayList<Refreshment>> call, Response<ArrayList<Refreshment>> response) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
-                    mBus.post(new RefreshmentsEvent(response.body()));
+                    mBus.post(new RefreshmentsEvent(response.body(), getRefreshmentsEvent.isBestOne()));
                 } else {
-                    mBus.post(new RefreshmentsEvent(null));
+                    mBus.post(new RefreshmentsEvent(null, false));
                 }
             }
 
             @Override
             public void onFailure(Call<ArrayList<Refreshment>> call, Throwable t) {
-                mBus.post(new RefreshmentsEvent(null));
+                mBus.post(new RefreshmentsEvent(null, false));
             }
         });
     }
