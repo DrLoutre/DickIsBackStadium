@@ -40,10 +40,20 @@ public class Lap {
         return temp_ms;
     }
 
-    public void setTemp(int hour, int min, int sec, int ms){
-        temp_min = min;
-        temp_sec = sec;
-        temp_ms = ms;
+    public void setTempHour(int temp_hour) {
+        this.temp_hour = temp_hour;
+    }
+
+    public void setTempMin(int temp_min) {
+        this.temp_min = temp_min;
+    }
+
+    public void setTempSec(int temp_sec) {
+        this.temp_sec = temp_sec;
+    }
+
+    public void setTempMs(int temp_ms) {
+        this.temp_ms = temp_ms;
     }
 
     public int getIdRace(){

@@ -10,8 +10,6 @@ public class Team {
     private int id;
     @SerializedName("nom")
     private String nom;
-    @SerializedName("players")
-    private List<String> players;
 
     public int getId() {
         return id;
@@ -27,13 +25,5 @@ public class Team {
 
     public void setNom(String nom) {
         this.nom = nom;
-    }
-
-    public List<String> getPlayers() {
-        return players;
-    }
-
-    public void setPlayers(List<String> players) {
-        this.players = players;
     }
 }

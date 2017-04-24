@@ -11,7 +11,6 @@ public class Athletic {
     private int age;
     private String sex;
     private String MDP;
-    private String team;
 
     public String getNFC() {
         return NFC;
@@ -59,13 +58,5 @@ public class Athletic {
 
     public void setMDP(String MDP) {
         this.MDP = MDP;
-    }
-    
-    public String getTeam(){
-        return team;
-    }
-    
-    public void setTeam(String id_team){
-        team = id_team;
     }
 }

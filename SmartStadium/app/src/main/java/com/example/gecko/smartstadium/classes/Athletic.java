@@ -16,8 +16,6 @@ public class Athletic {
     private String sex;
     @SerializedName("mdp")
     private String MDP;
-    @SerializedName("team")
-    private String team;
 
     public String getNFC() {
         return NFC;
@@ -65,13 +63,5 @@ public class Athletic {
 
     public void setMDP(String MDP) {
         this.MDP = MDP;
-    }
-
-    public String getTeam() {
-        return team;
-    }
-
-    public void setTeam(String team) {
-        this.team = team;
     }
 }
