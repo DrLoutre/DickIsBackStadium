@@ -13,6 +13,7 @@ import language.postfixOps
 
 class BachTSimul(var bb: BachTStore) {
 
+   val hour = 13;
    val bacht_random_choice = new Random()
 
    def run_one(agent: Expr):(Boolean,Expr) = {
@@ -22,6 +23,10 @@ class BachTSimul(var bb: BachTStore) {
             {  if (exec_primitive(prim,token)) { (true,bacht_ast_empty_agent()) }
                else { (false,agent) }
             }
+
+         case bacht_ast_wait(prim, time) => {
+           (false, bacht_ast_wait(prim, time))
+         }
 
          case bacht_ast_agent(";",ag_i,ag_ii) =>
             {  run_one(ag_i) match
@@ -112,20 +117,33 @@ class BachTSimul(var bb: BachTStore) {
       }
    }
 
+   def run_time(agent: Expr):Expr = {
+    agent match {
+      case bacht_ast_wait(prim, time) =>
+      {
+        if (time >= hour) {(bacht_ast_delay(prim, time + 1))}
+        else (bacht_ast_empty_agent())
+      }
+    }
+   }
+
    def bacht_exec_all(agent: Expr):Boolean = {
 
        var failure = false
        var c_agent = agent
-       while ( c_agent != bacht_ast_empty_agent() && !failure ) {
-          failure = run_one(c_agent) match 
-               { case (false,_)          => true
-                 case (true,new_agent)  => 
-                    { c_agent = new_agent
-                      false
-                    }
-               }
+       while (c_agent != bacht_ast_empty_agent()) {
+         while (!failure) {
+           failure = run_one(c_agent) match {
+             case (false, _) => true
+             case (true, new_agent) => {
+               c_agent = new_agent
+               false
+             }
+           }
            bb.print_store
            println("\n")
+         }
+         c_agent = run_time(c_agent)
        }
        
        if (c_agent == bacht_ast_empty_agent()) {

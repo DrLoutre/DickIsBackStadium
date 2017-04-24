@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="6c4420ac-3361-402d-959b-6668598a5c94" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/BlackBox/BlackBox.scala" afterPath="$PROJECT_DIR$/src/BlackBox/BlackBox.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/BlackBox/GoalCase.scala" afterPath="$PROJECT_DIR$/src/BlackBox/GoalCase.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Modes/Mode.scala" afterPath="$PROJECT_DIR$/src/Modes/Mode.scala" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -21,11 +18,11 @@
       <file leaf-file-name="BlackBox.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/BlackBox/BlackBox.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="144" column="159" lean-forward="false" selection-start-line="144" selection-start-column="159" selection-end-line="144" selection-end-column="159" />
+            <state relative-caret-position="423">
+              <caret line="134" column="3" lean-forward="false" selection-start-line="134" selection-start-column="3" selection-end-line="134" selection-end-column="3" />
               <folding>
                 <element signature="e#18#34#0" expanded="true" />
-                <element signature="e#4067#4654#0" expanded="false" />
+                <element signature="e#5162#5749#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -84,7 +81,6 @@
         <option value="$PROJECT_DIR$/src/Models/In/Stand.scala" />
         <option value="$PROJECT_DIR$/src/Models/In/Weather.scala" />
         <option value="$PROJECT_DIR$/src/Models/In/WeatherStation.scala" />
-        <option value="$PROJECT_DIR$/src/Models/Out/Field.scala" />
         <option value="$PROJECT_DIR$/src/Models/Out/Lighting.scala" />
         <option value="$PROJECT_DIR$/src/Models/Out/Roof.scala" />
         <option value="$PROJECT_DIR$/src/Mode/Mode.scala" />
@@ -92,6 +88,7 @@
         <option value="$PROJECT_DIR$/src/Models/In/DemoModePotentiometer.scala" />
         <option value="$PROJECT_DIR$/src/Modes/Mode.scala" />
         <option value="$PROJECT_DIR$/src/BlackBox/GoalCase.scala" />
+        <option value="$PROJECT_DIR$/src/Models/Out/Field.scala" />
         <option value="$PROJECT_DIR$/src/BlackBox/BlackBox.scala" />
       </list>
     </option>
@@ -103,8 +100,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="952" />
-    <option name="width" value="976" />
+    <option name="x" value="827" />
+    <option name="width" value="1101" />
     <option name="height" value="1038" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -319,37 +316,13 @@
           <option name="mySupportsDeletion" value="false" />
           <option name="myCanBeAbsent" value="false" />
           <option name="myId" value="UPDATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/build.gradle</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/activities/LoginActivity.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/activities/MainActivity.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/activities/StatActivity.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/api/StadiumClient.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/classes/Athletic.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/classes/Credentials.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/classes/Lap.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/classes/Match.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/classes/Race.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/classes/Refreshment.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/classes/Seat.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/classes/Spectator.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/classes/Team.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/classes/Tribune.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/classes/custom/OccupancyRate.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/classes/custom/SeatsByTribune.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/events/GetRefreshmentsEvent.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/events/RefreshmentsEvent.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/interfaces/IStadium.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/manager/StadiumManager.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/res/layout/activity_stat.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../StadiumWebSite/src/main/java/beans/Lap.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../StadiumWebSite/src/main/java/beans/Match.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../StadiumWebSite/src/main/java/dao/LapDao.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../StadiumWebSite/src/main/java/dao/MatchDao.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../StadiumWebSite/src/main/java/dao/impl/LapDaoImpl.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../StadiumWebSite/src/main/java/dao/impl/MatchDaoImpl.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../StadiumWebSite/src/main/java/servlets/Team.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../StadiumWebSite/src/main/java/webServices/AtheleticWebService.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../StadiumWebSite/src/main/java/webServices/RaceWebService.java</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageD/src/bacht_cli.scala</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageR/src/bacht_data.scala</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageR/src/bacht_parser.scala</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageR/src/bacht_simulator.scala</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageW/src/bacht_data.scala</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageW/src/bacht_parser.scala</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageW/src/bacht_simulator.scala</PATH>
         </FILE-GROUP>
         <FILE-GROUP>
           <option name="myUpdateName" value="Created" />
@@ -357,38 +330,6 @@
           <option name="mySupportsDeletion" value="false" />
           <option name="myCanBeAbsent" value="false" />
           <option name="myId" value="CREATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageD/.gitignore</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageD/src/bacht_cli.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageD/src/bacht_data.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageD/src/bacht_parser.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageD/src/bacht_simulator.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageD/src/bacht_store.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageI/.gitignore</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageI/src/bacht_cli.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageI/src/bacht_data.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageI/src/bacht_parser.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageI/src/bacht_simulator.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageI/src/bacht_store.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageR/.gitignore</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageR/src/bacht_cli.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageR/src/bacht_data.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageR/src/bacht_parser.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageR/src/bacht_simulator.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageR/src/bacht_store.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageW/.gitignore</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageW/src/bacht_cli.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageW/src/bacht_data.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageW/src/bacht_parser.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageW/src/bacht_simulator.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageW/src/bacht_store.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/adapter/MatchAdapter.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/classes/custom/MatchNotEnded.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/events/GetLastMatchsNotEndedEvent.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/events/GetLastRaceAthleticEvent.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/events/LastRaceAthleticEvent.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/events/MatchsEvent.java</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/res/layout/match.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../StadiumWebSite/src/main/java/beans/custom/MatchNotEnded.java</PATH>
         </FILE-GROUP>
         <FILE-GROUP>
           <option name="myUpdateName" value="Deleted" />
@@ -396,12 +337,6 @@
           <option name="mySupportsDeletion" value="false" />
           <option name="myCanBeAbsent" value="true" />
           <option name="myId" value="REMOVED_FROM_REPOSITORY" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Projet_JMJ/.gitignore</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Projet_JMJ/src/bacht_cli.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Projet_JMJ/src/bacht_data.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Projet_JMJ/src/bacht_parser.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Projet_JMJ/src/bacht_simulator.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Projet_JMJ/src/bacht_store.scala</PATH>
         </FILE-GROUP>
         <FILE-GROUP>
           <option name="myUpdateName" value="Restored" />
@@ -961,7 +896,7 @@
       <updated>1492672020786</updated>
       <workItem from="1492672026567" duration="1984000" />
       <workItem from="1492674706914" duration="3258000" />
-      <workItem from="1493026690997" duration="2010000" />
+      <workItem from="1493026690997" duration="4168000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit For phidget's scala code">
       <created>1492672296302</created>
@@ -1068,14 +1003,28 @@
       <option name="project" value="LOCAL" />
       <updated>1492870742623</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Scala Phidget Code : ou &quot;Ah oui mince, ça fait genre 3 jours que j'ai pas push, ça serait bien de le faire quand même... &quot;">
+      <created>1493028912322</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1493028912322</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Phidget code ok, still the TODO to do">
+      <created>1493047349291</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1493047349291</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="36113000" />
+    <option name="totallyTimeSpent" value="38271000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="952" y="0" width="976" height="1038" extended-state="0" />
+    <frame x="827" y="0" width="1101" height="1038" extended-state="0" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1091,7 +1040,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298969" sideWeight="0.4958932" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15777777" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.0" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="SonarLint" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1153,7 +1102,9 @@
     <MESSAGE value="field done" />
     <MESSAGE value="ouptut done" />
     <MESSAGE value="advance in blackbox" />
-    <option name="LAST_COMMIT_MESSAGE" value="advance in blackbox" />
+    <MESSAGE value="Scala Phidget Code : ou &quot;Ah oui mince, ça fait genre 3 jours que j'ai pas push, ça serait bien de le faire quand même... &quot;" />
+    <MESSAGE value="Phidget code ok, still the TODO to do" />
+    <option name="LAST_COMMIT_MESSAGE" value="Phidget code ok, still the TODO to do" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1228,6 +1179,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="84">
           <caret line="4" column="39" lean-forward="false" selection-start-line="4" selection-start-column="39" selection-end-line="4" selection-end-column="39" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1245,7 +1197,7 @@
           <caret line="4" column="40" lean-forward="false" selection-start-line="4" selection-start-column="40" selection-end-line="4" selection-end-column="40" />
           <folding>
             <element signature="e#18#34#0" expanded="true" />
-            <element signature="e#4067#4654#0" expanded="false" />
+            <element signature="e#5162#5749#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1278,6 +1230,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="84">
           <caret line="4" column="68" lean-forward="false" selection-start-line="4" selection-start-column="68" selection-end-line="4" selection-end-column="68" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1285,6 +1238,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="168">
           <caret line="8" column="1" lean-forward="false" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1293,7 +1247,7 @@
         <state relative-caret-position="189">
           <caret line="42" column="26" lean-forward="false" selection-start-line="42" selection-start-column="26" selection-end-line="42" selection-end-column="26" />
           <folding>
-            <element signature="e#19#43#0" expanded="true" />
+            <element signature="e#19#43#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1303,7 +1257,7 @@
         <state relative-caret-position="399">
           <caret line="25" column="3" lean-forward="true" selection-start-line="25" selection-start-column="3" selection-end-line="25" selection-end-column="3" />
           <folding>
-            <element signature="e#19#43#0" expanded="true" />
+            <element signature="e#19#43#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1328,7 +1282,7 @@
         <state relative-caret-position="105">
           <caret line="5" column="108" lean-forward="false" selection-start-line="5" selection-start-column="108" selection-end-line="5" selection-end-column="108" />
           <folding>
-            <element signature="e#19#43#0" expanded="true" />
+            <element signature="e#19#43#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1385,13 +1339,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="315">
           <caret line="65" column="5" lean-forward="true" selection-start-line="65" selection-start-column="5" selection-end-line="65" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Models/Out/Field.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-147">
-          <caret line="14" column="0" lean-forward="true" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1420,6 +1368,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="147">
           <caret line="7" column="30" lean-forward="false" selection-start-line="7" selection-start-column="30" selection-end-line="7" selection-end-column="30" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1428,7 +1377,7 @@
         <state relative-caret-position="840">
           <caret line="44" column="19" lean-forward="false" selection-start-line="44" selection-start-column="19" selection-end-line="44" selection-end-column="19" />
           <folding>
-            <element signature="e#19#43#0" expanded="true" />
+            <element signature="e#19#43#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1472,18 +1421,26 @@
         <state relative-caret-position="224">
           <caret line="23" column="6" lean-forward="false" selection-start-line="23" selection-start-column="6" selection-end-line="23" selection-end-column="6" />
           <folding>
-            <element signature="e#19#43#0" expanded="true" />
+            <element signature="e#19#43#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Models/Out/Field.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="23" column="76" lean-forward="false" selection-start-line="23" selection-start-column="76" selection-end-line="23" selection-end-column="76" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/BlackBox/BlackBox.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="144" column="159" lean-forward="false" selection-start-line="144" selection-start-column="159" selection-end-line="144" selection-end-column="159" />
+        <state relative-caret-position="423">
+          <caret line="134" column="3" lean-forward="false" selection-start-line="134" selection-start-column="3" selection-end-line="134" selection-end-column="3" />
           <folding>
             <element signature="e#18#34#0" expanded="true" />
-            <element signature="e#4067#4654#0" expanded="false" />
+            <element signature="e#5162#5749#0" expanded="false" />
           </folding>
         </state>
       </provider>

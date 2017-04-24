@@ -15,13 +15,13 @@ class Field(interfaceKitPhidget: InterfaceKitPhidget, indexRed: Int, indexBlue: 
 
   def setWatering(state:Boolean):Unit = {
     is_Watering = state
-    if (is_Watering) is_Heating = false
+    if (is_Watering) is_Heating = false //Todo : check if coherent exclusion
     //setLight()
   }
 
   def setHeating(state: Boolean): Unit = {
     is_Heating = state
-    if (is_Heating) is_Watering = false
+    if (is_Heating) is_Watering = false //Todo : check if coherent exclusion
     //setLight()
   }
 

@@ -13,19 +13,20 @@ import scala.util.matching.Regex
 class BachTParsers extends RegexParsers {
 
   def token 	: Parser[String] = ("[a-z][0-9a-zA-Z_]*").r ^^ {_.toString}
+  def duration 	: Parser[int] = ("[0-9]*").r
 
   val opChoice  : Parser[String] = "+" 
   val opPara    : Parser[String] = "||"
   val opSeq     : Parser[String] = ";" 
  
   def primitive : Parser[Expr]   = "tell("~token~")" ^^ {
-        case _ ~ vtoken ~ _  => bacht_ast_primitive("tell",vtoken) }  | 
+        case _ ~ vtoken, vduration ~ _  => bacht_ast_primitive("tell",vduration,vtoken) }  |
                                    "ask("~token~")" ^^ {
-        case _ ~ vtoken ~ _  => bacht_ast_primitive("ask",vtoken) }   | 
+        case _ ~ vtoken, vduration ~ _  => bacht_ast_primitive("ask",vduration,vtoken) }   |
                                    "get("~token~")" ^^ {
-        case _ ~ vtoken ~ _  => bacht_ast_primitive("get",vtoken) }   | 
+        case _ ~ vtoken, vduration ~ _  => bacht_ast_primitive("get",vduration,vtoken) }   |
                                    "nask("~token~")" ^^ {
-        case _ ~ vtoken ~ _  => bacht_ast_primitive("nask",vtoken) }
+        case _ ~ vtoken, vduration ~ _  => bacht_ast_primitive("nask",vduration,vtoken) }
 
   def agent = compositionChoice
 
