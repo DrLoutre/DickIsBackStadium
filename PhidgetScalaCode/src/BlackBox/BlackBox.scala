@@ -102,7 +102,36 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
     "Error : Bar Event no longer taken in charge in this code"
   }
   def processHeatEvent(log: String): _root_.scala.Predef.String = {
-    "Todo \n"
+    val temp:Double = weather.getHeat
+    val isDay:Boolean = weather.isDay
+    val weatherCond:Weather = weather.getWeather
+    var logChanges = ""
+
+    weatherCond match {
+      case Snow()  =>
+        roof.closeRoof
+        field.setHeating(temp <= 5)
+        field.setWatering(!currentMode.isMatch && (temp>15 || !isDay))
+      case Rain()  =>
+        roof.closeRoof
+        field.setHeating(temp <= 10)
+        field.setWatering(!currentMode.isMatch && (temp>20 || !isDay))
+      case Sun()   =>
+        roof.openRoof
+        field.setHeating(temp <= 5)
+        field.setWatering(!currentMode.isMatch && (temp>15 || !isDay))
+      case Cloud() =>
+        if (roof.open) {
+          field.setHeating(temp <= 15)
+          field.setWatering(!currentMode.isMatch && (temp>10 || !isDay))
+        } else {
+          field.setHeating(temp <= 10)
+          field.setWatering(!currentMode.isMatch && (temp>10 || !isDay))
+        }
+    }
+
+
+    log + "change in temperature : " + temp + " \n" + "actual meteo : " + weatherCond.toString + "\n are we during day ? ==> " + isDay + "\n\n changes done : " + logChanges
   }
 
   def processLightEvent(log: String): _root_.scala.Predef.String = {
