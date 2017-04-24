@@ -18,7 +18,7 @@ class BachTSimul(var bb: BachTStore) {
    def run_one(agent: Expr):(Boolean,Expr) = {
 
       agent match {
-         case bacht_ast_primitive(prim,token) => 
+         case bacht_ast_primitive(prim,duration,token) =>
             {  if (exec_primitive(prim,token)) { (true,bacht_ast_empty_agent()) }
                else { (false,agent) }
             }
@@ -112,20 +112,65 @@ class BachTSimul(var bb: BachTStore) {
       }
    }
 
+   def testvalue(value:int):int = {
+     if (value-1 >= 0) {value-1}
+     else {0}
+   }
+
+   def run_time(agent: Expr):Expr = {
+     agent match {
+       case bacht_ast_primitive(prim,time,token) =>
+       {
+         prim match {
+            case "tell" => {
+              if(time = 0) bacht_ast_empty_agent()
+              else agent
+            }
+            case "ask"  => bacht_ast_primitive(prim,testvalue(time),token)
+            case "get"  => bacht_ast_primitive(prim,testvalue(time),token)
+            case "nask" => bacht_ast_primitive(prim,testvalue(time),token)
+         }
+       }
+
+       case bacht_ast_agent(";",ag_i,ag_ii) =>
+       {
+         bacht_ast_agent(";", run_time(ag_i), ag_ii)
+       }
+
+       case bacht_ast_agent("||",ag_i,ag_ii) =>
+       {
+         bacht_ast_agent("||", run_time(ag_i), run_time(ag_ii))
+       }
+
+       case bacht_ast_agent("+",ag_i,ag_ii) =>
+       {
+         bacht_ast_agent("+", run_time(ag_i), run_time(ag_ii))
+       }
+
+       case _ =>
+       {
+         _
+       }
+     }
+   }
+
    def bacht_exec_all(agent: Expr):Boolean = {
 
        var failure = false
        var c_agent = agent
-       while ( c_agent != bacht_ast_empty_agent() && !failure ) {
-          failure = run_one(c_agent) match 
-               { case (false,_)          => true
-                 case (true,new_agent)  => 
-                    { c_agent = new_agent
-                      false
-                    }
-               }
-           bb.print_store
-           println("\n")
+       while( c_agent != bacht_ast_empty_agent()) {
+         while (!failure) {
+           failure = run_one(c_agent) match {
+             case (false, _) => true
+             case (true, new_agent) => {
+               c_agent = new_agent
+               false
+             }
+           }
+         bb.print_store
+         println("\n")
+         }
+         c_agent = run_time(c_agent)
        }
        
        if (c_agent == bacht_ast_empty_agent()) {
