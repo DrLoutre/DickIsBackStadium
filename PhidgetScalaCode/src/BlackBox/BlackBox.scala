@@ -46,15 +46,8 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
   var currentMode:Mode      = mode.getCurrentMode
   //val commu:CommunicationListener = new CommunicationListener
 
-  def processBarEvent(log: String): _root_.scala.Predef.String = ???
-  def processHeatEvent(log: String): _root_.scala.Predef.String = ???
-  def processLightEvent(log: String): _root_.scala.Predef.String = ???
-  def processGoalEvent(log: String): _root_.scala.Predef.String = ???
-  def processStandEvent(log: String): _root_.scala.Predef.String = ???
-  def processTurnEvent(log: String): _root_.scala.Predef.String = ???
-
   def processEvent(event: Event): Unit = {
-    var log:String = _
+    var log:String = ""
 
     if (!currentMode.isMatch)
       log += "Proceed Event : \n"
@@ -66,7 +59,7 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
     event match {
       case BarEvent(_)           => log = processBarEvent(log)
       case HeatEvent(_)          => log = processHeatEvent(log)
-      case LightEvent(_)         => log = processLightEvent(log)
+      case LightEvent(_)         => log = processLightEvent(event,log)
       case PassageEvent(_)       => log = processGoalEvent(log)
       case StandEvent(_)         => log = processStandEvent(log)
       case TurnEvent(_)          => log = processTurnEvent(log)
@@ -86,6 +79,7 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
   }
 
   def noEvent(c:Class[_]):Boolean = {
+    //Todo : refactor every use of this in order to use the scala option method
     getLast(c) match {
       case Some(_) => true
       case None    => false
@@ -95,7 +89,64 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
   def getLast(c:Class[_]):Option[Event] = {
     val temporaryList:util.ArrayList[Event] = eventList.clone.asInstanceOf[util.ArrayList[Event]]
     val tempList:List[Event] = temporaryList.asScala.toList
-    tempList.find((p:Event) => p match {case c => true case _ => false})
-    
+    //tempList.find((p:Event) => p match {case c => true case _ => false}) todo: verify is its really equivalent
+    tempList.find{case c => true case _ => false}
+  }
+
+
+  /*
+  Todo : change the return value of every function used below to option and when none make the error log written
+   */
+
+  def processBarEvent(log: String): _root_.scala.Predef.String = {
+    "Error : Bar Event no longer taken in charge in this code"
+  }
+  def processHeatEvent(log: String): _root_.scala.Predef.String = {
+    "Todo \n"
+  }
+
+  def processLightEvent(log: String): _root_.scala.Predef.String = {
+    "change in brightness : " + light.retLightIntensity + "\n"
+  }
+
+  def processGoalEvent(event:Event, log: String): _root_.scala.Predef.String = {
+    if (currentMode.isMatch)
+      event match {
+        case VibrationEvent(_) =>
+          if (goalCase.hasGoalHappened(event.asInstanceOf[VibrationEvent]))
+            goal.incrementGoal(System.currentTimeMillis())
+          log + "vibration of the goal Structure \n"
+        case PassageEvent(_) =>
+          goalCase = new GoalCase(event.asInstanceOf[PassageEvent], goal.getLastGoal)
+          log + "passage through the goal poles \n"
+      }
+    else log + "no match ongoing, goal event ignored\n"
+  }
+
+  def processStandEvent(log: String): _root_.scala.Predef.String = {
+   // val northStandState = for (seat <- stdNorth.getSeats) yield {
+     // if (seat) "Seat taken" else "Seat Free"
+    //}
+
+    val northStandState:Array[String] = stdNorth.getSeats.zipWithIndex.map{
+      case(taken: Boolean, count: Int) => {
+        val x = "Seat " + count
+        val y = if (taken) " taken" else " free"
+        x + y
+      }
+    }
+    val southStandState:Array[String] = stdSouth.getSeats.zipWithIndex.map{
+      case(taken: Boolean, count: Int) => {
+        val x = "Seat " + count
+        val y = if (taken) " taken" else " free"
+        x + y
+      }
+    }
+    log + "Change in Stands : Stand actual State : \n" + "North Stand : \n" + northStandState.mkString + "\n South Stand : \n" + southStandState.mkString + "\n"
+  }
+
+  def processTurnEvent(log: String): _root_.scala.Predef.String = {
+    //Todo : Check if new implementation suits the simple log
+    log + "new turn or player \n"
   }
 }
