@@ -10,5 +10,5 @@
 
 class Expr
 case class bacht_ast_empty_agent() extends Expr
-case class bacht_ast_primitive(primitive: String, time: int, token: String) extends Expr
+case class bacht_ast_primitive(primitive: String, time: Int, token: String) extends Expr
 case class bacht_ast_agent(op: String, agenti: Expr, agentii: Expr) extends Expr

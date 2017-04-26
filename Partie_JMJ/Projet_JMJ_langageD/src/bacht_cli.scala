@@ -1,4 +1,4 @@
-/* -------------------------------------------------------------------------- 
+/* --------------------------------------------------------------------------
 
    Complete code for the command-line interpreter
 
@@ -11,44 +11,43 @@
 class Expr
 case class bacht_ast_empty_agent() extends Expr
 case class bacht_ast_primitive(primitive: String, token: String) extends Expr
-case class bacht_ast_delay(primitive: String, time: int) extends Expr
+case class bacht_ast_delay(primitive: String, time: Int) extends Expr
 case class bacht_ast_agent(op: String, agenti: Expr, agentii: Expr) extends Expr
 import scala.util.parsing.combinator._
-import scala.util.matching.Regex
 
 class BachTParsers extends RegexParsers {
 
   def token 	: Parser[String] = ("[a-z][0-9a-zA-Z_]*").r ^^ {_.toString}
-  def duration 	: Parser[int] = ("[0-9]*").r
+  def duration 	: Parser[Int] = ("[0-9]*").r ^^ {_.toInt}
 
-  val opChoice  : Parser[String] = "+" 
+  val opChoice  : Parser[String] = "+"
   val opPara    : Parser[String] = "||"
-  val opSeq     : Parser[String] = ";" 
- 
+  val opSeq     : Parser[String] = ";"
+
   def primitive : Parser[Expr]   = "tell("~token~")" ^^ {
-        case _ ~ vtoken ~ _  => bacht_ast_primitive("tell",vtoken) }  | 
+      case _ ~ vtoken ~ _  => bacht_ast_primitive("tell",vtoken) }  |
                                    "ask("~token~")" ^^ {
-        case _ ~ vtoken ~ _  => bacht_ast_primitive("ask",vtoken) }   | 
+      case _ ~ vtoken ~ _  => bacht_ast_primitive("ask",vtoken) }   |
                                    "get("~token~")" ^^ {
-        case _ ~ vtoken ~ _  => bacht_ast_primitive("get",vtoken) }   | 
+      case _ ~ vtoken ~ _  => bacht_ast_primitive("get",vtoken) }   |
                                    "nask("~token~")" ^^ {
-        case _ ~ vtoken ~ _  => bacht_ast_primitive("nask",vtoken) } |
+      case _ ~ vtoken ~ _  => bacht_ast_primitive("nask",vtoken) } |
                                    "delay("~duration~")" ^^ {
-        case _ ~ vtoken ~ _  => bacht_ast_primitive("delay",vtoken) }
+      case _ ~ vtoken ~ _  => bacht_ast_delay("delay",vtoken) }
 
   def agent = compositionChoice
 
   def compositionChoice : Parser[Expr] = compositionPara~rep(opChoice~compositionChoice) ^^ {
-        case ag ~ List() => ag
-        case agi ~ List(op~agii)  => bacht_ast_agent(op,agi,agii) }
+    case ag ~ List() => ag
+    case agi ~ List(op~agii)  => bacht_ast_agent(op,agi,agii) }
 
   def compositionPara : Parser[Expr] = compositionSeq~rep(opPara~compositionPara) ^^ {
-        case ag ~ List() => ag
-        case agi ~ List(op~agii)  => bacht_ast_agent(op,agi,agii) }
+    case ag ~ List() => ag
+    case agi ~ List(op~agii)  => bacht_ast_agent(op,agi,agii) }
 
   def compositionSeq : Parser[Expr] = simpleAgent~rep(opSeq~compositionSeq) ^^ {
-        case ag ~ List() => ag
-        case agi ~ List(op~agii)  => bacht_ast_agent(op,agi,agii) }
+    case ag ~ List() => ag
+    case agi ~ List(op~agii)  => bacht_ast_agent(op,agi,agii) }
 
   def simpleAgent : Parser[Expr] = primitive | parenthesizedAgent
 
@@ -59,13 +58,13 @@ class BachTParsers extends RegexParsers {
 object BachTSimulParser extends BachTParsers {
 
   def parse_primitive(prim: String) = parseAll(primitive,prim) match {
-        case Success(result, _) => result
-        case failure : NoSuccess => scala.sys.error(failure.msg)
+    case Success(result, _) => result
+    case failure : NoSuccess => scala.sys.error(failure.msg)
   }
 
   def parse_agent(ag: String) = parseAll(agent,ag) match {
-        case Success(result, _) => result
-        case failure : NoSuccess => scala.sys.error(failure.msg)
+    case Success(result, _) => result
+    case failure : NoSuccess => scala.sys.error(failure.msg)
   }
 
   def parse_delay(prim: String) = parseAll(primitive,prim) match {
@@ -79,59 +78,59 @@ import scala.swing._
 
 class BachTStore {
 
-   var theStore = Map[String,Int]()
+  var theStore = Map[String,Int]()
 
-   def tell(token:String):Boolean = {
-      if (theStore.contains(token)) 
-        { theStore(token) = theStore(token) + 1 }
-      else
-        { theStore = theStore ++ Map(token -> 1) }
-      true
-   }
-
-
-   def ask(token:String):Boolean = {
-      if (theStore.contains(token)) 
-             if (theStore(token) >= 1) { true }
-             else { false }
-      else false
-   }
+  def tell(token:String):Boolean = {
+    if (theStore.contains(token))
+    { theStore(token) = theStore(token) + 1 }
+    else
+    { theStore = theStore ++ Map(token -> 1) }
+    true
+  }
 
 
-   def get(token:String):Boolean = {
-      if (theStore.contains(token)) 
-             if (theStore(token) >= 1) 
-               { theStore(token) = theStore(token) - 1 
-                 true 
-               }
-             else { false }
-      else false
-   }
+  def ask(token:String):Boolean = {
+    if (theStore.contains(token))
+      if (theStore(token) >= 1) { true }
+      else { false }
+    else false
+  }
 
 
-   def nask(token:String):Boolean = {
-      if (theStore.contains(token)) 
-             if (theStore(token) >= 1) { false }
-             else { true }
-      else true 
-   }
+  def get(token:String):Boolean = {
+    if (theStore.contains(token))
+      if (theStore(token) >= 1)
+      { theStore(token) = theStore(token) - 1
+        true
+      }
+      else { false }
+    else false
+  }
 
-   def print_store {
-      print("{ ")
-      for ((t,d) <- theStore) 
-         print ( t + "(" + theStore(t) + ")" )
-      println(" }")
-   }
 
-   def clear_store {
-      theStore = Map[String,Int]()
-   }
+  def nask(token:String):Boolean = {
+    if (theStore.contains(token))
+      if (theStore(token) >= 1) { false }
+      else { true }
+    else true
+  }
+
+  def print_store {
+    print("{ ")
+    for ((t,d) <- theStore)
+      print ( t + "(" + theStore(t) + ")" )
+    println(" }")
+  }
+
+  def clear_store {
+    theStore = Map[String,Int]()
+  }
 
 }
 
 object bb extends BachTStore {
 
-   def reset { clear_store }
+  def reset { clear_store }
 
 }
 
@@ -251,28 +250,66 @@ class BachTSimul(var bb: BachTStore) {
     agent match {
       case bacht_ast_delay(prim, time) =>
       {
-        if (time >= 0) {(bacht_ast_delay(prim, time - 1))}
+        if (time > 0) {(bacht_ast_delay(prim, time - 1))}
         else (bacht_ast_empty_agent())
       }
 
       case bacht_ast_agent(";",ag_i,ag_ii) =>
       {
-        bacht_ast_agent(";", run_time(ag_i), ag_ii)
+        run_time(ag_i) match {
+          case bacht_ast_empty_agent() =>
+            ag_ii
+          case _ =>
+            bacht_ast_agent(";", run_time(ag_i), ag_ii)
+        }
       }
 
       case bacht_ast_agent("||",ag_i,ag_ii) =>
       {
-        bacht_ast_agent("||", run_time(ag_i), run_time(ag_ii))
+        run_time(ag_i) match {
+          case bacht_ast_empty_agent() =>
+            run_time(ag_ii) match {
+              case bacht_ast_empty_agent() =>
+                bacht_ast_empty_agent()
+              case _ =>
+                run_time(ag_ii)
+            }
+          case _ =>
+            run_time(ag_ii) match {
+              case bacht_ast_empty_agent() =>
+                run_time(ag_i)
+              case _ =>
+                bacht_ast_agent("||", run_time(ag_i), run_time(ag_ii))
+            }
+        }
       }
 
       case bacht_ast_agent("+",ag_i,ag_ii) =>
       {
-        bacht_ast_agent("+", run_time(ag_i), run_time(ag_ii))
+        run_time(ag_i) match {
+          case bacht_ast_empty_agent() =>
+            run_time(ag_ii) match {
+              case bacht_ast_empty_agent() =>
+                bacht_ast_empty_agent()
+              case _ =>
+                run_time(ag_ii)
+            }
+          case _ =>
+            run_time(ag_ii) match {
+              case bacht_ast_empty_agent() =>
+                run_time(ag_i)
+              case _ =>
+                bacht_ast_agent("+", run_time(ag_i), run_time(ag_ii))
+            }
+        }
       }
 
-      case _ =>
-      {
-        _
+      case bacht_ast_primitive(prim, token) => {
+        bacht_ast_primitive(prim, token)
+      }
+
+      case bacht_ast_empty_agent() => {
+        bacht_ast_empty_agent()
       }
     }
   }
@@ -282,7 +319,7 @@ class BachTSimul(var bb: BachTStore) {
     var c_agent = agent
     while (c_agent != bacht_ast_empty_agent()) {
       var failure = false
-      while (!failure) {
+      while (c_agent != bacht_ast_empty_agent() && !failure) {
         failure = run_one(c_agent) match {
           case (false, _) => true
           case (true, new_agent) => {
@@ -327,4 +364,3 @@ object ag extends BachTSimul(bb) {
   def run(agent:String) { apply(agent) }
 
 }
-         
