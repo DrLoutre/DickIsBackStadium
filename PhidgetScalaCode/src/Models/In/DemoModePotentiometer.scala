@@ -13,30 +13,31 @@ import com.phidgets.event.{SensorChangeEvent, SensorChangeListener}
   * As an example, the first 90° will be the normal mode, from 91° to 180° will be demo mode 1 and so one...
   */
 class DemoModePotentiometer(interfaceKitPhidget: InterfaceKitPhidget, sensorIndex: Int, blackBox: BlackBox) {
-  val MILI_INTERVAL = 500
-  val MAX_CURSVAL   = 1000
-  val NBR_MODES     = 2
+  private val MILI_INTERVAL = 500
+  private val MAX_CURSVAL   = 1000
+  private val NBR_MODES     = 2
+  private val POT_SETTING_TIME= 2000
 
   interfaceKitPhidget.addSensorChangeListener(new SensorChangeListener {
-    override def sensorChanged(sensorChangeEvent: SensorChangeEvent): Unit = {
-      if(sensorChangeEvent.getIndex == sensorIndex /*TODO : && si noEvent de la blackbox + timing*/) {
-        Thread.sleep(2000)
-        DemoPhaseEvent(System.currentTimeMillis)
-        //Todo : process event
+    override def sensorChanged(sensorChangeEvent: SensorChangeEvent): Unit =
+      if(sensorChangeEvent.getIndex == sensorIndex) {
+        val time = System.currentTimeMillis
+        blackBox.getLast(Class[DemoPhaseEvent]) match {
+          case Some(DemoPhaseEvent(eventTime)) => if (time - eventTime > MILI_INTERVAL) Thread.sleep(POT_SETTING_TIME)
+        }
+        blackBox.processEvent(DemoPhaseEvent(time))
       }
-
-    }
   })
 
   def getCurrentMode:Mode = {
     val value:Int = interfaceKitPhidget.getSensorValue(sensorIndex)/(MAX_CURSVAL/NBR_MODES)%NBR_MODES
-    value match { //TODO: after creation of mode, test if there is a registered match in process
+    value match { //TODO: Create correct modes to test.
       case 0 =>
         println("Setting to normal mode ... ")
         NormalMode()
       case 1 =>
         println("Setting to match mode ... ")
-        NormalMode()//Todo : special mode where only match is
+        NormalMode()
       case 2 =>
         println("Setting to Demo mode 1 ... ")
         Demo_1_Mode()
@@ -45,8 +46,5 @@ class DemoModePotentiometer(interfaceKitPhidget: InterfaceKitPhidget, sensorInde
         NormalMode()
     }
   }
-
-
-
 
 }
