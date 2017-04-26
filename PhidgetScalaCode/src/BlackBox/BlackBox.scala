@@ -17,37 +17,39 @@ import scala.collection.immutable.Set
   * Managing the incoming flux of event.
   */
 class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
-  val INDEX_LIGHT_SENSOR:Int        = 0
-  val INDEX_TEMPERATURE_SENSOR:Int  = 1
-  val INDEX_PRECISION_IR_SENSOR:Int = 3
-  val INDEX_VIBRATION_SENSOR:Int    = 4
-  val INDEX_MODE_POT:Int            = 5
+  private val INDEX_LIGHT_SENSOR:Int        = 0
+  private val INDEX_TEMPERATURE_SENSOR:Int  = 1
+  private val INDEX_PRECISION_IR_SENSOR:Int = 3
+  private val INDEX_VIBRATION_SENSOR:Int    = 4
+  private val INDEX_MODE_POT:Int            = 5
 
-  val SEATS_NUMBER:Int              = 4
+  private val SEATS_NUMBER:Int              = 4
 
-  val INDEX_R:Int                   = 5
-  val INDEX_G:Int                   = 6
-  val INDEX_B:Int                   = 7
+  private val INDEX_R:Int                   = 5
+  private val INDEX_G:Int                   = 6
+  private val INDEX_B:Int                   = 7
 
-  var eventList: util.LinkedList[Event] = new util.LinkedList[Event]()
-  var goalCase: GoalCase = _
+  private var eventList: util.LinkedList[Event] = new util.LinkedList[Event]()
+  private var goalCase: GoalCase = _
 
-  val goal:Goal             = new Goal(  interfaceKitPhidget, INDEX_PRECISION_IR_SENSOR, INDEX_VIBRATION_SENSOR, this)
-  val weather:WeatherStation= new WeatherStation( interfaceKitPhidget, INDEX_TEMPERATURE_SENSOR, this)
-  val light:Light           = new Light( interfaceKitPhidget, INDEX_LIGHT_SENSOR, this )
-  val lighting:Lighting     = new Lighting(interfaceKitPhidget)
-  val stdSouth:Stand        = new Stand(interfaceKitPhidget, "South Stand", SEATS_NUMBER, this)
-  val stdNorth:Stand        = new Stand(interfaceKitPhidget, "North Stand", SEATS_NUMBER, this)
-  val lapCntr:LapCalculator = new LapCalculator(this)
-  val field:Field           = new Field(interfaceKitPhidget, INDEX_R, INDEX_B, INDEX_G)
-  val roof:Roof             = new Roof
-  val planning:MatchPlanning= new MatchPlanning
-  val mode:DemoModePotentiometer = new DemoModePotentiometer(interfaceKitPhidget, INDEX_MODE_POT, this)
-  var currentMode:Mode      = mode.getCurrentMode
+  private val goal:Goal             = new Goal(  interfaceKitPhidget, INDEX_PRECISION_IR_SENSOR, INDEX_VIBRATION_SENSOR, this)
+  private val weather:WeatherStation= new WeatherStation( interfaceKitPhidget, INDEX_TEMPERATURE_SENSOR, this)
+  private val light:Light           = new Light( interfaceKitPhidget, INDEX_LIGHT_SENSOR, this )
+  private val lighting:Lighting     = new Lighting(interfaceKitPhidget)
+  private val stdSouth:Stand        = new Stand(interfaceKitPhidget, "South Stand", SEATS_NUMBER, this)
+  private val stdNorth:Stand        = new Stand(interfaceKitPhidget, "North Stand", SEATS_NUMBER, this)
+  private val lapCntr:LapCalculator = new LapCalculator(this)
+  private val field:Field           = new Field(interfaceKitPhidget, INDEX_R, INDEX_B, INDEX_G)
+  private val roof:Roof             = new Roof
+  private val planning:MatchPlanning= new MatchPlanning
+  private val mode:DemoModePotentiometer = new DemoModePotentiometer(interfaceKitPhidget, INDEX_MODE_POT, this)
+  private var currentMode:Mode      = mode.getCurrentMode
   //val commu:CommunicationListener = new CommunicationListener
 
   def processEvent(event: Event): Unit = {
     var log:String = ""
+
+    currentMode.isMatch = planning.areWeDuringAMatch
 
     if (!currentMode.isMatch)
       log += "Proceed Event : \n"
@@ -59,25 +61,24 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
     event match {
       case BarEvent(_)           => log = processBarEvent(log)
       case HeatEvent(_)          => log = processHeatEvent(log)
-      case LightEvent(_)         => log = processLightEvent(event,log)
-      case PassageEvent(_)       => log = processGoalEvent(log)
+      case LightEvent(_)         => log = processLightEvent(log)
+      case PassageEvent(_)       => log = processGoalEvent(event,log)
       case StandEvent(_)         => log = processStandEvent(log)
       case TurnEvent(_)          => log = processTurnEvent(log)
-      case VibrationEvent(_)     => log = processGoalEvent(log)
-      case NewMatchPlanEvent(_)  => {
+      case VibrationEvent(_)     => log = processGoalEvent(event,log)
+      case NewMatchPlanEvent(_)  =>
         log += "Received new match ! \n"
         //add the received match to communication listener
-      }
-      case DemoPhaseEvent(_)     => {
+      case DemoPhaseEvent(_)     =>
         currentMode = mode.getCurrentMode
         log += "New Mode Set : " + currentMode.toString
-      }
       case _                  => log = "Error Event non recognized"
     }
-    if (eventList.size()>50) eventList.removeLast();
+    if (eventList.size()>50) eventList.removeLast()
     println(log)
   }
 
+  @deprecated
   def noEvent(c:Class[_]):Boolean = {
     //Todo : refactor every use of this in order to use the scala option method
     getLast(c) match {
@@ -98,18 +99,47 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
   Todo : change the return value of every function used below to option and when none make the error log written
    */
 
-  def processBarEvent(log: String): _root_.scala.Predef.String = {
+  private def processBarEvent(log: String): _root_.scala.Predef.String = {
     "Error : Bar Event no longer taken in charge in this code"
   }
-  def processHeatEvent(log: String): _root_.scala.Predef.String = {
-    "Todo \n"
+  private def processHeatEvent(log: String): _root_.scala.Predef.String = {
+    val temp:Double = weather.getHeat
+    val isDay:Boolean = weather.isDay
+    val weatherCond:Weather = weather.getWeather
+    var logChanges = ""
+
+    weatherCond match {
+      case Snow()  =>
+        roof.closeRoof
+        field.setHeating(temp <= 5)
+        field.setWatering(!currentMode.isMatch && (temp>15 || !isDay))
+      case Rain()  =>
+        roof.closeRoof
+        field.setHeating(temp <= 10)
+        field.setWatering(!currentMode.isMatch && (temp>20 || !isDay))
+      case Sun()   =>
+        roof.openRoof
+        field.setHeating(temp <= 5)
+        field.setWatering(!currentMode.isMatch && (temp>15 || !isDay))
+      case Cloud() =>
+        if (roof.open) {
+          field.setHeating(temp <= 15)
+          field.setWatering(!currentMode.isMatch && (temp>10 || !isDay))
+        } else {
+          field.setHeating(temp <= 10)
+          field.setWatering(!currentMode.isMatch && (temp>10 || !isDay))
+        }
+    }
+
+
+    log + "change in temperature : " + temp + " \n" + "actual meteo : " + weatherCond.toString + "\n are we during day ? ==> " + isDay + "\n\n changes done : " + logChanges
   }
 
-  def processLightEvent(log: String): _root_.scala.Predef.String = {
+  private def processLightEvent(log: String): _root_.scala.Predef.String = {
     "change in brightness : " + light.retLightIntensity + "\n"
   }
 
-  def processGoalEvent(event:Event, log: String): _root_.scala.Predef.String = {
+  private def processGoalEvent(event:Event, log: String): _root_.scala.Predef.String = {
     if (currentMode.isMatch)
       event match {
         case VibrationEvent(_) =>
@@ -123,7 +153,7 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
     else log + "no match ongoing, goal event ignored\n"
   }
 
-  def processStandEvent(log: String): _root_.scala.Predef.String = {
+  private def processStandEvent(log: String): _root_.scala.Predef.String = {
    // val northStandState = for (seat <- stdNorth.getSeats) yield {
      // if (seat) "Seat taken" else "Seat Free"
     //}
@@ -145,7 +175,7 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
     log + "Change in Stands : Stand actual State : \n" + "North Stand : \n" + northStandState.mkString + "\n South Stand : \n" + southStandState.mkString + "\n"
   }
 
-  def processTurnEvent(log: String): _root_.scala.Predef.String = {
+  private def processTurnEvent(log: String): _root_.scala.Predef.String = {
     //Todo : Check if new implementation suits the simple log
     log + "new turn or player \n"
   }

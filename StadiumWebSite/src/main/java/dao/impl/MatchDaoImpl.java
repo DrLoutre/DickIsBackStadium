@@ -185,7 +185,8 @@ public class MatchDaoImpl extends Dao implements MatchDao{
                 + "with the id " + idTeam1 + "does not exists in the database");
         if(!teamDao.teamExists(idTeam2)) throw new NotFoundException("The team "
                 + "with the id " + idTeam2 + "does not exists in the database");
-        match.setTeamID(idTeam1, idTeam2);
+        match.setTeamID1(idTeam1);
+        match.setTeamID2(idTeam2);
         MatchsData data = toData(match);
         SQLUpdateClause update = queryFactory.update(MATCH);
         
@@ -375,7 +376,8 @@ public class MatchDaoImpl extends Dao implements MatchDao{
     
     private Match toMatch(MatchsData data){
         Match returnValue = new Match();
-        returnValue.setTeamID(data.getIdTeam1(), data.getIdTeam2());
+        returnValue.setTeamID1(data.getIdTeam1());
+        returnValue.setTeamID2(data.getIdTeam2());
 //        try {
 //            returnValue.setTeamGoals(data.getIdTeam1(), data.getGoal1());
 //            returnValue.setTeamGoals(data.getIdTeam2(), data.getGoal2());

@@ -98,20 +98,6 @@ public class LapDaoImpl extends Dao implements LapDao{
         
         Assert.isTrue(rows == 1);
     }
-    
-//    @Override
-//    public Pair<Time,Integer> getTime(int ID) throws NotFoundException{
-//        Assert.isTrue(ID >= 0);
-//        
-//        if(!lapExists(ID)) throw new NotFoundException("Lap "+ ID 
-//                + " has not been found in the database");
-//        
-//        LapData data = queryFactory.selectFrom(LAP)
-//                .where(LAP.id.eq(ID)).fetchFirst();
-//        closeConnection();
-//        
-//        return new Pair(data.getTemp(),data.getTempMs());
-//    }
 
     @Override
     public List<Lap> getLastRace(String athleticNFC) throws NotFoundException {
@@ -193,9 +179,10 @@ public class LapDaoImpl extends Dao implements LapDao{
         Lap returnValue = new Lap();
         returnValue.setID(data.getId());
         returnValue.setIdRace(data.getIdScore());
-        returnValue.setTemp(data.getTemp().getHours(), 
-                data.getTemp().getMinutes(), data.getTemp().getSeconds(), 
-                data.getTempMs());
+        returnValue.setTempHour(data.getTemp().getHours());
+        returnValue.setTempMin(data.getTemp().getMinutes());
+        returnValue.setTempSec(data.getTemp().getSeconds());
+        returnValue.setTempMs(data.getTempMs());
         
         return returnValue;
     }
