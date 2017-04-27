@@ -13,7 +13,8 @@ import language.postfixOps
 
 class BachTSimul(var bb: BachTStore) {
 
-  var hour = 0;
+  var failure = false
+  var hour = 0
   val bacht_random_choice = new Random()
 
   def run_one(agent: Expr):(Boolean,Expr) = {
@@ -118,11 +119,17 @@ class BachTSimul(var bb: BachTStore) {
   }
 
   def run_time(agent: Expr):Expr = {
-    agent match {
-      case bacht_ast_wait(prim, time) =>
-      {
-        if (time <= hour) {bacht_ast_empty_agent()}
-        else (bacht_ast_wait(prim, time))
+    agent match
+    {
+      case bacht_ast_wait(prim, time) => {
+        if (time <= hour) {
+          failure = false
+          bacht_ast_empty_agent()
+        }
+        else {
+          failure = false
+          (bacht_ast_wait(prim, time))
+        }
       }
 
       case bacht_ast_agent(";",ag_i,ag_ii) =>
@@ -188,8 +195,7 @@ class BachTSimul(var bb: BachTStore) {
   def bacht_exec_all(agent: Expr):Boolean = {
 
     var c_agent = agent
-    while (c_agent != bacht_ast_empty_agent()) {
-      var failure = false
+    while (c_agent != bacht_ast_empty_agent() && !failure) {
       while (c_agent != bacht_ast_empty_agent() && !failure) {
         failure = run_one(c_agent) match {
           case (false, _) => true
