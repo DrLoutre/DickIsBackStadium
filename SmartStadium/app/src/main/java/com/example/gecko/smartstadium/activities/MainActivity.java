@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         QRButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, StatActivity.class);
+                Intent i = new Intent(MainActivity.this, QRCodeActivity.class);
                 startActivityForResult(i, QR_CODE);
             }
         });
@@ -100,40 +100,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
-            final String result = data.getStringExtra("result");
+            if(requestCode == QR_CODE) {
+                final String result = data.getStringExtra("result");
 
-            if (result.contains("zone")) {
-                getRefreshments(true);
-            } else {
-                onLoginSuccess(result);
-            }
-
-        }
-    }
-
-    private void CalculeBuvette() {
-        // faire le calcule
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle("Les buvettes sont en:")
-                .setMessage("* zone 1:\n   - 10% d\'occupation\n" +
-                        "* Zone 7:\n   - 70% d\'occupation");// message test
-        // Create the AlertDialog object and return it
-        builder.create();
-        builder.show();
-    }
-
-    private void onLoginSuccess(final String result) {
-        if (!ConnectionUtils.isOnline(this)) {
-            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Pas de connexion internet", Snackbar.LENGTH_SHORT);
-            snackbar.setAction("Réssayer", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onLoginSuccess(result);
+                if (result.contains("zone")) {
+                    getRefreshments(true);
+                } else {
+                    onScanSuccess(result);
                 }
-            });
-        } else {
-            mBus.post(new IdAthleticEvent(result));
+            }
         }
+    }
+
+    private void onScanSuccess(final String result) {
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        intent.putExtra("id", result);
+        startActivity(intent);
     }
 
     private void getRefreshments(boolean bestOne) {
@@ -144,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         mBus.post(new GetSeatsTribunesEvent());
     }
 
-    @Subscribe
+    /*@Subscribe
     public void AthleticEvent(AthleticEvent athleticEvent) {
         if (athleticEvent.getAthletic() != null) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -154,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
             Snackbar.make(findViewById(android.R.id.content), "Un problème de connexion.", Snackbar.LENGTH_LONG).show();
         }
 
-    }
+    }*/
 
     @Subscribe
     public void RefreshmentsEvent(final RefreshmentsEvent refreshmentsEvent) {

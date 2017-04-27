@@ -86,6 +86,13 @@ public class StatActivity extends AppCompatActivity {
         mBus.unregister(this);
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(StatActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     private void getAthletic() {
         dialog.show();
         mBus.post(new IdAthleticEvent("1"));

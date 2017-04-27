@@ -1,5 +1,6 @@
 package com.example.gecko.smartstadium.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -17,6 +18,7 @@ import com.example.gecko.smartstadium.bus.BusProvider;
 import com.example.gecko.smartstadium.classes.Credentials;
 import com.example.gecko.smartstadium.events.LoginEvent;
 import com.example.gecko.smartstadium.events.PostLoginEvent;
+import com.example.gecko.smartstadium.utils.ConnectionUtils;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -26,6 +28,10 @@ import com.squareup.otto.Subscribe;
 public class LoginActivity extends AppCompatActivity {
 
     private Bus mBus = BusProvider.getInstance();
+
+    private ProgressDialog dialog;
+
+    private String id;
 
     // UI references.
     private Button validationButton;
@@ -38,6 +44,15 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        id = getIntent().getStringExtra("id");
+
+        dialog = new ProgressDialog(this);
+        dialog = new ProgressDialog(this);
+        dialog.setIndeterminate(true);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setTitle("Chargement");
+        dialog.setMessage("Chargement de vos données ...");
 
         validationButton = (Button) findViewById(R.id.loginValidationButton);
         credentialSingletion = CredentialSingletion.getInstance();
@@ -92,12 +107,24 @@ public class LoginActivity extends AppCompatActivity {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             Snackbar.make(findViewById(android.R.id.content), "Erreur", Snackbar.LENGTH_LONG).show();
         } else {
-            connection(password, credentialSingletion.getId());
+            mPasswordView.setError(null);
+            connection(id, password);
         }
     }
 
-    private void connection(String password, String id) {
-        mBus.post(new PostLoginEvent(new Credentials(id, password)));
+    private void connection(String id, String password) {
+        if (!ConnectionUtils.isOnline(this)) {
+            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Pas de connexion internet", Snackbar.LENGTH_SHORT);
+            snackbar.setAction("Réssayer", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    attemptLogin();
+                }
+            });
+        } else {
+            dialog.show();
+            mBus.post(new PostLoginEvent(new Credentials(id, password)));
+        }
     }
 
     // Check the lenght of the password
@@ -107,9 +134,12 @@ public class LoginActivity extends AppCompatActivity {
 
     @Subscribe
     public void onLoginEvent(LoginEvent loginEvent) {
+        dialog.dismiss();
         if (loginEvent.getAthletic() != null) {
             Intent intent = new Intent(LoginActivity.this, StatActivity.class);
+            intent.putExtra("id", id);
             startActivity(intent);
+            finish();
         } else {
             Snackbar.make(findViewById(android.R.id.content), "Le mot de passe est incorrect", Snackbar.LENGTH_LONG).show();
         }
