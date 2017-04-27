@@ -26,11 +26,11 @@ class BachTParsers extends RegexParsers {
 
   def primitive : Parser[Expr]   = "tell("~duration~")("~duration~")("~token~")" ^^ {
     case _ ~ begin ~ _ ~ end ~ _ ~ vtoken ~ _ => bacht_ast_primitive("tell", begin, end, vtoken) }  |
-                                   "ask("~duration~")("~duration~")("~token~")" ^^ {
+    "ask("~duration~")("~duration~")("~token~")" ^^ {
       case _ ~ begin ~ _ ~ end ~ _ ~ vtoken ~ _ => bacht_ast_primitive("ask", begin, end, vtoken) }  |
-                                   "get("~duration~")("~duration~")("~token~")" ^^ {
+    "get("~duration~")("~duration~")("~token~")" ^^ {
       case _ ~ begin ~ _ ~ end ~ _ ~ vtoken ~ _ => bacht_ast_primitive("get", begin, end, vtoken) }  |
-                                   "nask("~duration~")("~duration~")("~token~")" ^^ {
+    "nask("~duration~")("~duration~")("~token~")" ^^ {
       case _ ~ begin ~ _ ~ end ~ _ ~ vtoken ~ _ => bacht_ast_primitive("nask", begin, end, vtoken) }
 
   def agent = compositionChoice
@@ -66,46 +66,72 @@ object BachTSimulParser extends BachTParsers {
   }
 
 }
+
 import scala.collection.mutable.Map
 import scala.swing._
 
 class BachTStore {
 
-  var theStore = Map[String,Int]()
+  var theStore = Map[(String, (Int, Int)), Int]()
+  var hour = 0;
 
-  def tell(token:String):Boolean = {
-    if (theStore.contains(token))
-    { theStore(token) = theStore(token) + 1 }
+  def give_time():Int = {
+    hour
+  }
+
+  def run_time() = {
+    theStore = for {
+      x <- theStore
+      if x._1._2._2 > hour
+    } yield ((x._1._1, x._1._2), x._2)
+    hour += 1
+  }
+
+  def tell(token:String, begin: Int, end: Int):Boolean = {
+    if (theStore.contains(token, (begin, end)))
+    { theStore((token, (begin, end))) = theStore(token, (begin, end)) + 1 }
     else
-    { theStore = theStore ++ Map(token -> 1) }
+    { theStore = theStore ++ Map((token, (begin, end)) -> 1) }
     true
   }
 
 
-  def ask(token:String):Boolean = {
-    if (theStore.contains(token))
-      if (theStore(token) >= 1) { true }
-      else { false }
-    else false
+  def ask(token:String, begin: Int, end: Int):Boolean = {
+    val theStoreBis = for {
+      x <- theStore
+      if ((x._1._1).equals(token) && (x._2 >= 1) && begin <= hour && end >= hour && x._1._2._1 <= hour && x._1._2._2 >= hour)
+    } yield ((x._1._1, x._1._2), x._2)
+    if(!theStoreBis.isEmpty) {
+      true
+    } else {
+      false
+    }
+  }
+
+  def get(token:String, begin: Int, end: Int):Boolean = {
+    val theStoreBis = for {
+      x <- theStore
+      if ((x._1._1).equals(token) && (x._2 >= 1) && begin <= hour && end >= hour && x._1._2._1 <= hour && x._1._2._2 >= hour)
+    } yield ((x._1._1, x._1._2), x._2)
+    if(!theStoreBis.isEmpty) {
+      theStore((theStoreBis.head._1._1, theStoreBis.head._1._2)) = theStore((theStoreBis.head._1._1, theStoreBis.head._1._2)) - 1
+      true
+    } else {
+      false
+    }
   }
 
 
-  def get(token:String):Boolean = {
-    if (theStore.contains(token))
-      if (theStore(token) >= 1)
-      { theStore(token) = theStore(token) - 1
-        true
-      }
-      else { false }
-    else false
-  }
-
-
-  def nask(token:String):Boolean = {
-    if (theStore.contains(token))
-      if (theStore(token) >= 1) { false }
-      else { true }
-    else true
+  def nask(token:String, begin: Int, end: Int):Boolean = {
+    val theStoreBis = for {
+      x <- theStore
+      if ((x._1._1).equals(token) && (x._2 >= 1) && begin <= hour && end >= hour && x._1._2._1 <= hour && x._1._2._2 >= hour)
+    } yield ((x._1._1, x._1._2), x._2)
+    if(!theStoreBis.isEmpty) {
+      false
+    } else {
+      true
+    }
   }
 
   def print_store {
@@ -116,7 +142,7 @@ class BachTStore {
   }
 
   def clear_store {
-    theStore = Map[String,Int]()
+    theStore = Map[(String, (Int, Int)),Int]()
   }
 
 }
@@ -131,15 +157,20 @@ import language.postfixOps
 
 class BachTSimul(var bb: BachTStore) {
 
-  var hour = 0;
+  var block = false
+  var para = false
+  var failure = false
   val bacht_random_choice = new Random()
 
   def run_one(agent: Expr):(Boolean,Expr) = {
 
     agent match {
-      case bacht_ast_primitive(prim, begin, end, token) =>
-      {  if (exec_primitive(prim,begin, end, token)) { (true,bacht_ast_empty_agent()) }
-      else { (false,agent) }
+      case bacht_ast_primitive(prim,begin, end,token) => {
+        if (exec_primitive(prim,begin, end,token)) {
+          (true, bacht_ast_empty_agent())
+        } else {
+          (false, agent)
+        }
       }
 
       case bacht_ast_agent(";",ag_i,ag_ii) =>
@@ -151,7 +182,9 @@ class BachTSimul(var bb: BachTStore) {
       }
 
       case bacht_ast_agent("||",ag_i,ag_ii) =>
-      {  var branch_choice = bacht_random_choice.nextInt(2)
+      {
+        para = true;
+        var branch_choice = bacht_random_choice.nextInt(2)
         if (branch_choice == 0)
         { run_one( ag_i ) match
         { case (false,_) =>
@@ -237,20 +270,52 @@ class BachTSimul(var bb: BachTStore) {
       {
         prim match {
           case "tell" => {
-            if(end <= hour) bacht_ast_empty_agent()
-            else bacht_ast_primitive(prim, begin, end,token)
+            if(begin <= bb.give_time()) {
+              block = false
+            }
+            if(end < bb.give_time()) {
+              bacht_ast_primitive(prim, begin, end,token)
+            }
+            else {
+              failure = false
+              bacht_ast_primitive(prim, begin, end,token)
+            }
           }
           case "ask"  => {
-            if(end <= hour) bacht_ast_empty_agent()
-            else bacht_ast_primitive(prim, begin, end,token)
+            if(begin <= bb.give_time()) {
+              block = false
+            }
+            if(end < bb.give_time()) {
+              bacht_ast_primitive(prim, begin, end,token)
+            }
+            else {
+              failure = false;
+              bacht_ast_primitive(prim, begin, end,token)
+            }
           }
           case "get"  => {
-            if(end <= hour) bacht_ast_empty_agent()
-            else bacht_ast_primitive(prim, begin, end,token)
+            if(begin <= bb.give_time()) {
+              block = false
+            }
+            if(end < bb.give_time()) {
+              bacht_ast_primitive(prim, begin, end,token)
+            }
+            else {
+              failure = false
+              bacht_ast_primitive(prim, begin, end,token)
+            }
           }
           case "nask" => {
-            if(end <= hour) bacht_ast_empty_agent()
-            else bacht_ast_primitive(prim, begin, end,token)
+            if(begin <= bb.give_time()) {
+              block = false
+            }
+            if(end < bb.give_time()) {
+              bacht_ast_primitive(prim, begin, end,token)
+            }
+            else {
+              failure = false
+              bacht_ast_primitive(prim, begin, end,token)
+            }
           }
         }
       }
@@ -314,21 +379,23 @@ class BachTSimul(var bb: BachTStore) {
   def bacht_exec_all(agent: Expr):Boolean = {
 
     var c_agent = agent
-    while (c_agent != bacht_ast_empty_agent()) {
-      var failure = false
-      while (c_agent != bacht_ast_empty_agent() && !failure) {
-        failure = run_one(c_agent) match {
-          case (false, _) => true
-          case (true, new_agent) => {
-            c_agent = new_agent
-            false
-          }
+    while ( c_agent != bacht_ast_empty_agent() && !failure ) {
+      failure = run_one(c_agent) match {
+        case (false, _) => true
+        case (true, new_agent) => {
+          c_agent = new_agent
+          false
         }
-        bb.print_store
-        println("\n")
       }
-      c_agent = run_time(c_agent)
-      hour += 1
+      bb.print_store
+      println(bb.give_time())
+      run_time(c_agent)
+      if (!para || block) {
+        bb.run_time()
+      }
+      para = false
+      block = true
+      println("\n")
     }
 
     if (c_agent == bacht_ast_empty_agent()) {
@@ -341,20 +408,20 @@ class BachTSimul(var bb: BachTStore) {
     }
   }
 
-  def exec_primitive(prim:String, begin:Int, end:Int, token:String):Boolean = {
-    prim match
-    { case "tell" =>
-      if (begin <= hour && end >= hour ) { bb.tell(token) }
-      else false
-    case "ask"  =>
-      if (begin <= hour && end >= hour ) { bb.ask(token) }
-      else false
-    case "get"  =>
-      if (begin <= hour && end >= hour ) { bb.get(token) }
-      else false
-    case "nask" =>
-      if (begin <= hour && end >= hour ) { bb.nask(token) }
-      else false
+  def exec_primitive(prim:String,begin:Int,end:Int,token:String):Boolean = {
+    prim match {
+      case "tell" => {
+        bb.tell(token,begin,end)
+      }
+      case "ask" => {
+        bb.ask(token,begin,end)
+      }
+      case "get" => {
+        bb.get(token,begin, end)
+      }
+      case "nask" => {
+        bb.nask(token,begin, end)
+      }
     }
   }
 

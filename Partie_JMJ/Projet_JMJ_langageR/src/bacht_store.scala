@@ -13,52 +13,73 @@ import scala.swing._
 
 class BachTStore {
 
-   var theStore = Map[String,Int]()
+   var theStore = Map[(String, Int), Int]()
 
-   def tell(token:String):Boolean = {
-      if (theStore.contains(token)) 
-        { theStore(token) = theStore(token) + 1 }
-      else
-        { theStore = theStore ++ Map(token -> 1) }
+   def run_time() = {
+      theStore = for {
+         x <- theStore
+         if x._1._2 > 0
+      } yield ((x._1._1, x._1._2 - 1), x._2)
+   }
+
+   def tell(token:String, time: Int):Boolean = {
+      if(time > 0) {
+         if (theStore.contains(token, time))
+         { theStore((token, time)) = theStore(token, time) + 1 }
+         else
+         { theStore = theStore ++ Map((token, time) -> 1) }
+      }
       true
    }
 
 
-   def ask(token:String):Boolean = {
-      if (theStore.contains(token)) 
-             if (theStore(token) >= 1) { true }
-             else { false }
-      else false
+   def ask(token:String, time: Int):Boolean = {
+      val theStoreBis = for {
+         x <- theStore
+         if ((x._1._1).equals(token) && (x._2 >= 1))
+      } yield ((x._1._1, x._1._2), x._2)
+      if(!theStoreBis.isEmpty) {
+         true
+      } else {
+         false
+      }
+   }
+
+   def get(token:String, time: Int):Boolean = {
+      val theStoreBis = for {
+         x <- theStore
+         if ((x._1._1).equals(token) && (x._2 >= 1))
+      } yield ((x._1._1, x._1._2), x._2)
+      if(!theStoreBis.isEmpty) {
+         theStore((theStoreBis.head._1._1, theStoreBis.head._1._2)) = theStore((theStoreBis.head._1._1, theStoreBis.head._1._2)) - 1
+         true
+      } else {
+         false
+      }
    }
 
 
-   def get(token:String):Boolean = {
-      if (theStore.contains(token)) 
-             if (theStore(token) >= 1) 
-               { theStore(token) = theStore(token) - 1 
-                 true 
-               }
-             else { false }
-      else false
-   }
-
-
-   def nask(token:String):Boolean = {
-      if (theStore.contains(token)) 
-             if (theStore(token) >= 1) { false }
-             else { true }
-      else true 
+   def nask(token:String, time: Int):Boolean = {
+      val theStoreBis = for {
+         x <- theStore
+         if ((x._1._1).equals(token) && (x._2 >= 1))
+      } yield ((x._1._1, x._1._2), x._2)
+      if(!theStoreBis.isEmpty) {
+         false
+      } else {
+         true
+      }
    }
 
    def print_store {
       print("{ ")
-      for ((t,d) <- theStore) 
+      for ((t,d) <- theStore)
          print ( t + "(" + theStore(t) + ")" )
       println(" }")
    }
 
    def clear_store {
-      theStore = Map[String,Int]()
+      theStore = Map[(String, Int),Int]()
    }
 
 }

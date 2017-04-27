@@ -1,4 +1,4 @@
-/* -------------------------------------------------------------------------- 
+/* --------------------------------------------------------------------------
 
    BachT simulator
 
@@ -11,16 +11,102 @@
 import scala.util.Random
 import language.postfixOps
 
+class BachTStore {
+
+  var theStore = Map[(String, Int), Int]()
+
+  def run_time() = {
+    theStore = for {
+      x <- theStore
+      if x._1._2 > 0
+    } yield ((x._1._1, x._1._2 - 1), x._2)
+  }
+
+  def tell(token:String, time: Int):Boolean = {
+    if(time > 0) {
+      if (theStore.contains(token, time))
+      { theStore((token, time)) = theStore(token, time) + 1 }
+      else
+      { theStore = theStore ++ Map((token, time) -> 1) }
+    }
+    true
+  }
+
+
+  def ask(token:String, time: Int):Boolean = {
+    val theStoreBis = for {
+      x <- theStore
+      if ((x._1._1).equals(token) && (x._2 >= 1))
+    } yield ((x._1._1, x._1._2), x._2)
+    if(!theStoreBis.isEmpty) {
+      true
+    } else {
+      false
+    }
+  }
+
+  def get(token:String, time: Int):Boolean = {
+    val theStoreBis = for {
+      x <- theStore
+      if ((x._1._1).equals(token) && (x._2 >= 1))
+    } yield ((x._1._1, x._1._2), x._2)
+    if(!theStoreBis.isEmpty) {
+      theStore((theStoreBis.head._1._1, theStoreBis.head._1._2)) = theStore((theStoreBis.head._1._1, theStoreBis.head._1._2)) - 1
+      true
+    } else {
+      false
+    }
+  }
+
+
+  def nask(token:String, time: Int):Boolean = {
+    val theStoreBis = for {
+      x <- theStore
+      if ((x._1._1).equals(token) && (x._2 >= 1))
+    } yield ((x._1._1, x._1._2), x._2)
+    if(!theStoreBis.isEmpty) {
+      false
+    } else {
+      true
+    }
+  }
+
+  def print_store {
+    print("{ ")
+    for ((t,d) <- theStore)
+      print ( t + "(" + theStore(t) + ")" )
+    println(" }")
+  }
+
+  def clear_store {
+    theStore = Map[(String, Int),Int]()
+  }
+
+}
+
+object bb extends BachTStore {
+
+  def reset { clear_store }
+
+}
+import scala.util.Random
+import language.postfixOps
+
 class BachTSimul(var bb: BachTStore) {
 
+  var para = false
+  var failure = false
   val bacht_random_choice = new Random()
 
   def run_one(agent: Expr):(Boolean,Expr) = {
 
     agent match {
-      case bacht_ast_primitive(prim,time,token) =>
-      {  if (exec_primitive(prim,time,token)) { (true,bacht_ast_empty_agent()) }
-      else { (false,agent) }
+      case bacht_ast_primitive(prim,time,token) => {
+        if (exec_primitive(prim, time, token)) {
+          (true, bacht_ast_empty_agent())
+        } else {
+          (false, agent)
+        }
       }
 
       case bacht_ast_agent(";",ag_i,ag_ii) =>
@@ -32,7 +118,9 @@ class BachTSimul(var bb: BachTStore) {
       }
 
       case bacht_ast_agent("||",ag_i,ag_ii) =>
-      {  var branch_choice = bacht_random_choice.nextInt(2)
+      {
+        para = true;
+        var branch_choice = bacht_random_choice.nextInt(2)
         if (branch_choice == 0)
         { run_one( ag_i ) match
         { case (false,_) =>
@@ -122,21 +210,36 @@ class BachTSimul(var bb: BachTStore) {
       case bacht_ast_primitive(prim, time, token) =>
       {
         prim match {
-          case "tell" => {
-            if(time == 0) bacht_ast_empty_agent()
-            else bacht_ast_primitive(prim, test_value(time), token)
-          }
+          case "tell" => {bacht_ast_primitive(prim, time, token)}
           case "ask"  => {
-            if(time == 0) bacht_ast_empty_agent()
-            else bacht_ast_primitive(prim, test_value(time), token)
+            if(time == 0) {
+              failure = true
+              bacht_ast_primitive(prim, time, token)
+            }
+            else {
+              failure = false
+              bacht_ast_primitive(prim, test_value(time), token)
+            }
           }
           case "get"  => {
-            if(time == 0) bacht_ast_empty_agent()
-            else bacht_ast_primitive(prim, test_value(time), token)
+            if(time == 0) {
+              failure = true
+              bacht_ast_primitive(prim, time, token)
+            }
+            else {
+              failure = false
+              bacht_ast_primitive(prim, test_value(time), token)
+            }
           }
           case "nask" => {
-            if(time == 0) bacht_ast_empty_agent()
-            else bacht_ast_primitive(prim, test_value(time), token)
+            if(time == 0) {
+              failure = true
+              bacht_ast_primitive(prim, time, token)
+            }
+            else {
+              failure = false
+              bacht_ast_primitive(prim, test_value(time), token)
+            }
           }
         }
       }
@@ -200,20 +303,21 @@ class BachTSimul(var bb: BachTStore) {
   def bacht_exec_all(agent: Expr):Boolean = {
 
     var c_agent = agent
-    while (c_agent != bacht_ast_empty_agent()) {
-      var failure = false
-      while ( c_agent != bacht_ast_empty_agent() && !failure ) {
-        failure = run_one(c_agent) match {
-          case (false, _) => true
-          case (true, new_agent) => {
-            c_agent = new_agent
-            false
-          }
+    while ( c_agent != bacht_ast_empty_agent() && !failure ) {
+      failure = run_one(c_agent) match {
+        case (false, _) => true
+        case (true, new_agent) => {
+          c_agent = new_agent
+          false
         }
-        bb.print_store
-        println("\n")
       }
-      c_agent = run_time(c_agent)
+      bb.print_store
+      if (!para) {
+        bb.run_time()
+        c_agent = run_time(c_agent)
+      }
+      para = false
+      println("\n")
     }
 
     if (c_agent == bacht_ast_empty_agent()) {
@@ -227,20 +331,19 @@ class BachTSimul(var bb: BachTStore) {
   }
 
   def exec_primitive(prim:String,time:Int,token:String):Boolean = {
-    prim match
-    {
-      case "tell" =>
-        if(time != 0) { bb.tell(token) }
-        else false
-      case "ask"  =>
-        if(time != 0) { bb.ask(token) }
-        else false
-      case "get"  =>
-        if(time == 0) { bb.get(token) }
-        else false
-      case "nask" =>
-        if(time == 0) { bb.nask(token) }
-        else false
+    prim match {
+      case "tell" => {
+        bb.tell(token, time)
+      }
+      case "ask" => {
+        bb.ask(token, time)
+      }
+      case "get" => {
+        bb.get(token, time)
+      }
+      case "nask" => {
+        bb.nask(token, time)
+      }
     }
   }
 
