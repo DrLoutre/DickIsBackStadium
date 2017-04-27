@@ -8,26 +8,34 @@ import com.phidgets.AdvancedServoPhidget
   * Both ServoMotor works in coalition in order to close the roof. 
   */
 class Roof {
-  //Todo : Add 2nd ServoMotor
 
-  val SERVO_SERIAL:Int = 305832
+  val SERVO1_SERIAL:Int = 305832
+  val SERVO2_SERIAL:Int = 305826
   val SERVO_INDEX:Int = 0
-  val VAL_ROOF_CLOSED:Double = 15.00
-  val VAL_ROOF_OPEN:Double = 220.00
+  val VAL_ROOF1_CLOSED:Double = 90.00
+  val VAL_ROOF2_CLOSED:Double = 90.00
+  val VAL_ROOF1_OPEN:Double = 180.00
+  val VAL_ROOF2_OPEN:Double = 0.00
 
   var open:Boolean = false
-  val servo:AdvancedServoPhidget = new AdvancedServoPhidget
+  val servo1:AdvancedServoPhidget = new AdvancedServoPhidget
+  val servo2:AdvancedServoPhidget = new AdvancedServoPhidget
 
   //Add listeners for error
 
-  servo.open(SERVO_SERIAL)
-  servo.waitForAttachment()
-  servo.setEngaged(SERVO_INDEX, true)
-  servo.setPosition(SERVO_INDEX, VAL_ROOF_CLOSED)
+  servo1.open(SERVO1_SERIAL)
+  servo2.open(SERVO2_SERIAL)
+  servo1.waitForAttachment()
+  servo2.waitForAttachment()
+  servo1.setEngaged(SERVO_INDEX, true)
+  servo2.setEngaged(SERVO_INDEX, true)
+  servo1.setPosition(SERVO_INDEX, VAL_ROOF1_CLOSED)
+  servo2.setPosition(SERVO_INDEX, VAL_ROOF2_CLOSED)
 
   def closeRoof:Unit = {
     if (open) {
-      servo.setPosition(SERVO_INDEX, VAL_ROOF_CLOSED)
+      servo1.setPosition(SERVO_INDEX, VAL_ROOF1_CLOSED)
+      servo2.setPosition(SERVO_INDEX, VAL_ROOF2_CLOSED)
       println("      ======> roof closed")
       open = false
     } else
@@ -36,7 +44,8 @@ class Roof {
 
   def openRoof:Unit = {
     if (!open) {
-      servo.setPosition(SERVO_INDEX, VAL_ROOF_OPEN)
+      servo1.setPosition(SERVO_INDEX, VAL_ROOF1_OPEN)
+      servo2.setPosition(SERVO_INDEX, VAL_ROOF2_OPEN)
       println("      ======> roof opened")
       open = true
     } else
