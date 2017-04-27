@@ -13,6 +13,7 @@ import language.postfixOps
 
 class BachTSimul(var bb: BachTStore) {
 
+  var failure = false;
   val bacht_random_choice = new Random()
 
   def run_one(agent: Expr):(Boolean,Expr) = {
@@ -124,8 +125,14 @@ class BachTSimul(var bb: BachTStore) {
     agent match {
       case bacht_ast_delay(prim, time) =>
       {
-        if (time > 0) {(bacht_ast_delay(prim, time - 1))}
-        else (bacht_ast_empty_agent())
+        if (time > 0) {
+          failure = false
+          (bacht_ast_delay(prim, time - 1))
+        }
+        else {
+          failure = false
+          (bacht_ast_empty_agent())
+        }
       }
 
       case bacht_ast_agent(";",ag_i,ag_ii) =>
@@ -191,8 +198,7 @@ class BachTSimul(var bb: BachTStore) {
   def bacht_exec_all(agent: Expr):Boolean = {
 
     var c_agent = agent
-    while (c_agent != bacht_ast_empty_agent()) {
-      var failure = false
+    while (c_agent != bacht_ast_empty_agent() && !failure) {
       while (c_agent != bacht_ast_empty_agent() && !failure) {
         failure = run_one(c_agent) match {
           case (false, _) => true
@@ -234,7 +240,13 @@ object ag extends BachTSimul(bb) {
     val agent_parsed = BachTSimulParser.parse_agent(agent)
     ag.bacht_exec_all(agent_parsed)
   }
-  def eval(agent:String) { apply(agent) }
-  def run(agent:String) { apply(agent) }
+
+  def eval(agent: String) {
+    apply(agent)
+  }
+
+  def run(agent: String) {
+    apply(agent)
+  }
 
 }
