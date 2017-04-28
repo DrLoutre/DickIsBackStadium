@@ -17,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class StadiumClient {
 
-    final static String BASE_URL = "http://10.0.2.2:8080/api/v1/";
+    final static String BASE_URL = "http://10.0.2.2:8080/StadiumWebSite/api/v1/";
 
     private static StadiumClient mStadiumClient;
     private static Retrofit mRetrofit;
