@@ -5,21 +5,24 @@
  */
 package verifications;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
  *
  * @author Maxime
  */
-public class Verif {
+public class VerifName {
     
+    Map<String, String> value = new HashMap<>();
     String firstName;
     String lastName;
     String old;
     String sex;
     String mdp;
     
-    public Verif(String firstName, String lastName, String old, String sex, String mdp) {
+    public VerifName(String firstName, String lastName, String old, String sex, String mdp) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.old = old;
@@ -28,7 +31,28 @@ public class Verif {
     }
     
     public boolean tryTest() {
-        return verifSize(firstName) && verifSize(lastName) && verifSize(mdp) && patternInt(old) &&  verifName(firstName) && verifName(lastName);
+        boolean result = true;
+        if (verifSize(firstName) && verifName(firstName)) {
+            value.put("Prenom", firstName);
+        } else {
+            result = false;
+        }
+        if (verifSize(lastName) && verifName(lastName)) {
+            value.put("Nom", lastName);
+        } else {
+            result = false;
+        }
+        if (verifSize(mdp) && mdp.length() >= 5) {
+            value.put("MDP", mdp);
+        } else {
+            result = false;
+        }
+        if (patternInt(old)) {
+            value.put("Age", old);
+        } else {
+            result = false;
+        }
+        return result;
     }
     
     private boolean verifName(String name) {
@@ -44,5 +68,9 @@ public class Verif {
     
     private boolean verifSize(String value) {
         return value.length() <= 30;
+    }
+    
+    public Map<String, String> getValue(){
+        return value;
     }
 }

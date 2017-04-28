@@ -17,6 +17,7 @@ and open the template in the editor.
         ArrayList<Match> matchs = (ArrayList<Match>) request.getAttribute("matchs");
         HashMap<String, String> team = (HashMap<String, String>) request.getAttribute("team");
         Boolean correct = (Boolean) request.getAttribute("correct");
+        Boolean time = (Boolean) request.getAttribute("time");
         int i = 0;
     %>
     <body>
@@ -43,15 +44,17 @@ and open the template in the editor.
                 </header>
             </div>
             <% if(correct != null) {
-                if (!correct) {%>
-                    <div class="alert alert-danger fade in">
-                        <Strong>Le nfc rentré est incorrect !</strong>
-                    </div>
-                <%} else {%>
-                    <div class="alert alert-success fade in">
-                        <strong>Success!</strong> Vous êtes bien inscrit pour le match demandé !
-                    </div>
-                <%}
+                if (time || time == null) {
+                    if (!correct) {%>
+                        <div class="alert alert-danger fade in">
+                            <Strong>Le nfc rentré est incorrect !</strong>
+                        </div>
+                    <%} else {%>
+                        <div class="alert alert-success fade in">
+                            <strong>Success!</strong> Vous êtes bien inscrit pour le match demandé !
+                        </div>
+                    <%}
+                }   
             }%>
             <form method="Post" action="/StadiumWebSite/Team">
                 <fieldset>
@@ -59,9 +62,15 @@ and open the template in the editor.
                     Le créateur du match sera inscrit dans la première équipe. <br> <br>
                     <label>Nom de la première équipe</label> : <br/> <input type="text" name="Team1" id="Team1" style="width: 500px;" required="true"/> <br/> <br/>
                     <label>Nom de la seconde équipe</label> : <br/> <input type="text" name="Team2" id="Team2" style="width: 500px;" required="true"/> <br/> <br/>
-                    <label>Date de la rencontre</label> : <br/> <input type="date" name="Date" id="Date" required="true"> <br> <br>
+                    <%if ((time != null) && !time) {%>
+                        <div class="form-group has-warning">
+                            <label class="control-label" for="idWarning">Avertissement</label> <br>
+                            <span class="help-block">La date rentrée est déjà dépassé, elle ne peut donc pas être enregistré.</span>
+                        </div>
+                    <%}%>
+                    <label>Date de la rencontre</label> : <br/> <input type="date" name="Date" id="Date" onchange="verifdate(this.id);" required="true"> <br> <br>
                     <label>Heure de la rencontre</label> : <br/> <input type="time" name="Heure" id="Heure" required="true"> <br> <br>
-                    <label>Nfc de l'athlète</label> : <br/> <input type="text" name="nfc" id="nfc" style="width: 500px;" required="true"/> <br/> <br/>
+                    <label>Identifiant de l'athlète</label> : <br/> <input type="text" name="nfc" id="nfc" style="width: 500px;" required="true"/> <br/> <br/>
                     <div class="row">
                         <div class="col-lg-offset-9 col-lg-9">
                             <input type="submit" class="btn btn-info btn-lg" value="Validation" name="Validation" style="width : 180px; height : 50px;"/>
