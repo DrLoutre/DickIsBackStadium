@@ -26,6 +26,8 @@ import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class StatActivity extends AppCompatActivity {
 
@@ -132,14 +134,21 @@ public class StatActivity extends AppCompatActivity {
             Double time = 0.0;
             int nbr = 0;
             for (Lap elem : lastRaceAthleticEvent.getLaps()) {
-                time = time + elem.getTemp_ms();
+                time = time + elem.getTemp_ms() + (elem.getTemp_sec() * 1000) + (elem.getTemp_min() * 60000) + (elem.getTemp_hour() * 3600000);
                 nbr = nbr + 1;
             }
+
+            String msg = "Indisponible";
             if (nbr != 0) {
                 time = time / nbr;
-                tempsMoyen.setText("" + time);
+                msg = String.format(Locale.FRANCE, "%d minute(s), %d seconde(s)",
+                        TimeUnit.MILLISECONDS.toMinutes(Math.round(time)),
+                        TimeUnit.MILLISECONDS.toSeconds(Math.round(time)) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(Math.round(time)))
+                );
+                tempsMoyen.setText(msg);
             } else {
-                tempsMoyen.setText("indisponible");
+                tempsMoyen.setText(msg);
             }
             getMatchsNotEnded();
         } else {
