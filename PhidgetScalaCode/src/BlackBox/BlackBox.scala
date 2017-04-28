@@ -8,8 +8,9 @@ import Modes._
 import Models.In._
 import Models.Out._
 import com.phidgets.InterfaceKitPhidget
-import scala.collection.JavaConverters._
+import com.phidgets.event.{AttachEvent, AttachListener, DetachEvent, DetachListener}
 
+import scala.collection.JavaConverters._
 import scala.collection.immutable.Set
 
 /**
@@ -40,11 +41,24 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
   private val stdNorth:Stand        = new Stand(interfaceKitPhidget, "North Stand", SEATS_NUMBER, this)
   private val lapCntr:LapCalculator = new LapCalculator(this)
   private val field:Field           = new Field(interfaceKitPhidget, INDEX_R, INDEX_B, INDEX_G)
-  private val roof:Roof             = new Roof
+  private val roof:Roof             = new Roof(this)
   private val planning:MatchPlanning= new MatchPlanning
   private val mode:DemoModePotentiometer = new DemoModePotentiometer(interfaceKitPhidget, INDEX_MODE_POT, this)
-  private var currentMode:Mode      = mode.getCurrentMode
+  var currentMode:Mode      = mode.getCurrentMode
   //val commu:CommunicationListener = new CommunicationListener
+
+  interfaceKitPhidget.addDetachListener((detachEvent: DetachEvent) => currentMode match {
+      case DetachedMode(_, motors, rfid) =>
+        currentMode = DetachedMode(true, motors, rfid)
+      case _ =>
+        currentMode = DetachedMode(true, false, false)
+    }
+  )
+
+  interfaceKitPhidget.addAttachListener((attachEvent: AttachEvent) => currentMode match {
+    case DetachedMode(_, motors, rfid) =>
+      if (!motors && !rfid) NormalMode else DetachedMode(false, motors, rfid)
+  })
 
   def processEvent(event: Event): Unit = {
     var log:String = ""
@@ -58,33 +72,61 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
 
     eventList.add(event)
 
-    event match {
-      case BarEvent(_)           => log = processBarEvent(log)
-      case HeatEvent(_)          => log = processHeatEvent(log)
-      case LightEvent(_)         => log = processLightEvent(log)
-      case PassageEvent(_)       => log = processGoalEvent(event,log)
-      case StandEvent(_)         => log = processStandEvent(log)
-      case TurnEvent(_)          => log = processTurnEvent(log)
-      case VibrationEvent(_)     => log = processGoalEvent(event,log)
-      case NewMatchPlanEvent(_)  =>
-        log += "Received new match ! \n"
-        //add the received match to communication listener
-      case DemoPhaseEvent(_)     =>
-        currentMode = mode.getCurrentMode
-        log += "New Mode Set : " + currentMode.toString
-      case _                  => log = "Error Event non recognized"
+    currentMode match {
+      case NormalMode() => {
+        if (!currentMode.isMatch)
+          log += "Proceed Event : \n"
+        else
+          log += "Proceed Event in Match Mode : \n"
+        event match {
+          case BarEvent(_) => log = processBarEvent(log)
+          case HeatEvent(_) => log = processHeatEvent(log)
+          case LightEvent(_) => log = processLightEvent(log)
+          case PassageEvent(_) => log = processGoalEvent(event, log)
+          case StandEvent(_) => log = processStandEvent(log)
+          case TurnEvent(_) => log = processTurnEvent(log)
+          case VibrationEvent(_) => log = processGoalEvent(event, log)
+          case NewMatchPlanEvent(_) =>
+            log += "Received new match ! \n"
+          //add the received match to communication listener
+          case DemoPhaseEvent(_) =>
+            currentMode = mode.getCurrentMode
+            log += "New Mode Set : " + currentMode.toString
+          case _ => log = "Error Event non recognized"
+        }
+      }
+      case DetachedMode(kitDetached, roofDetached, rfidDetached) => {
+        if (!currentMode.isMatch)
+          log += "Proceed Event : \n"
+        else
+          log += "Proceed Event in Match Mode : \n"
+        log += "/!\ Be careful, one or more phidget is detached ! \n"
+        event match {
+          case BarEvent(_) =>       if (!kitDetached)  log = processBarEvent(log)         else log += "--PhidgetKit Detached ! \n"
+          case HeatEvent(_) =>      if (!kitDetached)  log = processHeatEvent(log)        else log += "--PhidgetKit Detached ! \n"
+          case LightEvent(_) =>     if (!kitDetached)  log = processLightEvent(log)       else log += "--PhidgetKit Detached ! \n"
+          case PassageEvent(_) =>   if (!kitDetached)  log = processGoalEvent(event, log) else log += "--PhidgetKit Detached ! \n"
+          case StandEvent(_) =>     if (!kitDetached)  log = processStandEvent(log)       else log += "--PhidgetKit Detached ! \n"
+          case TurnEvent(_) =>      if (!rfidDetached) log = processTurnEvent(log)        else log += "--RFID Reader Detached ! \n"
+          case VibrationEvent(_) => if (!kitDetached)  log = processGoalEvent(event, log) else log += "--PhidgetKit Detached ! \n"
+          case NewMatchPlanEvent(_) =>
+            log += "Received new match ! \n"
+          //add the received match to communication listener
+          case DemoPhaseEvent(_) =>
+            if (!kitDetached) {
+              currentMode = mode.getCurrentMode
+              log += "New Mode Set : " + currentMode.toString
+            } else {
+              log += "--PhidgetKit Detached ! \n"
+            }
+          case _ => log = "Error Event non recognized"
+        }
+      }
     }
+
+
     if (eventList.size()>50) eventList.removeLast()
     println(log)
-  }
-
-  @deprecated
-  def noEvent(c:Class[_]):Boolean = {
-    //Todo : refactor every use of this in order to use the scala option method
-    getLast(c) match {
-      case Some(_) => true
-      case None    => false
-    }
   }
 
   def getLast(c:Class[_]):Option[Event] = {

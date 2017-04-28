@@ -14,6 +14,7 @@ class Stand(interfaceKitPhidget: InterfaceKitPhidget, standName: String, numberO
   var seats:Array[Boolean] = new Array[Boolean](numberOfSeats)
 
   interfaceKitPhidget.addInputChangeListener((inputChangeEvent: InputChangeEvent) => {
+    val time = System.currentTimeMillis
     if (inputChangeEvent.getState) {
       val seatOfConcern = inputChangeEvent.getIndex
       if (seats(seatOfConcern)) {
@@ -24,12 +25,7 @@ class Stand(interfaceKitPhidget: InterfaceKitPhidget, standName: String, numberO
         seats(seatOfConcern) = true
         println("Siège n°" + seatOfConcern + " occupé dans la tribune " + standName)
       }
-      try
-      //Todo: Process element || blackBox.processElement(new StandEvent(System.currentTimeMillis))
-      catch {
-        case e: PhidgetException =>
-          println("Error while processing event")
-      }
+      blackBox.processEvent(StandEvent(time))
     }
   })
 

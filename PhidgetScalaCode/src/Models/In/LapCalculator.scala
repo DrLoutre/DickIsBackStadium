@@ -1,8 +1,9 @@
 package Models.In
 
 import BlackBox.BlackBox
+import Modes.{DetachedMode, NormalMode}
 import com.phidgets.RFIDPhidget
-import com.phidgets.event.{TagGainEvent, TagGainListener, TagLossEvent, TagLossListener}
+import com.phidgets.event._
 
 /**
   * Created by bri_e on 20-04-17.
@@ -17,6 +18,18 @@ class LapCalculator(blackBox: BlackBox) {
 
   val rFIDPhidget:RFIDPhidget = new RFIDPhidget()
 
+  rFIDPhidget.addDetachListener((_: DetachEvent) => blackBox.currentMode match {
+    case DetachedMode(kit, motors, _) =>
+      blackBox.currentMode = DetachedMode(kit, motors, true)
+    case _ =>
+      blackBox.currentMode = DetachedMode(false, false, true)
+  })
+
+  rFIDPhidget.addAttachListener((_: AttachEvent) => blackBox.currentMode match {
+    case DetachedMode(kit, motors, _) =>
+      if (!kit && !motors) NormalMode else DetachedMode(kit, motors, false)
+  })
+
   rFIDPhidget.addTagGainListener((tagGainEvent: TagGainEvent) => timeScanning = System.currentTimeMillis())
 
   rFIDPhidget.addTagLossListener((tagLossEvent: TagLossEvent) => {
@@ -28,7 +41,6 @@ class LapCalculator(blackBox: BlackBox) {
       println("Runner Id     : " + tagLossEvent.getValue +
             "\nRunning Time  : " + (lapTime-lastLapTime)/1000 + "sec" +
             "\nNumber of Laps: " + runners.getIdLapsNumber(tagLossEvent.getValue))
-      //Todo:create and process new event (migrate that code in the processing of turns)
     }
     timeScanning = 0.00
   })

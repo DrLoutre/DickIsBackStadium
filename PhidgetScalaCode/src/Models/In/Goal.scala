@@ -1,7 +1,7 @@
 package Models.In
 
 import BlackBox.BlackBox
-import Events.PassageEvent
+import Events._
 import com.phidgets.InterfaceKitPhidget
 import com.phidgets.event.{SensorChangeEvent, SensorChangeListener}
 
@@ -11,23 +11,31 @@ import com.phidgets.event.{SensorChangeEvent, SensorChangeListener}
   * With a calculation on the time lapse between both event in a correct order we will determinate if there is a goal or not
   */
 class Goal(interfaceKitPhidget: InterfaceKitPhidget, indexPassage: Int, indexVibration: Int, blackBox: BlackBox) {
+  private val MILI_INTERVAL = 200
 
   var goal:Int = 0
   var lastGoal:Double = 0.0
 
-  interfaceKitPhidget.addSensorChangeListener(new SensorChangeListener {
-    override def sensorChanged(sensorChangeEvent: SensorChangeEvent): Unit = {
-      sensorChangeEvent.getIndex match {
-        case indexPassage =>
-          if (interfaceKitPhidget.getSensorValue(indexPassage) < 100){
-            //Todo check if noEvent + timout  if ok =>  new passage event + proceed it
-          }
-        case indexVibration => {
-          if (interfaceKitPhidget.getSensorValue(indexPassage) > 500){
-            //Todo check if noEvent + timout if ok => new vibration event + proceed it
+  interfaceKitPhidget.addSensorChangeListener((sensorChangeEvent: SensorChangeEvent) => {
+    sensorChangeEvent.getIndex match {
+      case indexPassage =>
+        if (interfaceKitPhidget.getSensorValue(indexPassage) < 100) {
+          val time = System.currentTimeMillis
+          blackBox.getLast(Class[PassageEvent]) match {
+            case Some(PassageEvent(eventTime)) =>
+              if (time - eventTime > MILI_INTERVAL)
+                blackBox.processEvent(PassageEvent(time))
           }
         }
-      }
+      case indexVibration =>
+        if (interfaceKitPhidget.getSensorValue(indexPassage) > 500) {
+          val time = System.currentTimeMillis
+          blackBox.getLast(Class[VibrationEvent]) match {
+            case Some(VibrationEvent(eventTime)) =>
+              if (time - eventTime > MILI_INTERVAL)
+                blackBox.processEvent(VibrationEvent(time))
+          }
+        }
     }
   })
 

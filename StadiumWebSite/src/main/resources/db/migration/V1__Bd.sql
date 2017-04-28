@@ -78,5 +78,13 @@ CREATE TABLE Spectator(
     FOREIGN KEY (Id_Match) REFERENCES Matchs(Id_Match)
 );
 
+CREATE TABLE Tokens(
+    NFC VARCHAR(50) NOT NULL,
+    Token VARCHAR(50) NOT NULL,
+    MatchDate DATETIME NOT NULL,
+    PRIMARY KEY (NFC,Token),
+    FOREIGN KEY (NFC) REFERENCES Athletic(NFC)
+);
+
 INSERT INTO `Refreshment` (`ID`, `Attendance`, `Localisation`) VALUES (1, 0.35, 'C''est pas ici');
 INSERT INTO `Refreshment` (`ID`, `Attendance`, `Localisation`) VALUES (2, 0.75, 'C''est pas ici non plus');

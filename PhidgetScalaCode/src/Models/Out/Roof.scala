@@ -1,13 +1,16 @@
 package Models.Out
 
+import BlackBox.BlackBox
+import Modes.{DetachedMode, NormalMode}
 import com.phidgets.AdvancedServoPhidget
+import com.phidgets.event.{AttachEvent, AttachListener, DetachEvent, DetachListener}
 
 /**
   * Created by bri_e on 20-04-17.
   * The roof can be opened xor closed.
   * Both ServoMotor works in coalition in order to close the roof. 
   */
-class Roof {
+class Roof(blackBox: BlackBox) {
 
   val SERVO1_SERIAL:Int = 305832
   val SERVO2_SERIAL:Int = 305826
@@ -21,7 +24,25 @@ class Roof {
   val servo1:AdvancedServoPhidget = new AdvancedServoPhidget
   val servo2:AdvancedServoPhidget = new AdvancedServoPhidget
 
-  //Add listeners for error
+  def detachServo:Unit = {
+    blackBox.currentMode match {
+      case DetachedMode(kit, _, rfid) =>
+        blackBox.currentMode = DetachedMode(kit, true, rfid)
+      case _ => blackBox.currentMode = DetachedMode(false, true, true)
+    }
+  }
+
+  def attachServo:Unit = {
+    blackBox.currentMode match {
+      case DetachedMode(kit, _, rfid) =>
+        if (!kit && !rfid) NormalMode else DetachedMode(kit, false, rfid)
+    }
+  }
+
+  servo1.addDetachListener((detachEvent: DetachEvent) => detachServo)
+  servo1.addAttachListener((attachEvent: AttachEvent) => attachServo)
+  servo2.addDetachListener((detachEvent: DetachEvent) => detachServo)
+  servo2.addAttachListener((attachEvent: AttachEvent) => attachServo)
 
   servo1.open(SERVO1_SERIAL)
   servo2.open(SERVO2_SERIAL)
@@ -31,6 +52,8 @@ class Roof {
   servo2.setEngaged(SERVO_INDEX, true)
   servo1.setPosition(SERVO_INDEX, VAL_ROOF1_CLOSED)
   servo2.setPosition(SERVO_INDEX, VAL_ROOF2_CLOSED)
+
+
 
   def closeRoof:Unit = {
     if (open) {
