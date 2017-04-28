@@ -5,6 +5,7 @@ import java.net.{HttpURLConnection, URL}
 import java.util.Date
 
 import BlackBox.BlackBox
+import Events.HeatEvent
 import com.phidgets.InterfaceKitPhidget
 import com.phidgets.event.{SensorChangeEvent, SensorChangeListener}
 import org.json.JSONObject
@@ -20,7 +21,12 @@ class WeatherStation (interfaceKitPhidget: InterfaceKitPhidget, sensorIndex: Int
 
   interfaceKitPhidget.addSensorChangeListener((sensorChangeEvent: SensorChangeEvent) => {
     if (sensorChangeEvent.getIndex == sensorIndex) {
-      //Todo : check if blackBox.noEvent + time difference + Create and process event
+      val time = System.currentTimeMillis
+      blackBox.getLast(Class[HeatEvent]) match{
+        case Some(HeatEvent(eventTime)) =>
+          if (time - eventTime > MILI_INTERVAL)
+            blackBox.processEvent(HeatEvent(time))
+      }
     }
   })
 

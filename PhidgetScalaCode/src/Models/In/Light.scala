@@ -1,6 +1,7 @@
 package Models.In
 
 import BlackBox.BlackBox
+import Events.LightEvent
 import com.phidgets._
 import com.phidgets.event._
 
@@ -14,11 +15,14 @@ class Light(interfaceKitPhidget: InterfaceKitPhidget, sensorIndex: Int, blackBox
   val MILI_INTERVAL:Int = 1000
 
   interfaceKitPhidget.addSensorChangeListener((sensorChangeEvent: SensorChangeEvent) => {
-    if (true /*TODO : if we can get last element from the blackbox list from Light type*/ )
-    //TODO : process a new light event
-      println("Processing Light Event")
-    else
-      println("No Light Event Proceeded")
+    if (sensorChangeEvent.getIndex == sensorIndex) {
+      val time = System.currentTimeMillis
+      blackBox.getLast(Class[LightEvent]) match {
+        case Some(LightEvent(eventTime)) =>
+          if (time - eventTime > MILI_INTERVAL)
+            blackBox.processEvent(LightEvent(time))
+      }
+    }
   })
 
   def retLightIntensity: Int = {

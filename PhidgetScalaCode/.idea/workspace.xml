@@ -3,8 +3,16 @@
   <component name="ChangeListManager">
     <list default="true" id="6c4420ac-3361-402d-959b-6668598a5c94" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Models/Out/Field.scala" afterPath="$PROJECT_DIR$/src/Models/Out/Field.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/BlackBox/BlackBox.scala" afterPath="$PROJECT_DIR$/src/BlackBox/BlackBox.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Models/In/DemoModePotentiometer.scala" afterPath="$PROJECT_DIR$/src/Models/In/DemoModePotentiometer.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Models/In/Goal.scala" afterPath="$PROJECT_DIR$/src/Models/In/Goal.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Models/In/LapCalculator.scala" afterPath="$PROJECT_DIR$/src/Models/In/LapCalculator.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Models/In/Light.scala" afterPath="$PROJECT_DIR$/src/Models/In/Light.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Models/In/Runners.scala" afterPath="$PROJECT_DIR$/src/Models/In/Runners.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Models/In/Stand.scala" afterPath="$PROJECT_DIR$/src/Models/In/Stand.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Models/In/WeatherStation.scala" afterPath="$PROJECT_DIR$/src/Models/In/WeatherStation.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Models/Out/Roof.scala" afterPath="$PROJECT_DIR$/src/Models/Out/Roof.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Modes/Mode.scala" afterPath="$PROJECT_DIR$/src/Modes/Mode.scala" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -16,108 +24,150 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="BlackBox.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/BlackBox/BlackBox.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="178" column="6" lean-forward="false" selection-start-line="178" selection-start-column="6" selection-end-line="178" selection-end-column="6" />
-              <folding>
-                <element signature="e#3946#4085#0" expanded="false" />
-                <element signature="e#4088#5274#0" expanded="false" />
-                <element signature="e#5278#5419#0" expanded="false" />
-                <element signature="e#5423#6018#0" expanded="false" />
-                <element signature="e#6022#6844#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Roof.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Models/Out/Roof.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="55">
-              <caret line="9" column="12" lean-forward="false" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="12" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Field.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Models/Out/Field.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="16" column="23" lean-forward="false" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Stand.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Models/In/Stand.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
-              <caret line="16" column="6" lean-forward="false" selection-start-line="16" selection-start-column="6" selection-end-line="16" selection-end-column="6" />
-              <folding>
-                <element signature="e#19#43#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Goal.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Models/In/Goal.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="399">
-              <caret line="22" column="14" lean-forward="false" selection-start-line="22" selection-start-column="14" selection-end-line="22" selection-end-column="14" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Main.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Main.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="18" column="1" lean-forward="false" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
-              <folding>
-                <element signature="e#0#24#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DemoModePotentiometer.scala" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/Models/In/DemoModePotentiometer.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="33" column="20" lean-forward="false" selection-start-line="33" selection-start-column="20" selection-end-line="33" selection-end-column="20" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Mode.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Modes/Mode.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="231">
-              <caret line="11" column="11" lean-forward="false" selection-start-line="11" selection-start-column="11" selection-end-line="11" selection-end-column="11" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MatchPlanning.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Models/In/MatchPlanning.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="9" column="6" lean-forward="false" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.5">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
+          <file leaf-file-name="BlackBox.scala" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/BlackBox/BlackBox.scala">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="168">
+                  <caret line="51" column="27" lean-forward="false" selection-start-line="51" selection-start-column="27" selection-end-line="51" selection-end-column="27" />
+                  <folding>
+                    <element signature="e#18#34#0" expanded="true" />
+                    <element signature="e#6187#6326#0" expanded="false" />
+                    <element signature="e#6329#7515#0" expanded="false" />
+                    <element signature="e#7519#7660#0" expanded="false" />
+                    <element signature="e#7664#8259#0" expanded="false" />
+                    <element signature="e#8263#9085#0" expanded="false" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Roof.scala" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/Models/Out/Roof.scala">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="399">
+                  <caret line="43" column="69" lean-forward="false" selection-start-line="43" selection-start-column="69" selection-end-line="43" selection-end-column="69" />
+                  <folding>
+                    <element signature="e#20#44#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Stand.scala" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/Models/In/Stand.scala">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="567">
+                  <caret line="27" column="45" lean-forward="true" selection-start-line="27" selection-start-column="45" selection-end-line="27" selection-end-column="45" />
+                  <folding>
+                    <element signature="e#19#43#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="WeatherStation.scala" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/Models/In/WeatherStation.scala">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="215">
+                  <caret line="24" column="47" lean-forward="true" selection-start-line="24" selection-start-column="47" selection-end-line="24" selection-end-column="47" />
+                  <folding>
+                    <element signature="e#19#82#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="LapCalculator.scala" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/Models/In/LapCalculator.scala">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="66">
+                  <caret line="23" column="13" lean-forward="true" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
+                  <folding>
+                    <element signature="e#19#43#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Mode.scala" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/Modes/Mode.scala">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="420">
+                  <caret line="20" column="19" lean-forward="true" selection-start-line="20" selection-start-column="19" selection-end-line="20" selection-end-column="19" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Light.scala" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/Models/In/Light.scala">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="194">
+                  <caret line="12" column="6" lean-forward="false" selection-start-line="12" selection-start-column="6" selection-end-line="12" selection-end-column="6" />
+                  <folding>
+                    <element signature="e#19#43#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="MatchPlanning.scala" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/Models/In/MatchPlanning.scala">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="168">
+                  <caret line="9" column="6" lean-forward="false" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Match.scala" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/Models/In/Match.scala">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="147">
+                  <caret line="7" column="4" lean-forward="false" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Runners.scala" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/Models/In/Runners.scala">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="756">
+                  <caret line="37" column="17" lean-forward="false" selection-start-line="37" selection-start-column="17" selection-end-line="37" selection-end-column="17" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file leaf-file-name="BlackBox.scala" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/BlackBox/BlackBox.scala">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="189">
+                  <caret line="53" column="22" lean-forward="false" selection-start-line="53" selection-start-column="22" selection-end-line="53" selection-end-column="22" />
+                  <folding>
+                    <element signature="e#18#34#0" expanded="true" />
+                    <element signature="e#6187#6326#0" expanded="false" />
+                    <element signature="e#6329#7515#0" expanded="false" />
+                    <element signature="e#7519#7660#0" expanded="false" />
+                    <element signature="e#7664#8259#0" expanded="false" />
+                    <element signature="e#8263#9085#0" expanded="false" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -150,25 +200,25 @@
         <option value="$PROJECT_DIR$/src/Models/Bar.scala" />
         <option value="$PROJECT_DIR$/src/Models/In/Bar.scala" />
         <option value="$PROJECT_DIR$/src/BlackBox/GoalCase.java" />
-        <option value="$PROJECT_DIR$/src/Models/In/Light.scala" />
-        <option value="$PROJECT_DIR$/src/Models/In/Goal.scala" />
-        <option value="$PROJECT_DIR$/src/Models/In/Runners.scala" />
-        <option value="$PROJECT_DIR$/src/Models/In/LapCalculator.scala" />
         <option value="$PROJECT_DIR$/src/Models/In/Match.scala" />
         <option value="$PROJECT_DIR$/src/Models/In/MatchPlanning.scala" />
-        <option value="$PROJECT_DIR$/src/Models/In/Stand.scala" />
         <option value="$PROJECT_DIR$/src/Models/In/Weather.scala" />
-        <option value="$PROJECT_DIR$/src/Models/In/WeatherStation.scala" />
         <option value="$PROJECT_DIR$/src/Models/Out/Lighting.scala" />
         <option value="$PROJECT_DIR$/src/Mode/Mode.scala" />
         <option value="$PROJECT_DIR$/src/Events/Event.scala" />
-        <option value="$PROJECT_DIR$/src/Modes/Mode.scala" />
         <option value="$PROJECT_DIR$/src/BlackBox/GoalCase.scala" />
-        <option value="$PROJECT_DIR$/src/Models/In/DemoModePotentiometer.scala" />
-        <option value="$PROJECT_DIR$/src/BlackBox/BlackBox.scala" />
         <option value="$PROJECT_DIR$/src/Main.scala" />
-        <option value="$PROJECT_DIR$/src/Models/Out/Roof.scala" />
         <option value="$PROJECT_DIR$/src/Models/Out/Field.scala" />
+        <option value="$PROJECT_DIR$/src/Models/In/DemoModePotentiometer.scala" />
+        <option value="$PROJECT_DIR$/src/Models/In/Goal.scala" />
+        <option value="$PROJECT_DIR$/src/Models/In/Light.scala" />
+        <option value="$PROJECT_DIR$/src/Models/In/Runners.scala" />
+        <option value="$PROJECT_DIR$/src/Models/In/Stand.scala" />
+        <option value="$PROJECT_DIR$/src/Models/In/WeatherStation.scala" />
+        <option value="$PROJECT_DIR$/src/Modes/Mode.scala" />
+        <option value="$PROJECT_DIR$/src/Models/Out/Roof.scala" />
+        <option value="$PROJECT_DIR$/src/BlackBox/BlackBox.scala" />
+        <option value="$PROJECT_DIR$/src/Models/In/LapCalculator.scala" />
       </list>
     </option>
   </component>
@@ -244,33 +294,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Modes" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Mode.scala" />
-              <option name="myItemType" value="org.jetbrains.plugins.scala.components.ScalaDefsProjectViewProvider$ScalaFileTreeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="PhidgetScalaCode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="PhidgetScalaCode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="Models" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Out" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -397,22 +421,15 @@
           <option name="mySupportsDeletion" value="false" />
           <option name="myCanBeAbsent" value="false" />
           <option name="myId" value="UPDATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageD/src/bacht_cli.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageD/src/bacht_data.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageD/src/bacht_parser.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageD/src/bacht_simulator.scala</PATH>
           <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageI/src/bacht_cli.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageI/src/bacht_data.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageI/src/bacht_parser.scala</PATH>
           <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageI/src/bacht_simulator.scala</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageI/src/bacht_store.scala</PATH>
           <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageR/src/bacht_cli.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageR/src/bacht_data.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageR/src/bacht_parser.scala</PATH>
           <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageR/src/bacht_simulator.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageW/src/bacht_cli.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageW/src/bacht_data.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageW/src/bacht_parser.scala</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageW/src/bacht_simulator.scala</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Projet_JMJ_langageR/src/bacht_store.scala</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/activities/LoginActivity.java</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/activities/MainActivity.java</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/../SmartStadium/app/src/main/java/com/example/gecko/smartstadium/activities/StatActivity.java</PATH>
         </FILE-GROUP>
         <FILE-GROUP>
           <option name="myUpdateName" value="Created" />
@@ -420,8 +437,6 @@
           <option name="mySupportsDeletion" value="false" />
           <option name="myCanBeAbsent" value="false" />
           <option name="myId" value="CREATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Extension_Time/.gitignore</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../Partie_JMJ/Extension_Time/src/test.txt</PATH>
         </FILE-GROUP>
         <FILE-GROUP>
           <option name="myUpdateName" value="Deleted" />
@@ -991,7 +1006,7 @@
       <workItem from="1493026690997" duration="6880000" />
       <workItem from="1493189325346" duration="1625000" />
       <workItem from="1493296456843" duration="57000" />
-      <workItem from="1493296643904" duration="1299000" />
+      <workItem from="1493296643904" duration="9922000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit For phidget's scala code">
       <created>1492672296302</created>
@@ -1126,11 +1141,18 @@
       <option name="project" value="LOCAL" />
       <updated>1493190313590</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Todo's Done ==&gt; Models Out">
+      <created>1493298118740</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1493298118740</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="43964000" />
+    <option name="totallyTimeSpent" value="52587000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1145,7 +1167,7 @@
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3657984" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38391846" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1158,7 +1180,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.4958932" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.216971" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14500538" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="SonarLint" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298969" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1223,21 +1245,14 @@
     <MESSAGE value="Scala Phidget Code : ou &quot;Ah oui mince, ça fait genre 3 jours que j'ai pas push, ça serait bien de le faire quand même... &quot;" />
     <MESSAGE value="Phidget code ok, still the TODO to do" />
     <MESSAGE value="Phidget sclacode main + add processing event for rotation sensor" />
-    <option name="LAST_COMMIT_MESSAGE" value="Phidget sclacode main + add processing event for rotation sensor" />
+    <MESSAGE value="Todo's Done ==&gt; Models Out" />
+    <option name="LAST_COMMIT_MESSAGE" value="Todo's Done ==&gt; Models Out" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/Models/In/Goal.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="5" column="124" lean-forward="false" selection-start-line="5" selection-start-column="124" selection-end-line="5" selection-end-column="124" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java" />
     <entry file="file://$PROJECT_DIR$/src/Main.scala">
       <provider selected="true" editor-type-id="text-editor">
@@ -1266,7 +1281,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="84">
           <caret line="4" column="35" lean-forward="false" selection-start-line="4" selection-start-column="35" selection-end-line="4" selection-end-column="35" />
-          <folding />
+          <folding>
+            <element signature="e#19#35#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1315,11 +1332,12 @@
         <state relative-caret-position="84">
           <caret line="4" column="40" lean-forward="false" selection-start-line="4" selection-start-column="40" selection-end-line="4" selection-end-column="40" />
           <folding>
-            <element signature="e#3946#4085#0" expanded="false" />
-            <element signature="e#4088#5274#0" expanded="false" />
-            <element signature="e#5278#5419#0" expanded="false" />
-            <element signature="e#5423#6018#0" expanded="false" />
-            <element signature="e#6022#6844#0" expanded="false" />
+            <element signature="e#18#34#0" expanded="true" />
+            <element signature="e#6187#6326#0" expanded="false" />
+            <element signature="e#6329#7515#0" expanded="false" />
+            <element signature="e#7519#7660#0" expanded="false" />
+            <element signature="e#7664#8259#0" expanded="false" />
+            <element signature="e#8263#9085#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1381,7 +1399,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="777">
           <caret line="37" column="19" lean-forward="false" selection-start-line="37" selection-start-column="19" selection-end-line="37" selection-end-column="19" />
-          <folding />
+          <folding>
+            <element signature="e#19#43#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1404,7 +1424,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
           <caret line="5" column="124" lean-forward="false" selection-start-line="5" selection-start-column="124" selection-end-line="5" selection-end-column="124" />
-          <folding />
+          <folding>
+            <element signature="e#19#43#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1413,34 +1435,6 @@
     <entry file="file://$PROJECT_DIR$/src/Models/In/Heat.scala" />
     <entry file="file://$PROJECT_DIR$/src/Models/In/package.scala" />
     <entry file="file://$PROJECT_DIR$/src/BlackBox/GoalCase.java" />
-    <entry file="file://$PROJECT_DIR$/src/Models/In/Runners.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="755">
-          <caret line="36" column="34" lean-forward="false" selection-start-line="36" selection-start-column="34" selection-end-line="36" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Models/In/Match.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="7" column="4" lean-forward="false" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Models/In/LapCalculator.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="19" column="2" lean-forward="false" selection-start-line="19" selection-start-column="2" selection-end-line="19" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Models/In/WeatherStation.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="65" column="5" lean-forward="true" selection-start-line="65" selection-start-column="5" selection-end-line="65" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Models/Out/Lighting.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-96">
@@ -1470,75 +1464,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Models/In/Light.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="23" column="6" lean-forward="false" selection-start-line="23" selection-start-column="6" selection-end-line="23" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Models/In/Stand.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="16" column="6" lean-forward="false" selection-start-line="16" selection-start-column="6" selection-end-line="16" selection-end-column="6" />
-          <folding>
-            <element signature="e#19#43#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Models/In/MatchPlanning.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="9" column="6" lean-forward="false" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Modes/Mode.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="11" column="11" lean-forward="false" selection-start-line="11" selection-start-column="11" selection-end-line="11" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Models/In/Goal.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="22" column="14" lean-forward="false" selection-start-line="22" selection-start-column="14" selection-end-line="22" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="378">
           <caret line="18" column="1" lean-forward="false" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
-          <folding>
-            <element signature="e#0#24#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/BlackBox/BlackBox.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="178" column="6" lean-forward="false" selection-start-line="178" selection-start-column="6" selection-end-line="178" selection-end-column="6" />
-          <folding>
-            <element signature="e#3946#4085#0" expanded="false" />
-            <element signature="e#4088#5274#0" expanded="false" />
-            <element signature="e#5278#5419#0" expanded="false" />
-            <element signature="e#5423#6018#0" expanded="false" />
-            <element signature="e#6022#6844#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Models/Out/Roof.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="55">
-          <caret line="9" column="12" lean-forward="false" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="12" />
           <folding />
         </state>
       </provider>
@@ -1551,11 +1480,126 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_112/src.zip!/java/util/LinkedList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="523" column="13" lean-forward="false" selection-start-line="523" selection-start-column="13" selection-end-line="523" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Models/In/Goal.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="27" column="11" lean-forward="true" selection-start-line="27" selection-start-column="11" selection-end-line="27" selection-end-column="11" />
+          <folding>
+            <element signature="e#19#43#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Models/In/Light.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="12" column="6" lean-forward="false" selection-start-line="12" selection-start-column="6" selection-end-line="12" selection-end-column="6" />
+          <folding>
+            <element signature="e#19#43#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Models/In/Match.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="7" column="4" lean-forward="false" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Models/In/MatchPlanning.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="9" column="6" lean-forward="false" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Models/In/Runners.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="756">
+          <caret line="37" column="17" lean-forward="false" selection-start-line="37" selection-start-column="17" selection-end-line="37" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Models/In/Stand.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="567">
+          <caret line="27" column="45" lean-forward="true" selection-start-line="27" selection-start-column="45" selection-end-line="27" selection-end-column="45" />
+          <folding>
+            <element signature="e#19#43#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Models/In/DemoModePotentiometer.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="33" column="20" lean-forward="false" selection-start-line="33" selection-start-column="20" selection-end-line="33" selection-end-column="20" />
+        <state relative-caret-position="420">
+          <caret line="24" column="25" lean-forward="false" selection-start-line="24" selection-start-column="25" selection-end-line="24" selection-end-column="25" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Models/In/WeatherStation.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="215">
+          <caret line="24" column="47" lean-forward="true" selection-start-line="24" selection-start-column="47" selection-end-line="24" selection-end-column="47" />
+          <folding>
+            <element signature="e#19#82#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Modes/Mode.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="20" column="19" lean-forward="true" selection-start-line="20" selection-start-column="19" selection-end-line="20" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Models/Out/Roof.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="43" column="69" lean-forward="false" selection-start-line="43" selection-start-column="69" selection-end-line="43" selection-end-column="69" />
+          <folding>
+            <element signature="e#20#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/BlackBox/BlackBox.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="51" column="27" lean-forward="false" selection-start-line="51" selection-start-column="27" selection-end-line="51" selection-end-column="27" />
+          <folding>
+            <element signature="e#18#34#0" expanded="true" />
+            <element signature="e#6187#6326#0" expanded="false" />
+            <element signature="e#6329#7515#0" expanded="false" />
+            <element signature="e#7519#7660#0" expanded="false" />
+            <element signature="e#7664#8259#0" expanded="false" />
+            <element signature="e#8263#9085#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Models/In/LapCalculator.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="23" column="13" lean-forward="true" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
+          <folding>
+            <element signature="e#19#43#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
