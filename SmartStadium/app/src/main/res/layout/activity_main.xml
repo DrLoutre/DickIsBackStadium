@@ -32,12 +32,23 @@
         android:textSize="20dp" />
 
     <TextView
+        android:id="@+id/loginTextExplication"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/loginTextAction"
+        android:layout_alignLeft="@+id/loginButtonQRcode"
+        android:layout_alignStart="@+id/loginButtonQRcode"
+        android:text="Sélectionner l'option qui vous intéresse:"
+        android:textColor="@android:color/black"
+        android:textSize="20dp" />
+
+    <TextView
         android:id="@+id/loginTextAction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/loginButtonQRcode"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:gravity="center"
         android:text="@string/mainTextAction"
         android:textColor="@android:color/darker_gray"

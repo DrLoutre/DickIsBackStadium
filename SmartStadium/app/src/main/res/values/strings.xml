@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">SmartStadium</string>
-    <string name="loginMainTitle">Bienvenue sur Smardium</string>
+    <string name="loginMainTitle">Bienvenue sur DickStadium</string>
     <string name="loginTextIntro"> Cette application est destinée à améliorer votre expérience dans ce stade. Vous êtes connecté en tant qu\'utilisateur anonyme pour l\'instant. </string>
     <string name="mainTextAction">Scanner un QRcode pour interagir avec le stade</string>
     <string name="publicTitle">Bienvenue</string>
