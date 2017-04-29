@@ -16,7 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ * Class qui permet d'afficher la JSP relative à l'inscription d'un athlète.
+ * 
  * @author Maxime
  */
 public class Registration extends HttpServlet {

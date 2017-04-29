@@ -29,7 +29,8 @@ import javax.servlet.http.HttpServletResponse;
 import verifications.VerifMatch;
 
 /**
- *
+ * Class qui permet d'afficher la JSP relative à la création d'un match.
+ * 
  * @author Maxime
  */
 public class Team extends HttpServlet {
@@ -88,12 +89,15 @@ public class Team extends HttpServlet {
         this.getServletContext().getRequestDispatcher("/WEB-INF/Team.jsp").forward(request, response);
     }
     
+    /**
+     * Permet d'initialiser des variables afin d'afficher l'ensemble des matchs qui ne sont pas finis. 
+     */
     private void initVar(HttpServletRequest request, HttpServletResponse response) {
         MatchDao resultDao = new MatchDaoImpl();
         TeamDao teamDao = new TeamDaoImpl();
         team = new HashMap<>();
         try {
-            request.setAttribute("matchs", resultDao.getAllMatch());
+            request.setAttribute("matchs", resultDao.getNotEndedMatch());
             for (Match match : resultDao.getAllMatch()) {
                 if(!team.containsKey(Integer.toString(match.getTeamID1())))
                     team.put(Integer.toString(match.getTeamID1()), teamDao.getName(match.getTeamID1()));

@@ -20,7 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ * Class qui permet d'afficher la JSP relative aux résultats des différents match finis.
+ * 
  * @author Maxime
  */
 public class Result extends HttpServlet {
@@ -33,8 +34,8 @@ public class Result extends HttpServlet {
         TeamDao teamDao = new TeamDaoImpl();
         team = new HashMap<>();
         try {
-            request.setAttribute("matchs", resultDao.getAllMatch());
-            for (Match match : resultDao.getAllMatch()) {
+            request.setAttribute("matchs", resultDao.getEndedMatch());
+            for (Match match : resultDao.getEndedMatch()) {
                 if(!team.containsKey(Integer.toString(match.getTeamID1())))
                     team.put(Integer.toString(match.getTeamID1()), teamDao.getName(match.getTeamID1()));
                 if(!team.containsKey(Integer.toString(match.getTeamID2())))
