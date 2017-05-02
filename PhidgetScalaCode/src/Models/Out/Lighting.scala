@@ -11,33 +11,17 @@ class Lighting(interfaceKitPhidget: InterfaceKitPhidget) {
   var power: Int = 0
 
   def updatePower(lightIntensity:Int):Unit = {
-    power = 100/lightIntensity
+    power = 100 - lightIntensity
     refreshLighting
   }
 
   def refreshLighting:Unit = {
-    var rest = power
-    val step = 100 / connectedLEDS
-    var ledNumber = 0
-    while (step <= rest) {
-      ledNumber += 1
-      rest -= step
-    }
-
-    var x = 0
-    while (x < ledNumber) {
-      if (!interfaceKitPhidget.getOutputState(x)) {
-        interfaceKitPhidget.setOutputState(x, true)
-        x += 1
-      }
-    }
-
-    var i = ledNumber
-    while (i < connectedLEDS) {
-      if (interfaceKitPhidget.getOutputState(i)) {
-        interfaceKitPhidget.setOutputState(i, false)
-        i += 1
-      }
-    }
+    // number of connected LEDS
+    val ledNumber = power / (100/connectedLEDS)
+    for(x <- 0 to connectedLEDS)
+      if (x<ledNumber)
+        interfaceKitPhidget.setOutputState(x,true)
+      else
+        interfaceKitPhidget.setOutputState(x,false)
   }
 }

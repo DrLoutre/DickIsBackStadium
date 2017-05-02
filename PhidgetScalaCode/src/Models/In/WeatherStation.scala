@@ -21,12 +21,18 @@ class WeatherStation (interfaceKitPhidget: InterfaceKitPhidget, sensorIndex: Int
 
   interfaceKitPhidget.addSensorChangeListener((sensorChangeEvent: SensorChangeEvent) => {
     if (sensorChangeEvent.getIndex == sensorIndex) {
+      println("Change in Heaaaaaaaaaaaaaaaaaaaaaaaaaaaaaat : " + getHeat)
       val time = System.currentTimeMillis
-      blackBox.getLast(Class[HeatEvent]) match{
+      /*blackBox.getLast(HeatEvent(time)) match{
         case Some(HeatEvent(eventTime)) =>
           if (time - eventTime > MILI_INTERVAL)
+            println("<<<<<<<<<<<<processing another heat event")
             blackBox.processEvent(HeatEvent(time))
-      }
+        case None =>
+          println(">>>>>>>>>>>processing first heat event")
+          blackBox.processEvent(HeatEvent(time))
+      }*/
+      blackBox.processEvent(HeatEvent(time))
     }
   })
 
@@ -37,14 +43,16 @@ class WeatherStation (interfaceKitPhidget: InterfaceKitPhidget, sensorIndex: Int
   }
 
   def getSunRise():Date = {
+    println("Able to gather info? ")
     var sun = getWeatherInformation
+    println("YES !")
     if (sun != null) {
       sun = sun.getJSONObject("sys")
       //3600 : UTC to UTC+1
       new Date(sun.getInt("sunrise") * 1000L + 3600)
     } else {
       println("Error while reading weather API")
-      Date
+      new Date
     }
   }
 
@@ -56,7 +64,7 @@ class WeatherStation (interfaceKitPhidget: InterfaceKitPhidget, sensorIndex: Int
       new Date(sun.getInt("sunset") * 1000L + 3600)
     } else {
       println("Error while reading weather API")
-      Date
+      new Date
     }
   }
 
@@ -74,27 +82,19 @@ class WeatherStation (interfaceKitPhidget: InterfaceKitPhidget, sensorIndex: Int
 
   def isDay:Boolean = {
     val now     = new Date()
+    println("Fletched date ok")
     val sunRise = getSunRise()
+    println("Fleched Sunrise")
     val sunSet  = getSunSet()
+    println("Fleched SunSet")
     now.after(sunRise)&&now.before(sunSet)
   }
 
 
 
   def getWeatherInformation:JSONObject = {
-    val url = new URL("http://api.openweathermap.org/data/2.5/weather?id=2790472&APPID=" + API_KEY)
-    val httpURLConnection = url.openConnection.asInstanceOf[HttpURLConnection]
-    httpURLConnection.setRequestMethod("GET")
-    httpURLConnection.setRequestProperty("accept", "application/json")
-    if (httpURLConnection.getResponseCode != 200) throw new RuntimeException("Http Get method failed " + httpURLConnection.getResponseCode)
-    val br = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream))
-    val buffer:StringBuilder = new StringBuilder
-    var temp:String = null
-    while ( {
-      (temp = br.readLine) != null
-    }) buffer.append(temp)
-    httpURLConnection.disconnect()
-    val rootObject = new JSONObject(buffer.toString)
+    val body = Http("http://api.openweathermap.org/data/2.5/weather?id=2790472&APPID=".concat(API_KEY)).timeout(10000, 10000).asString.body
+    val rootObject = new JSONObject(body)
     rootObject
   }
 

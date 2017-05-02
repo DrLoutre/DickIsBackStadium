@@ -4,14 +4,14 @@ package Events
   * Created by bri_e on 20-04-17.
   * Class containing the different case classes with different events
   */
-abstract class Event(eventTime:Double)
+abstract class Event(var eventTime:Long)
 
-case class BarEvent(eventTime:Double)           extends Event(eventTime)
-case class DemoPhaseEvent(eventTime:Double)     extends Event(eventTime)
-case class HeatEvent(eventTime:Double)          extends Event(eventTime)
-case class LightEvent(eventTime:Double)         extends Event(eventTime)
-case class NewMatchPlanEvent(eventTime:Double)  extends Event(eventTime)
-case class PassageEvent(eventTime:Double)       extends Event(eventTime)
-case class StandEvent(eventTime:Double)         extends Event(eventTime)
-case class TurnEvent(eventTime:Double)          extends Event(eventTime)
-case class VibrationEvent(eventTime:Double)     extends Event(eventTime)
+case class BarEvent(var evntTime:Long)           extends Event(evntTime)
+case class DemoPhaseEvent(var evntTime:Long)     extends Event(evntTime)
+case class HeatEvent(var evntTime:Long)          extends Event(evntTime)
+case class LightEvent(var evntTime:Long)         extends Event(evntTime)
+case class NewMatchPlanEvent(var evntTime:Long)  extends Event(evntTime)
+case class PassageEvent(var evntTime:Long)       extends Event(evntTime)
+case class StandEvent(var evntTime:Long)         extends Event(evntTime)
+case class TurnEvent(var evntTime:Long)          extends Event(evntTime)
+case class VibrationEvent(var evntTime:Long)     extends Event(evntTime)

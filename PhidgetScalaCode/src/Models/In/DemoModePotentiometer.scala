@@ -1,7 +1,7 @@
 package Models.In
 
 import BlackBox.BlackBox
-import Events.DemoPhaseEvent
+import Events.{DemoPhaseEvent, LightEvent}
 import Modes._
 import com.phidgets.InterfaceKitPhidget
 import com.phidgets.event.{SensorChangeEvent, SensorChangeListener}
@@ -21,7 +21,7 @@ class DemoModePotentiometer(interfaceKitPhidget: InterfaceKitPhidget, sensorInde
   interfaceKitPhidget.addSensorChangeListener((sensorChangeEvent: SensorChangeEvent) =>
     if (sensorChangeEvent.getIndex == sensorIndex) {
       val time = System.currentTimeMillis
-      blackBox.getLast(Class[DemoPhaseEvent]) match {
+      blackBox.getLast(DemoPhaseEvent(time)) match {
         case Some(DemoPhaseEvent(eventTime)) =>
           if (time - eventTime > MILI_INTERVAL)
             Thread.sleep(POT_SETTING_TIME)

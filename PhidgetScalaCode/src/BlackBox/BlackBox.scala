@@ -8,10 +8,11 @@ import Modes._
 import Models.In._
 import Models.Out._
 import com.phidgets.InterfaceKitPhidget
-import com.phidgets.event.{AttachEvent, AttachListener, DetachEvent, DetachListener}
+import com.phidgets.event._
 
 import scala.collection.JavaConverters._
 import scala.collection.immutable.Set
+import scala.collection.mutable
 
 /**
   * Created by bri_e on 20-04-17.
@@ -30,7 +31,7 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
   private val INDEX_G:Int                   = 6
   private val INDEX_B:Int                   = 7
 
-  private var eventList: util.LinkedList[Event] = new util.LinkedList[Event]()
+  private var eventList: mutable.Set[Event] = mutable.Set[Event]()
   private var goalCase: GoalCase = _
 
   private val goal:Goal             = new Goal(  interfaceKitPhidget, INDEX_PRECISION_IR_SENSOR, INDEX_VIBRATION_SENSOR, this)
@@ -70,7 +71,8 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
     else
       log += "Proceed Event in Match Mode : \n"
 
-    eventList.add(event)
+    eventList += event
+
 
     currentMode match {
       case NormalMode() => {
@@ -80,7 +82,9 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
           log += "Proceed Event in Match Mode : \n"
         event match {
           case BarEvent(_) => log = processBarEvent(log)
-          case HeatEvent(_) => log = processHeatEvent(log)
+          case HeatEvent(_) => log = {
+            println("Processing heat event : ")
+            processHeatEvent(log)}
           case LightEvent(_) => log = processLightEvent(log)
           case PassageEvent(_) => log = processGoalEvent(event, log)
           case StandEvent(_) => log = processStandEvent(log)
@@ -100,7 +104,7 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
           log += "Proceed Event : \n"
         else
           log += "Proceed Event in Match Mode : \n"
-        log += "/!\ Be careful, one or more phidget is detached ! \n"
+        log += "/!/ Be careful, one or more phidget is detached ! \n"
         event match {
           case BarEvent(_) =>       if (!kitDetached)  log = processBarEvent(log)         else log += "--PhidgetKit Detached ! \n"
           case HeatEvent(_) =>      if (!kitDetached)  log = processHeatEvent(log)        else log += "--PhidgetKit Detached ! \n"
@@ -125,15 +129,63 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
     }
 
 
-    if (eventList.size()>50) eventList.removeLast()
+    //if (eventList.size()>50) eventList.removeLast()
+    filterEvntList
     println(log)
   }
 
-  def getLast(c:Class[_]):Option[Event] = {
-    val temporaryList:util.ArrayList[Event] = eventList.clone.asInstanceOf[util.ArrayList[Event]]
-    val tempList:List[Event] = temporaryList.asScala.toList
-    //tempList.find((p:Event) => p match {case c => true case _ => false}) todo: verify is its really equivalent
-    tempList.find{case c => true case _ => false}
+  def getLast(newEvent:Event):Option[Event] = {
+
+    var actualClass:Class[_] = classOf[Event]
+
+    newEvent match {
+      case LightEvent(_) => actualClass = classOf[LightEvent]
+      case BarEvent(_) => actualClass = classOf[BarEvent]
+      case DemoPhaseEvent(_) => actualClass = classOf[DemoPhaseEvent]
+      case HeatEvent(_) => actualClass = classOf[HeatEvent]
+      case NewMatchPlanEvent(_) => actualClass = classOf[NewMatchPlanEvent]
+      case PassageEvent(_) => actualClass = classOf[PassageEvent]
+      case StandEvent(_) => actualClass = classOf[StandEvent]
+      case TurnEvent(_) => actualClass = classOf[TurnEvent]
+      case VibrationEvent(_) => actualClass = classOf[VibrationEvent]
+      case _ => actualClass = classOf[Event]
+    }
+
+
+
+    try {
+      val tempList:List[Event] = eventList.toList
+      //println("Conversion done, checking with  = " + actualClass.toString + "\n for list : " + tempList)
+      tempList.find { case actualClass => true case _ => false}
+    } catch {
+      case e:Exception => println("Exception : " + e)
+        None
+    }
+  }
+
+  def filterEvntList:Unit = {
+    //println("Before filter : " + eventList.toString)
+    val typeList:List[Class[_]] = List(classOf[BarEvent], classOf[DemoPhaseEvent], classOf[HeatEvent], classOf[LightEvent], classOf[NewMatchPlanEvent], classOf[PassageEvent], classOf[PassageEvent], classOf[StandEvent], classOf[TurnEvent], classOf[VibrationEvent])
+    for (y <- typeList) {
+      val cnt:Int = eventList.count((e: Event) => !(e.getClass == y))
+      if (cnt > 1) retains(y)
+    }
+    def retains(ty:Class[_]): Unit = {
+      eventList.retain {
+        x: Event => {
+          (x.getClass == ty) &&
+            (eventList.find((y: Event) =>
+              (ty == y.getClass) && (y.eventTime < x.eventTime)
+            ) match {
+              case Some(_) =>
+                true
+              case None =>
+                false
+            })
+        }
+      }
+    }
+    //println("After Filter : " + eventList.toString())
   }
 
 
@@ -144,26 +196,34 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
   private def processBarEvent(log: String): _root_.scala.Predef.String = {
     "Error : Bar Event no longer taken in charge in this code"
   }
+
   private def processHeatEvent(log: String): _root_.scala.Predef.String = {
+    println("New heat event !")
     val temp:Double = weather.getHeat
     val isDay:Boolean = weather.isDay
+    println("is not wrong for Day")
     val weatherCond:Weather = weather.getWeather
+    println("is not wrong for Weather")
     var logChanges = ""
-
+    println("Matching weather condition")
     weatherCond match {
       case Snow()  =>
+        println("neige")
         roof.closeRoof
         field.setHeating(temp <= 5)
         field.setWatering(!currentMode.isMatch && (temp>15 || !isDay))
       case Rain()  =>
+        println("pluie")
         roof.closeRoof
         field.setHeating(temp <= 10)
         field.setWatering(!currentMode.isMatch && (temp>20 || !isDay))
       case Sun()   =>
+        println("soleil")
         roof.openRoof
         field.setHeating(temp <= 5)
         field.setWatering(!currentMode.isMatch && (temp>15 || !isDay))
       case Cloud() =>
+        println("nuages")
         if (roof.open) {
           field.setHeating(temp <= 15)
           field.setWatering(!currentMode.isMatch && (temp>10 || !isDay))
@@ -178,7 +238,9 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
   }
 
   private def processLightEvent(log: String): _root_.scala.Predef.String = {
-    "change in brightness : " + light.retLightIntensity + "\n"
+    val ret:Int = light.retLightIntensity
+    lighting.updatePower(ret)
+    "change in brightness : " + ret + "\n"
   }
 
   private def processGoalEvent(event:Event, log: String): _root_.scala.Predef.String = {

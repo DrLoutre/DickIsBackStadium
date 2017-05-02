@@ -21,7 +21,7 @@ class Goal(interfaceKitPhidget: InterfaceKitPhidget, indexPassage: Int, indexVib
       case indexPassage =>
         if (interfaceKitPhidget.getSensorValue(indexPassage) < 100) {
           val time = System.currentTimeMillis
-          blackBox.getLast(Class[PassageEvent]) match {
+          blackBox.getLast(PassageEvent(time)) match {
             case Some(PassageEvent(eventTime)) =>
               if (time - eventTime > MILI_INTERVAL)
                 blackBox.processEvent(PassageEvent(time))
@@ -30,7 +30,7 @@ class Goal(interfaceKitPhidget: InterfaceKitPhidget, indexPassage: Int, indexVib
       case indexVibration =>
         if (interfaceKitPhidget.getSensorValue(indexPassage) > 500) {
           val time = System.currentTimeMillis
-          blackBox.getLast(Class[VibrationEvent]) match {
+          blackBox.getLast(VibrationEvent(time)) match {
             case Some(VibrationEvent(eventTime)) =>
               if (time - eventTime > MILI_INTERVAL)
                 blackBox.processEvent(VibrationEvent(time))

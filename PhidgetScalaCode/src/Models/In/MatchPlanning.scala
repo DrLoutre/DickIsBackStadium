@@ -9,7 +9,7 @@ import java.util.{ArrayList, Date}
   */
 class MatchPlanning() {
 
-  var planned: util.ArrayList[Match] = null
+  var planned: util.ArrayList[Match] = new util.ArrayList[Match]
 
   def addMatchToList(start: Date, end: Date): Unit = {
     deleteOldMatches()
