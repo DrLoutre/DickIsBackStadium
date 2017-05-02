@@ -8,6 +8,8 @@ import dao.impl.SeatDaoImpl;
 import dao.impl.TribuneDaoImpl;
 import exceptions.NotFoundException;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;

@@ -10,7 +10,8 @@ CREATE TABLE Athletic(
     FirstName VARCHAR(30) NOT NULL,
     Age INTEGER NOT NULL,
     Sex VARCHAR(10) NOT NULL,
-    Password VARCHAR(50) NOT NULL,
+    Password VARCHAR(500) NOT NULL,
+    Salt VARCHAR(30) NOT NULL,
     PRIMARY KEY(NFC)
 );
 
@@ -76,6 +77,14 @@ CREATE TABLE Spectator(
     Id_Match INTEGER NOT NULL,
     FOREIGN KEY (TribuneNFC) REFERENCES Tribune(NFC),
     FOREIGN KEY (Id_Match) REFERENCES Matchs(Id_Match)
+);
+
+CREATE TABLE Tokens(
+    NFC VARCHAR(50) NOT NULL,
+    Token VARCHAR(50) NOT NULL,
+    MatchDate DATETIME NOT NULL,
+    PRIMARY KEY (NFC,Token),
+    FOREIGN KEY (NFC) REFERENCES Athletic(NFC)
 );
 
 INSERT INTO `Refreshment` (`ID`, `Attendance`, `Localisation`) VALUES (1, 0.35, 'C''est pas ici');

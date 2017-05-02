@@ -142,8 +142,11 @@ public class MainActivity extends AppCompatActivity {
     public void RefreshmentsEvent(final RefreshmentsEvent refreshmentsEvent) {
         if (refreshmentsEvent.getRefreshment() != null) {
             StringBuilder message = new StringBuilder();
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle("Les buvettes sont en :");
 
             if (refreshmentsEvent.isBestOne()) {
+                builder.setTitle("Buvette(s) la (les) plus libre(s) : ");
                 refreshmentsEvent.setRefreshment(getFreeRefreshments(refreshmentsEvent.getRefreshment()));
             }
 
@@ -160,9 +163,7 @@ public class MainActivity extends AppCompatActivity {
                     message.append("\n");
                 }
             }
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            builder.setTitle("Les buvettes sont en :")
-                    .setMessage(message.toString());
+            builder.setMessage(message.toString());
             // Create the AlertDialog object and return it
             builder.create();
             builder.show();
@@ -203,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            builder.setTitle("Il y a une (des) place(s) libre(s) en :")
+            builder.setTitle("Numéros des places libres :")
                     .setMessage(message.toString());
             // Create the AlertDialog object and return it
             builder.create();

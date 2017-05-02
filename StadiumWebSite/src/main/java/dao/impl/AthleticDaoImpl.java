@@ -3,10 +3,14 @@ package dao.impl;
 import beans.Athletic;
 import com.querydsl.sql.dml.SQLUpdateClause;
 import core.Assert;
+import static core.Random.createRandomAlphaNumericString;
 import dao.AthleticDao;
 import dao.Dao;
+import exceptions.FailureException;
 import exceptions.IntegrityException;
 import exceptions.NotFoundException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import stade.data.AthleticData;
@@ -34,7 +38,10 @@ public class AthleticDaoImpl extends Dao implements AthleticDao {
         if (athleticExists(NFC)) throw new IntegrityException("An athletic "
                 + "already exists in the database with the NFC id : " + NFC);
         
-        AthleticData data = toData(NFC, firstName, lastName, age, sex,password);
+        String salt = createRandomAlphaNumericString(30);
+        
+        AthleticData data = toData(NFC, firstName, lastName, age, sex, password,
+                salt);
         long rows = queryFactory.insert(ATHLETIC).populate(data).execute();
         closeConnection();
         
@@ -99,7 +106,7 @@ public class AthleticDaoImpl extends Dao implements AthleticDao {
     }
 
     @Override
-    public String getPassword(String NFC) throws NotFoundException {
+    public String getHashedPassword(String NFC) throws NotFoundException {
         Assert.notNull(NFC);
         Assert.isTrue(NFC.length() > 0);
         
@@ -193,9 +200,16 @@ public class AthleticDaoImpl extends Dao implements AthleticDao {
         Assert.notNull(password);
         Assert.isTrue(password.length() > 0);
         
-        Athletic athletic = getAthletic(NFC);
-        athletic.setMDP(password);
-        AthleticData data = toData(athletic);
+        AthleticData data = queryFactory.selectFrom(ATHLETIC)
+                .where(ATHLETIC.nfc.eq(NFC)).fetchFirst();
+        closeConnection();
+        
+        if(data == null) throw new NotFoundException("Athletic " + NFC 
+                + " has not been found in the database");
+        
+        String hashedPassword = hashText(password+data.getSalt());
+        data.setPassword(hashedPassword);
+        
         SQLUpdateClause update = queryFactory.update(ATHLETIC);
         
         long rows = update.set(ATHLETIC, data).where(ATHLETIC.nfc.eq(NFC))
@@ -241,14 +255,32 @@ public class AthleticDaoImpl extends Dao implements AthleticDao {
         
         Assert.isTrue(rows == 1);
     }
+
+    @Override
+    public boolean connect(String NFC, String password) {
+        Assert.notNull(NFC);
+        Assert.isTrue(NFC.length() > 0);
+        Assert.notNull(password);
+        Assert.isTrue(password.length() == 1);
+        
+        AthleticData data = queryFactory.selectFrom(ATHLETIC)
+                .where(ATHLETIC.nfc.eq(NFC)).fetchFirst();
+        closeConnection();
+        
+        if(data == null) return false;
+        
+        String hashedPassword = hashText(password+data.getSalt());
+        return password.equals(hashedPassword);
+    }
     
     private AthleticData toData(Athletic athletic){
-        return toData(athletic.getNFC(), athletic.getPrenom(), athletic.getNom()
-                , athletic.getAge(), athletic.getSex(), athletic.getMDP());
+        return toData(athletic.getNFC(), athletic.getPrenom(), 
+                athletic.getNom(), athletic.getAge(), athletic.getSex(), 
+                athletic.getMDP(), createRandomAlphaNumericString(30));
     }
     
     private AthleticData toData(String NFC, String firstName, String lastName, 
-            int age, String sex, String password){
+            int age, String sex, String password, String salt){
         Assert.notNull(NFC);
         Assert.isTrue(NFC.length() > 0);
         Assert.notNull(firstName);
@@ -260,14 +292,19 @@ public class AthleticDaoImpl extends Dao implements AthleticDao {
         Assert.isTrue(password.length() > 0);
         Assert.notNull(sex);
         Assert.isTrue(sex.length() == 1);
+        Assert.notNull(salt);
+        Assert.isTrue(salt.length() > 0);
+        
+        String hashedPassword = hashText(password+salt);
         
         AthleticData data = new AthleticData();
         data.setNfc(NFC);
         data.setFirstName(firstName);
         data.setLastName(lastName);
         data.setAge(age);
-        data.setPassword(password);
+        data.setPassword(hashedPassword);
         data.setSex(sex);
+        data.setSalt(salt);
         
         return data;
     }
@@ -282,5 +319,42 @@ public class AthleticDaoImpl extends Dao implements AthleticDao {
         returnValue.setSex(data.getSex());
         
         return returnValue;
+    }
+    
+    private final int NB_HASH = 50;
+    
+    /**
+     * @param data the data that have to be converted
+     * @return the string from the given byte array
+     */
+    private String convertByteToHex(byte data[]){
+        StringBuilder hexData = new StringBuilder();
+        for (int byteIndex = 0; byteIndex < data.length; byteIndex++)
+            hexData.append(
+                    Integer.toString((data[byteIndex] & 0xff) + 0x100, 16)
+                            .substring(1));
+        
+        return hexData.toString();
+    }
+    
+    /**
+     * @pre textToHash is not null
+     * @param textToHash the text that will be hashed
+     * @return the hashed text (hashed several times)
+     */
+    private String hashText(String textToHash)
+    {
+        for(int i=0;i<NB_HASH;i++){
+            MessageDigest sha512;
+            try {
+                sha512 = MessageDigest.getInstance("SHA-512");
+                sha512.update(textToHash.getBytes());
+
+                textToHash = convertByteToHex(sha512.digest());
+            } catch (NoSuchAlgorithmException e) {
+                throw new FailureException("This algorithm doesn't exist");
+            }
+        }
+        return textToHash;
     }
 }
