@@ -17,10 +17,14 @@ class Light(interfaceKitPhidget: InterfaceKitPhidget, sensorIndex: Int, blackBox
   interfaceKitPhidget.addSensorChangeListener((sensorChangeEvent: SensorChangeEvent) => {
     if (sensorChangeEvent.getIndex == sensorIndex) {
       val time = System.currentTimeMillis
-      blackBox.getLast(Class[LightEvent]) match {
-        case Some(LightEvent(eventTime)) =>
-          if (time - eventTime > MILI_INTERVAL)
+      blackBox.getLast(LightEvent(time)) match {
+        case Some(LightEvent(eventTime)) => {
+          // println("time : " + time + "  eventTime : " +  eventTime + "  diff : " + (time-eventTime))
+          if ((time - eventTime) > MILI_INTERVAL)
             blackBox.processEvent(LightEvent(time))
+        }
+        case None =>
+          blackBox.processEvent(LightEvent(time))
       }
     }
   })

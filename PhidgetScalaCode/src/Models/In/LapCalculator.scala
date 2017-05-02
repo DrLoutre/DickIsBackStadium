@@ -44,9 +44,10 @@ class LapCalculator(blackBox: BlackBox) {
     }
     timeScanning = 0.00
   })
+  print("\nAttaching RFID reader...")
   rFIDPhidget.open(PHIDGET_SERIAL)
+  rFIDPhidget.waitForAttachment()
 
-
-
+  println(" ...done")
 
 }

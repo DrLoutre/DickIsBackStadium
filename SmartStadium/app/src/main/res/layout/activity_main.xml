@@ -38,7 +38,7 @@
         android:layout_above="@+id/loginTextAction"
         android:layout_alignLeft="@+id/loginButtonQRcode"
         android:layout_alignStart="@+id/loginButtonQRcode"
-        android:text="Sélectionner l'option qui vous intéresse:"
+        android:text="Sélectionnez l'option qui vous intéresse:"
         android:textColor="@android:color/black"
         android:textSize="20dp" />
 

@@ -44,6 +44,7 @@ class Roof(blackBox: BlackBox) {
   servo2.addDetachListener((detachEvent: DetachEvent) => detachServo)
   servo2.addAttachListener((attachEvent: AttachEvent) => attachServo)
 
+  print("\nAttaching both servo motors... ")
   servo1.open(SERVO1_SERIAL)
   servo2.open(SERVO2_SERIAL)
   servo1.waitForAttachment()
@@ -52,6 +53,7 @@ class Roof(blackBox: BlackBox) {
   servo2.setEngaged(SERVO_INDEX, true)
   servo1.setPosition(SERVO_INDEX, VAL_ROOF1_CLOSED)
   servo2.setPosition(SERVO_INDEX, VAL_ROOF2_CLOSED)
+  println("...done")
 
 
 
