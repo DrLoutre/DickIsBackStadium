@@ -90,7 +90,7 @@ public class RefreshmentDaoImpl extends Dao implements RefreshmentDao{
     public void setAttendance(int ID, float attendance) 
             throws NotFoundException {
         Assert.isTrue(ID >= 0);
-        Assert.isTrue(attendance >= 0 && attendance <= 100);
+        Assert.isTrue(attendance >= 0 && attendance <= 1);
         
         if (!refreshmentExists(ID)) throw new NotFoundException("Refreshement " 
                 + ID + " has not been found in the database");

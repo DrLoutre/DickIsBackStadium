@@ -8,7 +8,10 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -16,6 +19,7 @@ import java.util.Scanner;
 @Path("refreshments")
 public class RefreshmentWebService {
 
+    private final float BASE_BUVETTE = 1024;
     private RefreshmentDaoImpl refreshmentDao = new RefreshmentDaoImpl();
 
     @GET
@@ -31,12 +35,16 @@ public class RefreshmentWebService {
         int i = 0;
         try {
 
-            pourcentage = getUrl();
+            pourcentage = "193;167;";
             String[] tokens = pourcentage.split("[;]+");
             ArrayList<Refreshment> refreshments = refreshmentDao.getAllRefreshment();
             for (Refreshment refresh : refreshments) {
-                Scanner scanner = new Scanner(tokens[i]);
-                refreshmentDao.setAttendance(refresh.getId(), scanner.nextFloat());
+                float value = Integer.parseInt(tokens[i])/BASE_BUVETTE;
+
+                BigDecimal bd = new BigDecimal(value);
+                bd = bd.setScale(2, RoundingMode.HALF_UP);
+
+                refreshmentDao.setAttendance(refresh.getId(), bd.floatValue());
                 i +=1;
             }
             refreshment = refreshmentDao.getRefreshment(id);
