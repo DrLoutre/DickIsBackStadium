@@ -388,7 +388,6 @@ class BachTSimul(var bb: BachTStore) {
         }
       }
       bb.print_store
-      println(bb.give_time())
       run_time(c_agent)
       if (!para || block) {
         bb.run_time()

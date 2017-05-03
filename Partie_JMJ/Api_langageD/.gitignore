@@ -2,7 +2,10 @@
 ### Scala template
 *.class
 *.log
-.idea/
+*~
+.DS_Store
+
+/.idea
 *.iml
-out/
-target/
+/target
+
