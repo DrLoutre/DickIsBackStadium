@@ -1,9 +1,9 @@
 package webServices;
 
 import beans.Athletic;
-import beans.custom.Credentials;
 import beans.Lap;
 import beans.Match;
+import beans.custom.Credentials;
 import beans.custom.MatchNotEnded;
 import dao.impl.AthleticDaoImpl;
 import dao.impl.LapDaoImpl;
@@ -111,6 +111,7 @@ public class AtheleticWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postLogin(Credentials credentials) {
         String username = credentials.getId();
+        String password = credentials.getPassword();
 
         //Get athlectics from DB
         Athletic athletic;
