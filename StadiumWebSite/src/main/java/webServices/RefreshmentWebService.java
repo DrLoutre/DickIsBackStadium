@@ -10,6 +10,7 @@ import javax.ws.rs.core.Response;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Path("refreshments")
@@ -27,9 +28,17 @@ public class RefreshmentWebService {
 
         String pourcentage;
         Refreshment refreshment;
+        int i = 0;
         try {
-            pourcentage = getUrl(String.valueOf(id));
-            refreshmentDao.setAttendance(id, Float.valueOf(pourcentage));
+
+            pourcentage = getUrl();
+            String[] tokens = pourcentage.split("[;]+");
+            ArrayList<Refreshment> refreshments = refreshmentDao.getAllRefreshment();
+            for (Refreshment refresh : refreshments) {
+                Scanner scanner = new Scanner(tokens[i]);
+                refreshmentDao.setAttendance(refresh.getId(), scanner.nextFloat());
+                i +=1;
+            }
             refreshment = refreshmentDao.getRefreshment(id);
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -69,13 +78,13 @@ public class RefreshmentWebService {
         return Response.ok(refreshment1).build();
     }
 
-    private String getUrl(String id) throws NotFoundException {
+    private String getUrl() throws NotFoundException {
         HttpURLConnection connection = null;
         StringBuilder output = new StringBuilder();
 
         try {
             //Create connection
-            URL url = new URL("http://192.168.1.4/G" + id);
+            URL url = new URL("http://192.168.2.2/G");
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.connect();
