@@ -18,7 +18,7 @@ public class RefreshmentDaoImpl extends Dao implements RefreshmentDao{
 
     @Override
     public int addRefreshment(float attendance, String localisation){
-        Assert.isTrue(attendance >= 0 && attendance <= 100);
+        Assert.isTrue(attendance >= 0 && attendance <= 1);
         Assert.notNull(localisation);
         Assert.isTrue(localisation.length() > 0);
         
@@ -121,7 +121,7 @@ public class RefreshmentDaoImpl extends Dao implements RefreshmentDao{
     
     private RefreshmentData toData(float attendance, 
             String localisation){
-        Assert.isTrue(attendance >= 0 && attendance <= 100);
+        Assert.isTrue(attendance >= 0 && attendance <= 1);
         Assert.notNull(localisation);
         Assert.isTrue(localisation.length() > 0);
         
