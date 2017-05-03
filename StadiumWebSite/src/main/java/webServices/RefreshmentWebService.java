@@ -20,6 +20,7 @@ import java.util.Scanner;
 public class RefreshmentWebService {
 
     private final float BASE_BUVETTE = 1024;
+    private final String IP_ARDUINO = "http://192.168.2.2/";
     private RefreshmentDaoImpl refreshmentDao = new RefreshmentDaoImpl();
 
     @GET
@@ -35,7 +36,7 @@ public class RefreshmentWebService {
         int i = 0;
         try {
 
-            pourcentage = "193;167;";
+            pourcentage = getUrl();
             String[] tokens = pourcentage.split("[;]+");
             ArrayList<Refreshment> refreshments = refreshmentDao.getAllRefreshment();
             for (Refreshment refresh : refreshments) {
@@ -92,7 +93,7 @@ public class RefreshmentWebService {
 
         try {
             //Create connection
-            URL url = new URL("http://192.168.2.2/G");
+            URL url = new URL(IP_ARDUINO);
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.connect();
