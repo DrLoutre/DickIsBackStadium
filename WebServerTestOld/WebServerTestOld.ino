@@ -31,10 +31,10 @@ int status = WL_IDLE_STATUS;
 WiFiServer server(80);
 
 void setup() {
-  // check for the presence of the shield:
-  if (WiFi.status() == WL_NO_SHIELD) {
-    Serial.println("WiFi shield not present");
-    while (true);       // don't continue
+  //Initialize serial and wait for port to open:
+  Serial.begin(9600); 
+  while (!Serial) {
+    ; // wait for serial port to connect. Needed for Leonardo only
   }
 
   

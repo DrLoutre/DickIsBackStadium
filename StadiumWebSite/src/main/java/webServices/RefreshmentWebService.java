@@ -8,7 +8,10 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -16,6 +19,8 @@ import java.util.Scanner;
 @Path("refreshments")
 public class RefreshmentWebService {
 
+    private final float BASE_BUVETTE = 1023;
+    private final String IP_ARDUINO = "http://192.168.2.2";
     private RefreshmentDaoImpl refreshmentDao = new RefreshmentDaoImpl();
 
     @GET
@@ -26,21 +31,17 @@ public class RefreshmentWebService {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        String pourcentage;
         Refreshment refreshment;
-        int i = 0;
         try {
-
-            pourcentage = getUrl();
-            String[] tokens = pourcentage.split("[;]+");
+            int i = 0;
+            float [] pourcentage = getFromArduino();
             ArrayList<Refreshment> refreshments = refreshmentDao.getAllRefreshment();
             for (Refreshment refresh : refreshments) {
-                Scanner scanner = new Scanner(tokens[i]);
-                refreshmentDao.setAttendance(refresh.getId(), scanner.nextFloat());
+                refreshmentDao.setAttendance(refresh.getId(), pourcentage[i]);
                 i +=1;
             }
             refreshment = refreshmentDao.getRefreshment(id);
-        } catch (NotFoundException e) {
+        } catch (Exception e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         return Response.ok(refreshment).build();
@@ -50,7 +51,14 @@ public class RefreshmentWebService {
     public Response getRefreshments() {
         ArrayList<Refreshment> refreshments;
         try {
+            int i = 0;
+            float [] pourcentage = getFromArduino();
             refreshments = refreshmentDao.getAllRefreshment();
+            for (Refreshment refresh : refreshments) {
+                refreshmentDao.setAttendance(refresh.getId(), pourcentage[i]);
+                i +=1;
+            }
+            refreshments = refreshmentDao.getAllRefreshment(); //Get again due to update
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -78,13 +86,13 @@ public class RefreshmentWebService {
         return Response.ok(refreshment1).build();
     }
 
-    private String getUrl() throws NotFoundException {
+    private float[] getFromArduino() throws NotFoundException {
         HttpURLConnection connection = null;
         StringBuilder output = new StringBuilder();
 
         try {
             //Create connection
-            URL url = new URL("http://192.168.2.2/G");
+            URL url = new URL(IP_ARDUINO);
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.connect();
@@ -100,7 +108,16 @@ public class RefreshmentWebService {
 
             br.close();
 
-            return output.toString();
+            //Use to remove all Html character
+            char[] tab = output.toString().toCharArray();
+            output = new StringBuilder();
+            for (char c : tab) {
+                if (Character.isDigit(c) || c == ';') {
+                    output.append(c);
+                }
+            }
+
+            return splitMessage(output.toString());
         } catch (Exception e) {
             throw new NotFoundException();
         } finally {
@@ -108,5 +125,22 @@ public class RefreshmentWebService {
                 connection.disconnect();
             }
         }
+    }
+
+    private float[] splitMessage(String message) {
+        String[] tokens = message.split("[;]+");
+        float[] percentage = new float[tokens.length];
+
+        for (int i = 0; i < tokens.length ; i++) {
+
+            float value = Integer.parseInt(tokens[i])/BASE_BUVETTE;
+
+            BigDecimal bd = new BigDecimal(value);
+            bd = bd.setScale(2, RoundingMode.HALF_UP);
+
+            percentage[i] = bd.floatValue();
+        }
+
+        return percentage;
     }
 }

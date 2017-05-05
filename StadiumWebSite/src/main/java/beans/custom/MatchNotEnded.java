@@ -1,5 +1,8 @@
 package beans.custom;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class MatchNotEnded {
 
     private String team1;
