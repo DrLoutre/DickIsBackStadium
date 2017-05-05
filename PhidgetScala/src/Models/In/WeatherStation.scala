@@ -21,22 +21,6 @@ class WeatherStation (interfaceKitPhidget: InterfaceKitPhidget, sensorIndex: Int
   val MILI_INTERVAL = 1000
   val API_KEY       = "eff123853edf134ccd86bf1455b57487"
 
-  interfaceKitPhidget.addSensorChangeListener((sensorChangeEvent: SensorChangeEvent) => {
-    if (sensorChangeEvent.getIndex == sensorIndex) {
-      println("Change in Heaaaaaaaaaaaaaaaaaaaaaaaaaaaaaat : " + getHeat)
-      val time = System.currentTimeMillis
-      /*blackBox.getLast(HeatEvent(time)) match{
-        case Some(HeatEvent(eventTime)) =>
-          if (time - eventTime > MILI_INTERVAL)
-            println("<<<<<<<<<<<<processing another heat event")
-            blackBox.processEvent(HeatEvent(time))
-        case None =>
-          println(">>>>>>>>>>>processing first heat event")
-          blackBox.processEvent(HeatEvent(time))
-      }*/
-      blackBox.processEvent(HeatEvent(time))
-    }
-  })
 
   def getHeat: Double = {
     val sensorvalue = interfaceKitPhidget.getSensorValue(sensorIndex)

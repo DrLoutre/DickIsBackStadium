@@ -18,6 +18,7 @@ class Lighting(interfaceKitPhidget: InterfaceKitPhidget) {
   def refreshLighting:Unit = {
     // number of connected LEDS
     val ledNumber = power / (100/connectedLEDS)
+    println("Nombre de leds : " + ledNumber)
     for(x <- 0 to connectedLEDS)
       if (x<ledNumber)
         interfaceKitPhidget.setOutputState(x,true)

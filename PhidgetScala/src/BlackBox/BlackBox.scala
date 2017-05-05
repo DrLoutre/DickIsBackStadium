@@ -19,6 +19,12 @@ import scala.collection.mutable
   * Managing the incoming flux of event.
   */
 class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
+  private val LIGHT_TIMEOUT:Int     = 1000
+  private val TEMP_TIMEOUT:Int      = 1000
+  private val PASSAGE_TIMEOUT:Int   = 10
+  private val VIBRATION_TIMEOUT:Int = 10
+  private val POT_TIMEOUT:Int       = 1000
+
   private val INDEX_LIGHT_SENSOR:Int        = 0
   private val INDEX_TEMPERATURE_SENSOR:Int  = 1
   private val INDEX_PRECISION_IR_SENSOR:Int = 3
@@ -48,6 +54,7 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
   var currentMode:Mode      = mode.getCurrentMode
   //val commu:CommunicationListener = new CommunicationListener
 
+  setListener
   interfaceKitPhidget.addDetachListener((detachEvent: DetachEvent) => currentMode match {
       case DetachedMode(_, motors, rfid) =>
         currentMode = DetachedMode(true, motors, rfid)
@@ -62,26 +69,19 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
   })
 
   def processEvent(event: Event): Unit = {
-    var log:String = ""
+    var log:String = "\n\n\nEvent : "
 
-    currentMode.isMatch = planning.areWeDuringAMatch
-
-    if (!currentMode.isMatch)
-      log += "Proceed Event : \n"
-    else
-      log += "Proceed Event in Match Mode : \n"
-
-    eventList += event
-
+    eventList.add(event)
 
     currentMode match {
       case NormalMode() => {
+        currentMode.isMatch = planning.areWeDuringAMatch
         if (!currentMode.isMatch)
-          log += "Proceed Event : \n"
+          log += "Proceed Event (mode : " + currentMode.getClass + "): \n"
         else
           log += "Proceed Event in Match Mode : \n"
         event match {
-          case BarEvent(_) => log = processBarEvent(log)
+          case BarEvent(_)  => log = processBarEvent(log)
           case HeatEvent(_) => log = {
             println("Processing heat event : ")
             processHeatEvent(log)}
@@ -126,10 +126,30 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
           case _ => log = "Error Event non recognized"
         }
       }
+      case Demo_1_Mode() => {
+        log = log + "Proceed Event in forced Match Mode : \n"
+        currentMode.isMatch = true
+        event match {
+          case BarEvent(_)  => log = processBarEvent(log)
+          case HeatEvent(_) => log = {
+            println("Processing heat event : ")
+            processHeatEvent(log)}
+          case LightEvent(_) => log = processLightEvent(log)
+          case PassageEvent(_) => log = processGoalEvent(event, log)
+          case StandEvent(_) => log = processStandEvent(log)
+          case TurnEvent(_) => log = processTurnEvent(log)
+          case VibrationEvent(_) => log = processGoalEvent(event, log)
+          case NewMatchPlanEvent(_) =>
+            log += "Received new match ! \n"
+          //add the received match to communication listener
+          case DemoPhaseEvent(_) =>
+            currentMode = mode.getCurrentMode
+            log += "New Mode Set : " + currentMode.toString
+          case _ => log = "Error Event non recognized"
+        }
+
+      }
     }
-
-
-    //if (eventList.size()>50) eventList.removeLast()
     filterEvntList
     println(log)
   }
@@ -150,42 +170,25 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
       case VibrationEvent(_) => actualClass = classOf[VibrationEvent]
       case _ => actualClass = classOf[Event]
     }
-
-
-
+    println("Getting last event of : " + actualClass)
     try {
       val tempList:List[Event] = eventList.toList
-      //println("Conversion done, checking with  = " + actualClass.toString + "\n for list : " + tempList)
-      tempList.find { case actualClass => true case _ => false}
+      println("Checking with  = " + actualClass.toString + "\n for list : " + tempList)
+      tempList.find {(x:Event) => x.getClass == actualClass}
     } catch {
-      case e:Exception => println("Exception : " + e)
+      case e:Exception =>
+        println("Exception : " + e)
         None
     }
   }
 
   def filterEvntList:Unit = {
-    //println("Before filter : " + eventList.toString)
-    val typeList:List[Class[_]] = List(classOf[BarEvent], classOf[DemoPhaseEvent], classOf[HeatEvent], classOf[LightEvent], classOf[NewMatchPlanEvent], classOf[PassageEvent], classOf[PassageEvent], classOf[StandEvent], classOf[TurnEvent], classOf[VibrationEvent])
-    for (y <- typeList) {
-      val cnt:Int = eventList.count((e: Event) => !(e.getClass == y))
-      if (cnt > 1) retains(y)
+    println("Before filter : " + eventList.toString)
+    eventList.retain{x: Event => !hasOtherOfTypeAndOlder(x)}
+    def hasOtherOfTypeAndOlder(elem:Event): Boolean = {
+      eventList.count((e:Event) => e.getClass == elem.getClass && e != elem && e.eventTime > elem.eventTime) > 0
     }
-    def retains(ty:Class[_]): Unit = {
-      eventList.retain {
-        x: Event => {
-          (x.getClass == ty) &&
-            (eventList.find((y: Event) =>
-              (ty == y.getClass) && (y.eventTime < x.eventTime)
-            ) match {
-              case Some(_) =>
-                true
-              case None =>
-                false
-            })
-        }
-      }
-    }
-    //println("After Filter : " + eventList.toString())
+    println("After Filter : " + eventList.toString())
   }
 
 
@@ -208,39 +211,49 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
     println("Matching weather condition")
     weatherCond match {
       case Snow()  =>
-        println("neige")
         roof.closeRoof
+        logChanges += "    - Roof closed"
         field.setHeating(temp <= 5)
+        if (temp <= 5) logChanges += "    - set Heating."
         field.setWatering(!currentMode.isMatch && (temp>15 || !isDay))
+        if (!currentMode.isMatch && (temp>15 || !isDay)) logChanges += "    - set Watering."
       case Rain()  =>
-        println("pluie")
         roof.closeRoof
+        logChanges += "    Roof closed"
         field.setHeating(temp <= 10)
+        if (temp <= 10) logChanges += "    - set Heating."
         field.setWatering(!currentMode.isMatch && (temp>20 || !isDay))
+        if (!currentMode.isMatch && (temp>20 || !isDay)) logChanges += "    - set Watering."
       case Sun()   =>
-        println("soleil")
         roof.openRoof
+        logChanges += "    Roof opened"
         field.setHeating(temp <= 5)
+        if (temp <= 5) logChanges += "    - set Heating."
         field.setWatering(!currentMode.isMatch && (temp>15 || !isDay))
+        if (!currentMode.isMatch && (temp>15 || !isDay)) logChanges += "    - set Watering."
       case Cloud() =>
-        println("nuages")
+        logChanges += "    - Roof not changed"
         if (roof.open) {
           field.setHeating(temp <= 15)
+          if (temp <= 15) logChanges += "    - set Heating."
           field.setWatering(!currentMode.isMatch && (temp>10 || !isDay))
+          if (!currentMode.isMatch && (temp>10 || !isDay)) logChanges += "    - set Watering."
         } else {
           field.setHeating(temp <= 10)
+          if (temp <= 10) logChanges += "    - set Heating."
           field.setWatering(!currentMode.isMatch && (temp>10 || !isDay))
+          if (!currentMode.isMatch && (temp>10 || !isDay)) logChanges += "    - set Watering."
         }
     }
 
 
-    log + "change in temperature : " + temp + " \n" + "actual meteo : " + weatherCond.toString + "\n are we during day ? ==> " + isDay + "\n\n changes done : " + logChanges
+    log + "change in temperature : " + temp + " \n" + "actual meteo : " + weatherCond.toString + "\n are we during day ? ==> " + isDay + "\n\n changes done : " + logChanges + "\n"
   }
 
   private def processLightEvent(log: String): _root_.scala.Predef.String = {
     val ret:Int = light.retLightIntensity
     lighting.updatePower(ret)
-    "change in brightness : " + ret + "\n"
+    log + "change in brightness : " + ret + "\n"
   }
 
   private def processGoalEvent(event:Event, log: String): _root_.scala.Predef.String = {
@@ -283,4 +296,76 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
     //Todo : Check if new implementation suits the simple log
     log + "new turn or player \n"
   }
+
+
+  private def setListener:Unit = {
+
+    interfaceKitPhidget.addSensorChangeListener((sensorChangeEvent: SensorChangeEvent) => {
+
+      sensorChangeEvent.getIndex match {
+        case 0 =>
+          filterEvntList
+          val time = System.currentTimeMillis
+          getLast(LightEvent(time)) match {
+            case Some(LightEvent(eventTime)) =>
+              if ((time - eventTime) > LIGHT_TIMEOUT)
+                println("New Light Event")
+                processEvent(LightEvent(time))
+            case None =>
+              println("First Light Event")
+              processEvent(LightEvent(time))
+          }
+        case 1 =>
+          filterEvntList
+          val time = System.currentTimeMillis
+          getLast(HeatEvent(time)) match {
+            case Some(HeatEvent(eventTime)) =>
+              if (time - eventTime > TEMP_TIMEOUT)
+                println("New heat event")
+              processEvent(HeatEvent(time))
+            case None =>
+              println("First heat event")
+              processEvent(HeatEvent(time))
+          }
+        case 3 =>
+          print("")
+          if (interfaceKitPhidget.getSensorValue(3) < 200) {
+            val time = System.currentTimeMillis
+            getLast(PassageEvent(time)) match {
+              case Some(PassageEvent(eventTime)) =>
+                if (time - eventTime > PASSAGE_TIMEOUT)
+                  println("IR detected")
+                  processEvent(PassageEvent(time))
+              case None =>
+                println("First IR event")
+                processEvent(PassageEvent(time))
+            }
+          }
+        case 4 =>
+          filterEvntList
+          if (interfaceKitPhidget.getSensorValue(4) > 600 || interfaceKitPhidget.getSensorValue(4) < 400) {
+            val time = System.currentTimeMillis
+            getLast(VibrationEvent(time)) match {
+              case Some(VibrationEvent(eventTime)) =>
+                if (time - eventTime > VIBRATION_TIMEOUT)
+                  println("Vibation occured")
+                  processEvent(VibrationEvent(time))
+              case None =>
+                println("First Vib event")
+                processEvent(VibrationEvent(time))
+            }
+          }
+        case 5 =>
+          filterEvntList
+          val time = System.currentTimeMillis
+          getLast(DemoPhaseEvent(time)) match {
+            case Some(DemoPhaseEvent(eventTime)) =>
+              if (time - eventTime > POT_TIMEOUT)
+                println("Potentiometer changed !")
+                processEvent(DemoPhaseEvent(time))
+            case None => processEvent(DemoPhaseEvent(time))
+          }
+      }
+    })
+    }
 }

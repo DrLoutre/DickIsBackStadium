@@ -15,10 +15,11 @@ class Roof(blackBox: BlackBox) {
   val SERVO1_SERIAL:Int = 305832
   val SERVO2_SERIAL:Int = 305826
   val SERVO_INDEX:Int = 0
-  val VAL_ROOF1_CLOSED:Double = 90.00
-  val VAL_ROOF2_CLOSED:Double = 90.00
+  val VAL_ROOF1_CLOSED:Double = 0.00
+  val VAL_ROOF2_CLOSED:Double = 180.00
   val VAL_ROOF1_OPEN:Double = 180.00
   val VAL_ROOF2_OPEN:Double = 0.00
+  val SPEED   = 100.0
 
   var open:Boolean = false
   val servo1:AdvancedServoPhidget = new AdvancedServoPhidget
@@ -51,6 +52,8 @@ class Roof(blackBox: BlackBox) {
   servo2.waitForAttachment()
   servo1.setEngaged(SERVO_INDEX, true)
   servo2.setEngaged(SERVO_INDEX, true)
+  servo1.setAcceleration(SERVO_INDEX, SPEED)
+  servo2.setAcceleration(SERVO_INDEX, SPEED)
   servo1.setPosition(SERVO_INDEX, VAL_ROOF1_CLOSED)
   servo2.setPosition(SERVO_INDEX, VAL_ROOF2_CLOSED)
   println("...done")
