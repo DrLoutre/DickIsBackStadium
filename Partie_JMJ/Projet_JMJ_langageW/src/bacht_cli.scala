@@ -16,6 +16,9 @@ case class bacht_ast_wait(primitive: String, time: Int) extends Expr
 import scala.util.parsing.combinator._
 import scala.util.matching.Regex
 
+/**
+  * Le code suivant a été modifié de manière à faire reconnaitre la primitive wait au parser.
+  */
 class BachTParsers extends RegexParsers {
 
   def token 	: Parser[String] = ("[a-z][0-9a-zA-Z_]*").r ^^ {_.toString}
@@ -56,6 +59,9 @@ class BachTParsers extends RegexParsers {
 
 }
 
+/**
+  * Nous avons donc créé un nouveau parse_wait en rapport avec la primitive que nous avons ajouté précédemment.
+  */
 object BachTSimulParser extends BachTParsers {
 
   def parse_primitive(prim: String) = parseAll(primitive,prim) match {
@@ -76,6 +82,9 @@ object BachTSimulParser extends BachTParsers {
 import scala.collection.mutable.Map
 import scala.swing._
 
+/**
+  * Cette class n'a pas du être modifié
+  */
 class BachTStore {
 
   var theStore = Map[String,Int]()
@@ -137,6 +146,9 @@ object bb extends BachTStore {
 import scala.util.Random
 import language.postfixOps
 
+/**
+  * Cette class a été modifié afin de permettre la gestion de la primitive wait.
+  */
 class BachTSimul(var bb: BachTStore) {
 
   var failure = false
@@ -244,6 +256,11 @@ class BachTSimul(var bb: BachTStore) {
     }
   }
 
+  /**
+    * Permet de gérer la primitive wait, cette méthode consiste à comparer la valeur de "l'horloge"
+    * avec les différents wait afin de savoir si nous devons attendre que l'horloge augmente ou si le temps voulu
+    * est déjà atteint.
+    */
   def run_time(agent: Expr):Expr = {
     agent match
     {
@@ -318,6 +335,9 @@ class BachTSimul(var bb: BachTStore) {
     }
   }
 
+  /**
+    * Ajout d'une seconde boucle permettant de gérer les primitives wait.
+    */
   def bacht_exec_all(agent: Expr):Boolean = {
 
     var c_agent = agent
@@ -358,6 +378,9 @@ class BachTSimul(var bb: BachTStore) {
 
 }
 
+/**
+  * Cet object n'a pas été modifié.
+  */
 object ag extends BachTSimul(bb) {
 
   def apply(agent: String) {

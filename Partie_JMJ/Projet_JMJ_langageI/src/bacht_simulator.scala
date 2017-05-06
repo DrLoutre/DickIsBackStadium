@@ -11,6 +11,10 @@
 import scala.util.Random
 import language.postfixOps
 
+/**
+  * cette class a été modifié afin de faire apparaître la notion de parallèle pour gérer l'avancement du temps car nous n'utilisons qu'une seule boucle dans l'exécution.
+  * Ainsi que la notion de bloquer, c'est-à-dire que l'ensemble des instructions qui peuvent être exécuté ont un temps de commencement supérieur au temps actuel.
+  */
 class BachTSimul(var bb: BachTStore) {
 
   var block = false
@@ -120,6 +124,10 @@ class BachTSimul(var bb: BachTStore) {
     }
   }
 
+  /**
+    * Cette méthode permet de gérer l'intervalle de validité des différentes instructions. Une instruction n'est conservé que si son temps de fin de validité est supérieur au temps actuel.
+    * Si elle n'a pas pu être executé, nous renvoyons une failure pour arrêter l'exécution du programme.
+    */
   def run_time(agent: Expr):Expr = {
     agent match {
       case bacht_ast_primitive(prim, begin, end,token) =>
@@ -232,6 +240,9 @@ class BachTSimul(var bb: BachTStore) {
     }
   }
 
+  /**
+    * Nous n'utilisons qu'une seule boucle mais la gestion du temps a pû gérer par l'utilisation d'un 'if'.
+    */
   def bacht_exec_all(agent: Expr):Boolean = {
 
     var c_agent = agent
@@ -282,6 +293,9 @@ class BachTSimul(var bb: BachTStore) {
 
 }
 
+/**
+  * Cet object n'a pas été modifié.
+  */
 object ag extends BachTSimul(bb) {
 
   def apply(agent: String) {

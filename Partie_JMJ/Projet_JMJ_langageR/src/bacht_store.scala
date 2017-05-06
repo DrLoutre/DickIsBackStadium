@@ -8,13 +8,22 @@
 
 ----------------------------------------------------------------------------*/
 
-import scala.collection.mutable.Map
-import scala.swing._
+import scala.util.Random
+import language.postfixOps
 
+/**
+  * Cet class a dû être modifié pour faire apparaître la durée de vie des tokens.
+  */
 class BachTStore {
 
+   /**
+     * Le couple représente donc le "nom" du token et la durée de vie de celui-ci.
+     */
    var theStore = Map[(String, Int), Int]()
 
+   /**
+     * Permet de ne garder que les tokens qui ont une durée de vie supérieur à 0.
+     */
    def run_time() = {
       theStore = for {
          x <- theStore

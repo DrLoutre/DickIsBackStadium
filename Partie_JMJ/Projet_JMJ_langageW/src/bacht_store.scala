@@ -11,6 +11,9 @@
 import scala.collection.mutable.Map
 import scala.swing._
 
+/**
+  * Cette class n'a pas du être modifié
+  */
 class BachTStore {
 
    var theStore = Map[String,Int]()

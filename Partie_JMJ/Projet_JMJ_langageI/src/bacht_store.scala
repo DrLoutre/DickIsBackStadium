@@ -11,8 +11,14 @@
 import scala.collection.mutable.Map
 import scala.swing._
 
+/**
+  * Cet class a dû être modifié pour faire apparaître l'intervalle de temps de validité des tokens.
+  */
 class BachTStore {
 
+   /**
+     * Le premier élément du couple représente donc le "nom" du token et le second élément est un couple qui représente l'intervalle de validité des tokens.
+     */
    var theStore = Map[(String, (Int, Int)), Int]()
    var hour = 0;
 
@@ -20,6 +26,9 @@ class BachTStore {
       hour
    }
 
+   /**
+     * Permet de ne conserver que les tokens qui ont un temps de fin de validité supérieur au temps actuel.
+     */
    def run_time() = {
       theStore = for {
          x <- theStore
@@ -85,5 +94,11 @@ class BachTStore {
    def clear_store {
       theStore = Map[(String, (Int, Int)),Int]()
    }
+
+}
+
+object bb extends BachTStore {
+
+   def reset { clear_store }
 
 }

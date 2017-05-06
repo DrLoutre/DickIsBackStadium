@@ -11,6 +11,9 @@
 import scala.util.Random
 import language.postfixOps
 
+/**
+  * Cette class a été modifié afin de permettre la gestion de la primitive delay.
+  */
 class BachTSimul(var bb: BachTStore) {
 
   var failure = false;
@@ -121,6 +124,11 @@ class BachTSimul(var bb: BachTStore) {
     }
   }
 
+  /**
+    * Permet de gérer la primitive delay, cette méthode consiste à savoir si nous la valeur de la primitive
+    * a atteint 0 ou pas encore afin de déterminer si nous devons encore attendre ou si nous avons suffisament
+    * attendu
+    */
   def run_time(agent: Expr):Expr = {
     agent match {
       case bacht_ast_delay(prim, time) =>
@@ -195,6 +203,9 @@ class BachTSimul(var bb: BachTStore) {
     }
   }
 
+  /**
+    * Ajout d'une seconde boucle permettant de gérer les primitives delay.
+    */
   def bacht_exec_all(agent: Expr):Boolean = {
 
     var c_agent = agent
@@ -234,6 +245,9 @@ class BachTSimul(var bb: BachTStore) {
 
 }
 
+/**
+  * Cette object n'a pas été modifié.
+  */
 object ag extends BachTSimul(bb) {
 
   def apply(agent: String) {

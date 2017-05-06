@@ -11,6 +11,9 @@
 import scala.util.Random
 import language.postfixOps
 
+/**
+  * Cette class a été modifié afin de permettre la gestion de la primitive wait.
+  */
 class BachTSimul(var bb: BachTStore) {
 
   var failure = false
@@ -118,6 +121,11 @@ class BachTSimul(var bb: BachTStore) {
     }
   }
 
+  /**
+    * Permet de gérer la primitive wait, cette méthode consiste à comparer la valeur de "l'horloge"
+    * avec les différents wait afin de savoir si nous devons attendre que l'horloge augmente ou si le temps voulu
+    * est déjà atteint.
+    */
   def run_time(agent: Expr):Expr = {
     agent match
     {
@@ -192,6 +200,9 @@ class BachTSimul(var bb: BachTStore) {
     }
   }
 
+  /**
+    * Ajout d'une seconde boucle permettant de gérer les primitives wait.
+    */
   def bacht_exec_all(agent: Expr):Boolean = {
 
     var c_agent = agent
@@ -232,6 +243,9 @@ class BachTSimul(var bb: BachTStore) {
 
 }
 
+/**
+  * Cette object n'a pas été modifié.
+  */
 object ag extends BachTSimul(bb) {
 
   def apply(agent: String) {
