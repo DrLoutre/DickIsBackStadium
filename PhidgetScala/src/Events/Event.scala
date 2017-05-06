@@ -4,7 +4,7 @@ package Events
   * Created by bri_e on 20-04-17.
   * Class containing the different case classes with different events
   */
-abstract class Event(var eventTime:Long)
+class Event(var eventTime:Long)
 
 case class BarEvent(var evntTime:Long)           extends Event(evntTime)
 case class DemoPhaseEvent(var evntTime:Long)     extends Event(evntTime)

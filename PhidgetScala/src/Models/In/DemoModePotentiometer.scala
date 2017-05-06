@@ -18,26 +18,16 @@ class DemoModePotentiometer(interfaceKitPhidget: InterfaceKitPhidget, sensorInde
   private val NBR_MODES     = 2
   private val POT_SETTING_TIME= 2000
 
-  interfaceKitPhidget.addSensorChangeListener((sensorChangeEvent: SensorChangeEvent) =>
-    if (sensorChangeEvent.getIndex == sensorIndex) {
-      val time = System.currentTimeMillis
-      blackBox.getLast(DemoPhaseEvent(time)) match {
-        case Some(DemoPhaseEvent(eventTime)) =>
-          if (time - eventTime > MILI_INTERVAL)
-            Thread.sleep(POT_SETTING_TIME)
-      }
-      blackBox.processEvent(DemoPhaseEvent(time))
-  })
 
   def getCurrentMode:Mode = {
-    val value:Int = interfaceKitPhidget.getSensorValue(sensorIndex)/(MAX_CURSVAL/NBR_MODES)%NBR_MODES
+    val value:Int = interfaceKitPhidget.getSensorValue(sensorIndex)/(MAX_CURSVAL/NBR_MODES)
     value match { //TODO: Create correct modes to test.
       case 0 =>
         println("Setting to normal mode ... ")
         NormalMode()
       case 1 =>
         println("Setting to match mode ... ")
-        NormalMode()
+        Demo_1_Mode()
       case 2 =>
         println("Setting to Demo mode 1 ... ")
         Demo_1_Mode()
