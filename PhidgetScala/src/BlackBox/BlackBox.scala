@@ -328,7 +328,7 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
               processEvent(HeatEvent(time))
           }
         case 3 =>
-          print("")
+          filterEvntList
           if (interfaceKitPhidget.getSensorValue(3) < 200) {
             val time = System.currentTimeMillis
             getLast(PassageEvent(time)) match {
