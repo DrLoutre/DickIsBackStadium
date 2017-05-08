@@ -9,7 +9,7 @@ object Main {
     print("Initialising the InterfaceKit Phidget . . . ")
     var interfaceKitPhidget:InterfaceKitPhidget = new InterfaceKitPhidget
     interfaceKitPhidget.open(329107)
-    interfaceKitPhidget.waitForAttachment
+    interfaceKitPhidget.waitForAttachment()
     println(". . . done !")
     print("Initialising blackbox . . . ")
     val blackBox:BlackBox = new BlackBox(interfaceKitPhidget)

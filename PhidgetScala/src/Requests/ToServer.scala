@@ -1,5 +1,7 @@
 package Requests
 
+import com.google.gson.Gson
+
 import scalaj.http.Http
 
 object ToServer {
@@ -10,7 +12,7 @@ object ToServer {
   def sendLap(rfid:String, nbrTours:Int, tempsTour:String, tempsMilli:Int) : Unit = {
     val lap:Lap = new Lap(rfid, nbrTours, tempsTour, tempsMilli)
     val json:String = new Gson().toJson(lap)
-    val code:Boolean = Http(BASE_URL.concat("laps")).timeout(10000, 10000).postData(json).asString.is2XX
+    val code:Boolean = Http(BASE_URL.concat("laps")).timeout(10000, 10000).postData(json).asString.is2xx
   }
 
   def sendGoal(isDroit:Boolean, nbrGoals:Int) : Unit = {
