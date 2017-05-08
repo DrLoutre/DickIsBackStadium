@@ -9,7 +9,10 @@
 
 import scala.util.parsing.combinator._
 import scala.util.matching.Regex
-
+/**
+  * Cette class a été modifié de manière a pouvoir faire apparaître les valeurs de temps dans les différentes
+  * primitives.
+  */
 class BachTParsers extends RegexParsers {
 
   def token 	: Parser[String] = ("[a-z][0-9a-zA-Z_]*").r ^^ {_.toString}
@@ -48,6 +51,9 @@ class BachTParsers extends RegexParsers {
 
 }
 
+/**
+  * Cet object n'a pas été modifié.
+  */
 object BachTSimulParser extends BachTParsers {
 
   def parse_primitive(prim: String) = parseAll(primitive,prim) match {

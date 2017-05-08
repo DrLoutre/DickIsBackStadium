@@ -11,6 +11,7 @@ object api {
 
   def apply(agent: Extension) {
     val agent_parsed = toStringAgent(agent)
+    //ag run(agent_parsed) //lien vers bachtT
   }
 
   def eval(agent: Extension) {
@@ -21,6 +22,10 @@ object api {
     apply(agent)
   }
 
+  /**
+    * Permet de transformer un instruction écrite en scala en un String.
+    * Ex : &&(tell(3)("t"), get(4)("t")) => tell(3)(t);(4)get(t)
+    */
   def toStringAgent(agent: Extension): String = {
     agent match {
       case tell(token, time) => {

@@ -15,6 +15,9 @@ case class bacht_ast_delay(primitive: String, time: Int) extends Expr
 case class bacht_ast_agent(op: String, agenti: Expr, agentii: Expr) extends Expr
 import scala.util.parsing.combinator._
 
+/**
+  * Le code suivant a été modifié de manière à faire reconnaitre la primitive delay au parser.
+  */
 class BachTParsers extends RegexParsers {
 
   def token 	: Parser[String] = ("[a-z][0-9a-zA-Z_]*").r ^^ {_.toString}
@@ -55,6 +58,9 @@ class BachTParsers extends RegexParsers {
 
 }
 
+/**
+  * Nous avons donc créé un nouveau parse_delay en rapport avec la primitive que nous avons ajouté précédemment.
+  */
 object BachTSimulParser extends BachTParsers {
 
   def parse_primitive(prim: String) = parseAll(primitive,prim) match {
@@ -76,6 +82,9 @@ object BachTSimulParser extends BachTParsers {
 import scala.collection.mutable.Map
 import scala.swing._
 
+/**
+  * Cette class n'a pas du être modifié
+  */
 class BachTStore {
 
   var theStore = Map[String,Int]()
@@ -137,6 +146,9 @@ object bb extends BachTStore {
 import scala.util.Random
 import language.postfixOps
 
+/**
+  * Cette class a été modifié afin de permettre la gestion de la primitive delay.
+  */
 class BachTSimul(var bb: BachTStore) {
 
   var failure = false;
@@ -247,6 +259,11 @@ class BachTSimul(var bb: BachTStore) {
     }
   }
 
+  /**
+    * Permet de gérer la primitive delay, cette méthode consiste à savoir si nous la valeur de la primitive
+    * a atteint 0 ou pas encore afin de déterminer si nous devons encore attendre ou si nous avons suffisament
+    * attendu
+    */
   def run_time(agent: Expr):Expr = {
     agent match {
       case bacht_ast_delay(prim, time) =>
@@ -321,6 +338,9 @@ class BachTSimul(var bb: BachTStore) {
     }
   }
 
+  /**
+    * Ajout d'une seconde boucle permettant de gérer les primitives delay.
+    */
   def bacht_exec_all(agent: Expr):Boolean = {
 
     var c_agent = agent
@@ -360,6 +380,9 @@ class BachTSimul(var bb: BachTStore) {
 
 }
 
+/**
+  * Cet object n'a pas été modifié.
+  */
 object ag extends BachTSimul(bb) {
 
   def apply(agent: String) {

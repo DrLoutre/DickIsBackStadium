@@ -10,6 +10,9 @@
 import scala.util.parsing.combinator._
 import scala.util.matching.Regex
 
+/**
+  * Le code suivant a été modifié de manière à faire reconnaitre la primitive wait au parser.
+  */
 class BachTParsers extends RegexParsers {
 
   def token 	: Parser[String] = ("[a-z][0-9a-zA-Z_]*").r ^^ {_.toString}
@@ -50,6 +53,9 @@ class BachTParsers extends RegexParsers {
 
 }
 
+/**
+  * Nous avons donc créé un nouveau parse_wait en rapport avec la primitive que nous avons ajouté précédemment.
+  */
 object BachTSimulParser extends BachTParsers {
 
   def parse_primitive(prim: String) = parseAll(primitive,prim) match {

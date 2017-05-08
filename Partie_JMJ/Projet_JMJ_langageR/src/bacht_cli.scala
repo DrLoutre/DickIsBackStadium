@@ -16,6 +16,10 @@ case class bacht_ast_agent(op: String, agenti: Expr, agentii: Expr) extends Expr
 import scala.util.parsing.combinator._
 import scala.util.matching.Regex
 
+/**
+  * Cette class a été modifié de manière a pouvoir faire apparaître la valeur de temps dans les différentes
+  * primitives.
+  */
 class BachTParsers extends RegexParsers {
 
   def token 	: Parser[String] = ("[a-z][0-9a-zA-Z_]*").r ^^ {_.toString}
@@ -54,6 +58,9 @@ class BachTParsers extends RegexParsers {
 
 }
 
+/**
+  * Cet object n'a pas été modifié.
+  */
 object BachTSimulParser extends BachTParsers {
 
   def parse_primitive(prim: String) = parseAll(primitive,prim) match {
@@ -71,10 +78,19 @@ object BachTSimulParser extends BachTParsers {
 import scala.collection.mutable.Map
 import scala.swing._
 
+/**
+  * Cet class a dû être modifié pour faire apparaître la durée de vie des tokens.
+  */
 class BachTStore {
 
+  /**
+    * Le couple représente donc le "nom" du token et la durée de vie de celui-ci.
+    */
   var theStore = Map[(String, Int), Int]()
 
+  /**
+    * Permet de ne garder que les tokens qui ont une durée de vie supérieur à 0.
+    */
   def run_time() = {
     theStore = for {
       x <- theStore
@@ -152,6 +168,9 @@ object bb extends BachTStore {
 import scala.util.Random
 import language.postfixOps
 
+/**
+  * cette class a été modifié afin de faire apparaître la notion de parallèle pour gérer l'avancement du temps car nous n'utilisons qu'une seule boucle dans l'exécution.
+  */
 class BachTSimul(var bb: BachTStore) {
 
   var para = false
@@ -265,6 +284,10 @@ class BachTSimul(var bb: BachTStore) {
     else {0}
   }
 
+  /**
+    * Cette méthode permet de gérer la durée de vie des différentes instructions. Une instruction n'est conservé que si sa durée de vie est supérieur à 0.
+    * Si elle n'a pas pu être executé, nous renvoyons une failure pour arrêter l'exécution du programme.
+    */
   def run_time(agent: Expr):Expr = {
     agent match {
       case bacht_ast_primitive(prim, time, token) =>
@@ -360,6 +383,9 @@ class BachTSimul(var bb: BachTStore) {
     }
   }
 
+  /**
+    * Nous n'utilisons qu'une seule boucle mais la gestion du temps a pû gérer par l'utilisation d'un 'if'.
+    */
   def bacht_exec_all(agent: Expr):Boolean = {
 
     var c_agent = agent
@@ -409,6 +435,9 @@ class BachTSimul(var bb: BachTStore) {
 
 }
 
+/**
+  * Cet object n'a pas été modifié.
+  */
 object ag extends BachTSimul(bb) {
 
   def apply(agent: String) {

@@ -11,93 +11,19 @@
 import scala.util.Random
 import language.postfixOps
 
-class BachTStore {
-
-  var theStore = Map[(String, Int), Int]()
-
-  def run_time() = {
-    theStore = for {
-      x <- theStore
-      if x._1._2 > 0
-    } yield ((x._1._1, x._1._2 - 1), x._2)
-  }
-
-  def tell(token:String, time: Int):Boolean = {
-    if(time > 0) {
-      if (theStore.contains(token, time))
-      { theStore((token, time)) = theStore(token, time) + 1 }
-      else
-      { theStore = theStore ++ Map((token, time) -> 1) }
-    }
-    true
-  }
-
-
-  def ask(token:String, time: Int):Boolean = {
-    val theStoreBis = for {
-      x <- theStore
-      if ((x._1._1).equals(token) && (x._2 >= 1))
-    } yield ((x._1._1, x._1._2), x._2)
-    if(!theStoreBis.isEmpty) {
-      true
-    } else {
-      false
-    }
-  }
-
-  def get(token:String, time: Int):Boolean = {
-    val theStoreBis = for {
-      x <- theStore
-      if ((x._1._1).equals(token) && (x._2 >= 1))
-    } yield ((x._1._1, x._1._2), x._2)
-    if(!theStoreBis.isEmpty) {
-      theStore((theStoreBis.head._1._1, theStoreBis.head._1._2)) = theStore((theStoreBis.head._1._1, theStoreBis.head._1._2)) - 1
-      true
-    } else {
-      false
-    }
-  }
-
-
-  def nask(token:String, time: Int):Boolean = {
-    val theStoreBis = for {
-      x <- theStore
-      if ((x._1._1).equals(token) && (x._2 >= 1))
-    } yield ((x._1._1, x._1._2), x._2)
-    if(!theStoreBis.isEmpty) {
-      false
-    } else {
-      true
-    }
-  }
-
-  def print_store {
-    print("{ ")
-    for ((t,d) <- theStore)
-      print ( t + "(" + theStore(t) + ")" )
-    println(" }")
-  }
-
-  def clear_store {
-    theStore = Map[(String, Int),Int]()
-  }
-
-}
-
-object bb extends BachTStore {
-
-  def reset { clear_store }
-
-}
-import scala.util.Random
-import language.postfixOps
-
+/**
+  * cette class a été modifié afin de faire apparaître la notion de parallèle pour gérer l'avancement du temps car nous n'utilisons qu'une seule boucle dans l'exécution.
+  */
 class BachTSimul(var bb: BachTStore) {
 
   var para = false
   var failure = false
   val bacht_random_choice = new Random()
 
+  /**
+    * Cette méthode permet de gérer la durée de vie des différentes instructions. Une instruction n'est conservé que si sa durée de vie est supérieur à 0.
+    * Si elle n'a pas pu être executé, nous renvoyons une failure pour arrêter l'exécution du programme.
+    */
   def run_one(agent: Expr):(Boolean,Expr) = {
 
     agent match {
@@ -205,6 +131,10 @@ class BachTSimul(var bb: BachTStore) {
     else {0}
   }
 
+  /**
+    * Cette méthode permet de gérer la durée de vie des différentes instructions. Une instruction n'est conservé que si sa durée de vie est supérieur à 0.
+    * Si elle n'a pas pu être executé, nous renvoyons une failure pour arrêter l'exécution du programme.
+    */
   def run_time(agent: Expr):Expr = {
     agent match {
       case bacht_ast_primitive(prim, time, token) =>
@@ -300,6 +230,9 @@ class BachTSimul(var bb: BachTStore) {
     }
   }
 
+  /**
+    * Nous n'utilisons qu'une seule boucle mais la gestion du temps a pû gérer par l'utilisation d'un 'if'.
+    */
   def bacht_exec_all(agent: Expr):Boolean = {
 
     var c_agent = agent
@@ -349,6 +282,9 @@ class BachTSimul(var bb: BachTStore) {
 
 }
 
+/**
+  * Cet object n'a pas été modifié.
+  */
 object ag extends BachTSimul(bb) {
 
   def apply(agent: String) {
