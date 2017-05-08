@@ -6,6 +6,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="shortcut icon" href="CSS/18221949_10211207804182298_8640115247712280419_n.jpg" type="image/x-icon" />
+        <link rel="icon" href="CSS/18221949_10211207804182298_8640115247712280419_n.jpg" type="image/x-icon" />
         <link href="CSS/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
         <title>Résultat</title>
     </head>
@@ -19,8 +21,11 @@
             <nav class="navbar navbar-default">
                 <div class="container-fluid">
                     <div class="navbar-header">
+                        <div class="glyphicon navbar-header">
+                            <img src="CSS/18221949_10211207804182298_8640115247712280419_n.jpg" height="48px" >
+                        </div>
                         <a class="navbar-brand">
-                            DickStadium
+                            &nbsp;&nbsp;Smartdium
                         </a>  
                     </div>
                     <ul class="nav navbar-nav">
