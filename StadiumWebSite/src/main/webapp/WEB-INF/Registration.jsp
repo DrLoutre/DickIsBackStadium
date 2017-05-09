@@ -5,6 +5,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="shortcut icon" href="CSS/18221949_10211207804182298_8640115247712280419_n.jpg" type="image/x-icon" />
+        <link rel="icon" href="CSS/18221949_10211207804182298_8640115247712280419_n.jpg" type="image/x-icon" />
         <link href="CSS/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
         <title>Inscription</title>
     </head>
@@ -15,8 +17,11 @@
                 <nav class="navbar navbar-default">
                     <div class="container-fluid">
                         <div class="navbar-header">
+                            <div class="glyphicon navbar-header">
+                                <img src="CSS/18221949_10211207804182298_8640115247712280419_n.jpg" height="48px" >
+                            </div>
                             <a class="navbar-brand">
-                                DickStadium
+                                &nbsp;&nbsp;Smartdium
                             </a>  
                         </div>
                         <ul class="nav navbar-nav">
@@ -44,11 +49,11 @@
                     <% if(correct != null) {
                         if (!correct) {%>
                             <div class="alert alert-danger fade in">
-                                <Strong>Impossible d'ajouter le joueur</strong>, une des informations rentrées doit être incorrect !
+                                <Strong>Impossible de vous inscrire au stade</strong>, une des informations rentrées doit être incorrect !
                             </div>
                         <%} else {%>
                             <div class="alert alert-success fade in">
-                                <strong>Success!</strong> Vous êtes bien inscrit en tant qu'athlète !
+                                <strong>Success!</strong> Vous êtes bien inscrit dans le stade !
                             </div>
                         <%}
                     }%>
@@ -62,7 +67,7 @@
                         <label>Nom du sportif</label> : <br/> <input type="text" name="Nom" id="Nom" style="width: 500px;" required="true"/> <br/> <br/>
                     <%}%>
                     <%if(!value.containsKey("Prenom") && (correct != null)) {%>
-                        <div class="form-group has-warning"> <br>
+                        <div class="form-group has-warning">
                             <label class="control-label" for="idWarning">Avertissement</label> <br>
                             <label>Prénom du sportif</label> : <br/> <input type="text" name="Prenom" id="Prenom" style="width: 500px;" required="true"/> <br/>
                             <span class="help-block">Il y a un problème dans la saisie</span>

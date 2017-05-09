@@ -11,6 +11,8 @@ and open the template in the editor.
     <head>
         <title>Equipe</title>
         <meta charset="UTF-8">
+        <link rel="shortcut icon" href="CSS/18221949_10211207804182298_8640115247712280419_n.jpg" type="image/x-icon" />
+        <link rel="icon" href="CSS/18221949_10211207804182298_8640115247712280419_n.jpg" type="image/x-icon" />
         <link href="CSS/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
     </head>
     <% 
@@ -26,8 +28,11 @@ and open the template in the editor.
             <nav class="navbar navbar-default">
                 <div class="container-fluid">
                     <div class="navbar-header">
+                        <div class="glyphicon navbar-header">
+                            <img src="CSS/18221949_10211207804182298_8640115247712280419_n.jpg" height="48px" >
+                        </div>
                         <a class="navbar-brand">
-                            DickStadium
+                            &nbsp;&nbsp;Smartdium
                         </a>  
                     </div>
                     <ul class="nav navbar-nav">
@@ -47,11 +52,11 @@ and open the template in the editor.
                 if (time || time == null) {
                     if (!correct) {%>
                         <div class="alert alert-danger fade in">
-                            <Strong>Le nfc rentré est incorrect !</strong>
+                            <Strong>L'identifiant de l'athlète rentré est incorrect !</strong>
                         </div>
                     <%} else {%>
                         <div class="alert alert-success fade in">
-                            <strong>Success!</strong> Vous êtes bien inscrit pour le match demandé !
+                            <strong>Vous êtes bien inscrit pour le match demandé !</strong>
                         </div>
                     <%}
                 }   

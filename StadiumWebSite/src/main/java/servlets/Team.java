@@ -78,9 +78,12 @@ public class Team extends HttpServlet {
                     Logger.getLogger(Team.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
+                time = true;
                 try {
                     playInDao.addEntry((String) request.getParameter("nfc"), Integer.parseInt(request.getParameter("match")));
-                } catch(NotFoundException e) {}
+                } catch(NotFoundException | IntegrityException e) {
+                    nfc = false;
+                }
             }
         }
         request.setAttribute("correct", nfc);
