@@ -11,18 +11,31 @@ import com.phidgets.event.{SensorChangeEvent, SensorChangeListener}
   * With a calculation on the time lapse between both event in a correct order we will determinate if there is a goal or not
   */
 class Goal(interfaceKitPhidget: InterfaceKitPhidget, indexPassage: Int, indexVibration: Int, blackBox: BlackBox) {
-  private val MILI_INTERVAL = 200
+
+  // Constants for the goal's sensors.
+  private val TIMEOUT_BTW_TWO_GOALS = 8000.0
   private val INDEX_IR = 3
   private val INDEX_VIB = 4
 
+  // Number of goals and time of the last goal.
   var goal:Int = 0
-  var lastGoal:Double = 0.0
+  var lastGoal:Double = -8000.0
 
-
+  // getters
   def getGoal:Int = goal
   def getLastGoal:Double = lastGoal
-  def incrementGoal(time:Double):Unit = {
-    goal += 1
-    lastGoal = time
+
+  // increments the goal
+  def incrementGoal(time:Double):Boolean = {
+    if (lastGoal-time < TIMEOUT_BTW_TWO_GOALS) {
+      println("Gooaaaal !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! the time set :" + time)
+      goal += 1
+      println("Goal number : " + goal)
+      lastGoal = time
+      true
+    } else {
+      println("Too soon")
+      false
+    }
   }
 }

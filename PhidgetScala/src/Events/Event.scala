@@ -3,6 +3,7 @@ package Events
 /**
   * Created by bri_e on 20-04-17.
   * Class containing the different case classes with different events
+  * The the attribute is its happening time.
   */
 class Event(var eventTime:Long)
 

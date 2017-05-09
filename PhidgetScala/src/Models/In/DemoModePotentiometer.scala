@@ -10,26 +10,36 @@ import com.phidgets.event.{SensorChangeEvent, SensorChangeListener}
 /**
   * Created by bri_e on 20-04-17.
   * This class is the model of the potentiometer stating in which mode we are
-  * As an example, the first 90° will be the normal mode, from 91° to 180° will be demo mode 1 and so one...
+  * As an example, the first 90° will be the normal mode, from 91° to 180° will be demo mode 1.
   */
 class DemoModePotentiometer(interfaceKitPhidget: InterfaceKitPhidget, sensorIndex: Int, blackBox: BlackBox) {
+
+  // Different constants for the potentiometer.
   private val MILI_INTERVAL = 500
   private val MAX_CURSVAL   = 1000
   private val NBR_MODES     = 2
   private val POT_SETTING_TIME= 2000
 
-
+  /**
+    * @return the current mode given by the potentiometer sensor
+    */
   def getCurrentMode:Mode = {
     val value:Int = interfaceKitPhidget.getSensorValue(sensorIndex)/(MAX_CURSVAL/NBR_MODES)
     value match { //TODO: Create correct modes to test.
-      case 0 =>
+      case 0 => // Normal mode.
         println("Setting to normal mode ... ")
         NormalMode()
-      case 1 =>
-        println("Setting to match mode ... ")
+      case 1 => // Normal mode but matches are forced.
+        println("Setting to demo mode 1 ... ")
         Demo_1_Mode()
-      case 2 =>
-        println("Setting to Demo mode 1 ... ")
+      case 2 => // Todo : this
+        println("Setting to Demo mode 2 ... ")
+        Demo_1_Mode()
+      case 3 => // Todo : this
+        println("Setting to Demo mode 3 ... ")
+        Demo_1_Mode()
+      case 4 => // Todo : this
+        println("Setting to Demo mode 4 ... ")
         Demo_1_Mode()
       case _ =>
         println("Demo mode x not yet implemented")

@@ -5,14 +5,18 @@ import java.util._
 
 /**
   * Created by bri_e on 20-04-17.
-  * A runner has turns at a certain time
+  * Modelling all the runners, theirs turns and theirs laps and times
   */
 class Runners {
 
+  //The different lists
   var idList:util.LinkedList[String] = new util.LinkedList[String]()
   var idNumber:util.LinkedList[Integer] = new util.LinkedList[Integer]()
   var time:util.LinkedList[util.LinkedList[Long]] = new util.LinkedList[util.LinkedList[Long]]()
 
+  /**
+    * @param id
+    */
   def scanned(id: String):Unit = {
     if (idList.contains(id)) {
       val index = idList.indexOf(id)

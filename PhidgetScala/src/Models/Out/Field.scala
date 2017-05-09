@@ -10,6 +10,10 @@ class Field(interfaceKitPhidget: InterfaceKitPhidget, indexRed: Int, indexBlue: 
   var is_Watering:Boolean = false
   var is_Heating: Boolean = false
 
+  interfaceKitPhidget.setOutputState(indexBlue, false)
+  interfaceKitPhidget.setOutputState(indexGreen, false)
+  interfaceKitPhidget.setOutputState(indexRed, false)
+
   def isHeating:Boolean = isHeating
   def isWatering:Boolean = isWatering
 
@@ -32,6 +36,9 @@ class Field(interfaceKitPhidget: InterfaceKitPhidget, indexRed: Int, indexBlue: 
         interfaceKitPhidget.setOutputState(indexRed, false)
         interfaceKitPhidget.setOutputState(indexBlue, true)
       }
+    else {
+      interfaceKitPhidget.setOutputState(indexBlue, false)
+    }
 
     if (is_Heating)
       if (is_Watering)
@@ -41,5 +48,8 @@ class Field(interfaceKitPhidget: InterfaceKitPhidget, indexRed: Int, indexBlue: 
         interfaceKitPhidget.setOutputState(indexGreen, false)
         interfaceKitPhidget.setOutputState(indexRed, true)
       }
+    else {
+      interfaceKitPhidget.setOutputState(indexRed, false)
+    }
   }
 }

@@ -33,5 +33,9 @@ class Stand(interfaceKitPhidget: InterfaceKitPhidget, standName: String, numberO
 
   def getStandName: String = standName
 
+  def getStandPercentage:Int = {
+    seats.toList.count((elem:Boolean) => elem)/numberOfSeats
+  }
+
   def getSeats: Array[Boolean] = seats
 }

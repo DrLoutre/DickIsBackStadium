@@ -9,6 +9,7 @@ import com.phidgets.InterfaceKitPhidget
 class Lighting(interfaceKitPhidget: InterfaceKitPhidget) {
   val connectedLEDS:Int = 5
   var power: Int = 0
+  refreshLighting
 
   def updatePower(lightIntensity:Int):Unit = {
     power = 100 - lightIntensity
