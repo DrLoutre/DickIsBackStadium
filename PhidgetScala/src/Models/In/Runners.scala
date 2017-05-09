@@ -70,4 +70,11 @@ class Runners {
       null
   }
 
+  def getTotal(id:String):Long = {
+    val index:Int = idList.indexOf(id)
+    val subList = time.get(index)
+    var res:Long = 0
+    subList.forEach(res += _)
+    res
+  }
 }

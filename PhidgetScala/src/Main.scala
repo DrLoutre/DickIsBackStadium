@@ -3,6 +3,7 @@ import com.phidgets.InterfaceKitPhidget
 
 /**
   * Created by bri_e on 20-04-17.
+  * main method launching the application
   */
 object Main {
   def main(args: Array[String]): Unit = {

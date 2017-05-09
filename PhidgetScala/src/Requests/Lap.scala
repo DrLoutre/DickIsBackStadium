@@ -1,6 +1,6 @@
 package Requests
 
-class Lap(rfid:String, nbrLaps:Int, temps:String, milli:Int) {
+class Lap(rfid:String, nbrLaps:Int, temps:Long, milli:Long) {
 
 
 }

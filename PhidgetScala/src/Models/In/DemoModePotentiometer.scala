@@ -17,7 +17,7 @@ class DemoModePotentiometer(interfaceKitPhidget: InterfaceKitPhidget, sensorInde
   // Different constants for the potentiometer.
   private val MILI_INTERVAL = 500
   private val MAX_CURSVAL   = 1000
-  private val NBR_MODES     = 2
+  private val NBR_MODES     = 5
   private val POT_SETTING_TIME= 2000
 
   /**
@@ -25,6 +25,7 @@ class DemoModePotentiometer(interfaceKitPhidget: InterfaceKitPhidget, sensorInde
     */
   def getCurrentMode:Mode = {
     val value:Int = interfaceKitPhidget.getSensorValue(sensorIndex)/(MAX_CURSVAL/NBR_MODES)
+    println("======================================================<>>>>> Value of pot : " + value)
     value match { //TODO: Create correct modes to test.
       case 0 => // Normal mode.
         println("Setting to normal mode ... ")
@@ -32,15 +33,15 @@ class DemoModePotentiometer(interfaceKitPhidget: InterfaceKitPhidget, sensorInde
       case 1 => // Normal mode but matches are forced.
         println("Setting to demo mode 1 ... ")
         Demo_1_Mode()
-      case 2 => // Todo : this
+      case 2 => // Normal mode but snow and freezing
         println("Setting to Demo mode 2 ... ")
-        Demo_1_Mode()
-      case 3 => // Todo : this
+        Demo_2_Mode()
+      case 3 => // Normal mode but night
         println("Setting to Demo mode 3 ... ")
-        Demo_1_Mode()
-      case 4 => // Todo : this
+        Demo_3_Mode()
+      case 4 => // Normal mode but under the tropics
         println("Setting to Demo mode 4 ... ")
-        Demo_1_Mode()
+        Demo_4_Mode()
       case _ =>
         println("Demo mode x not yet implemented")
         NormalMode()

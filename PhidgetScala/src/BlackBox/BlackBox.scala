@@ -1,9 +1,12 @@
 package BlackBox
 
+import java.util.concurrent.{ScheduledThreadPoolExecutor, TimeUnit}
+
 import Events._
 import Models.In._
 import Models.Out._
 import Modes._
+import Requests.ToServer
 import com.phidgets.InterfaceKitPhidget
 import com.phidgets.event._
 
@@ -37,8 +40,8 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
   private val INDEX_VIBRATION_SENSOR:Int    = 4
   private val INDEX_MODE_POT:Int            = 5
 
-  private val INDEX_R:Int                   = 5
-  private val INDEX_G:Int                   = 6
+  private val INDEX_G:Int                   = 5
+  private val INDEX_R:Int                   = 6
   private val INDEX_B:Int                   = 7
 
   // Constants number of Seats
@@ -65,7 +68,6 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
   var currentMode:Mode      = mode.getCurrentMode
   //val commu:CommunicationListener = new CommunicationListener
 
-  //
   setListener
 
   /**
@@ -74,10 +76,20 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
     */
   def processEvent(event: Event): Unit = {
     // Log variable.
-    var log:String = "\n\n\nEvent : "
+    var log:String = "\n\n\nEvent : \n "
 
     //Adding event to the list.
     eventList.add(event)
+
+
+    log += "Light : " + light.retLightIntensity + " and bright : " + lighting.power + "\n"
+    log += "Heat  : " + weather.getHeat + "\n"
+    log += "Mode  : " + currentMode.toString + "\n"
+    log += "StandN: " + stdNorth.getStandPercentage + "\n"
+    log += "StandS: " + stdSouth.getStandPercentage + "\n"
+    log += "Goals : " + goal.goal + "\n"
+    log += "Field : " + (if(field.is_Heating) "heating " else " not heating" ) + " and "  + (if (field.is_Watering) "watering" else "not watering") + "\n"
+    log += "Roof  : " + (if(roof.open) "openned" else "closed") + "\n"
 
     if (currentMode.isMatch) {
       field.setWatering(false)
@@ -89,27 +101,17 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
 
     //First of all the mode must be matched bewteen all the availables modes.
     currentMode match {
-      case NormalMode() => {
+      case _ => { // It's _ because it take in charge normal mode and both demo mode 2 and 3
         // In normal mode we check in the match planning in order to update the mode attribute.
         currentMode.isMatch = planning.areWeDuringAMatch
 
          if (!currentMode.isMatch)
           log += "Proceed Event (mode : " + currentMode.getClass + "): \n"
         else {
-          log += "Proceed Event in Match Mode : \n"
+          log += "Proceed Event in Match Mode (mode : + " + currentMode.getClass + " : \n"
           field.setWatering(false)
           field.setHeating(false)
         }
-
-        log += "Light : " + light.retLightIntensity + " and bright : " + lighting.power + "\n"
-        log += "Heat  : " + weather.getHeat + "\n"
-        log += "Mode  : " + currentMode.toString + "\n"
-        log += "StandN: " + stdNorth.getStandPercentage + "\n"
-        log += "StandS: " + stdSouth.getStandPercentage + "\n"
-        log += "Goals : " + goal.goal + "\n"
-        log += "Field : " + (if(field.is_Heating) "heating " else " not heating" ) + " and "  + (if (field.is_Watering) "watering" else "not watering") + "\n"
-        log += "Roof  : " + (if(roof.open) "openned" else "closed") + "\n"
-
 
         //Then, we match the event with its type and launch the process following its type.
         event match {
@@ -125,9 +127,15 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
             log += "Received new match ! \n"
           //add the received match to communication listener
           case DemoPhaseEvent(_) =>
-            currentMode = mode.getCurrentMode
-            log += "New Mode Set : " + currentMode.toString
-          case _ => log = "Error Event non recognized"
+            if (!currentMode.isInstanceOf[DetachedMode]) {
+              currentMode = mode.getCurrentMode
+              Thread.sleep(500)
+              processHeatEvent(log)
+              log += "New Mode Set : " + currentMode.toString
+            } else {
+              log += "Detached mode, mode not modifed !!"
+            }
+          case _ => log = "Error Event non recognized" + event.toString
         }
       }
       case DetachedMode(kitDetached, roofDetached, rfidDetached) => {
@@ -179,11 +187,16 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
             log += "Received new match ! \n"
           //todo : add the received match to communication listener
           case DemoPhaseEvent(_) =>
-            currentMode = mode.getCurrentMode
-            log += "New Mode Set : " + currentMode.toString
+            if (!currentMode.isInstanceOf[DetachedMode]) {
+              currentMode = mode.getCurrentMode
+              Thread.sleep(500)
+              processHeatEvent(log)
+              log += "New Mode Set : " + currentMode.toString
+            } else {
+              log += "Detached mode, mode not modifed !!"
+            }
           case _ => log = "Error Event non recognized"
         }
-
       }
     }
     // Printing the final log.
@@ -253,11 +266,28 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
   private def processHeatEvent(log: String): _root_.scala.Predef.String = {
     //Getting information from both the temperature sensor and the weather station
     println("New heat event !")
-    val temp:Double = weather.getHeat
-    val isDay:Boolean = weather.isDay
+
+    var temp: Double = weather.getHeat
+    var isDay: Boolean = weather.isDay
     println("is not wrong for Day")
-    val weatherCond:Weather = weather.getWeather
+    var weatherCond: Weather = weather.getWeather
     println("is not wrong for Weather")
+
+    currentMode match {
+      case Demo_2_Mode() =>
+        temp = -5.0
+        println("Forcing negative temp : -5°C")
+        weatherCond = Snow()
+        println("Forcing snow")
+      case Demo_3_Mode() =>
+        isDay  = false
+        println("Forcing Night")
+      case Demo_4_Mode() =>
+        temp = 30.0
+        println("Forcing temperature to 30°C")
+        weatherCond = Sun()
+        println("Forcing Sun (if only...)")
+    }
     // Initialisation of the log
     var logChanges = ""
     println("Matching weather condition")
@@ -346,6 +376,7 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
           if (goalCase.hasGoalHappened(event.asInstanceOf[VibrationEvent])) {
             if (goal.incrementGoal(System.currentTimeMillis())) {
               goalCase.updateLastGoal(System.currentTimeMillis()) //Double verification of the timing of goals.
+              ToServer.sendGoal(true,goal.goal)
               log + "goal registered !! Number of goals : " + goal.goal
             } else {
               log + "vibration of the goal Structure \n"
@@ -399,6 +430,12 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
     */
   private def processTurnEvent(log: String): _root_.scala.Predef.String = {
     //Todo : Check if new implementation suits the simple log
+    val id:String = lapCntr.lastScanned
+    ToServer.sendLap(
+      id,
+      lapCntr.runners.idNumber.get(lapCntr.runners.idList.indexOf(id)),
+      lapCntr.runners.time.get(lapCntr.runners.idList.indexOf(id)).getLast,
+      lapCntr.runners.getTotal(id))
     log + "new turn or player \n"
   }
 
@@ -564,5 +601,16 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
       }
 
     })
+
+
+    //In order to get temperature update more often :
+    val ex = new ScheduledThreadPoolExecutor(1)
+    val task = new Runnable {
+      def run():Unit = {
+        processEvent(HeatEvent(System.currentTimeMillis()))
+      }
+    }
+    val f = ex.scheduleAtFixedRate(task, 0, 20, TimeUnit.SECONDS)
+    // f.cancel(false)
     }
 }

@@ -16,7 +16,7 @@ object ToServer {
     * @param tempsTour time of the last lap of the runner
     * @param tempsMilli total time of the run
     */
-  def sendLap(rfid:String, nbrTours:Int, tempsTour:String, tempsMilli:Int) : Unit = {
+  def sendLap(rfid:String, nbrTours:Int, tempsTour:Long, tempsMilli:Long) : Unit = {
     val lap:Lap = new Lap(rfid, nbrTours, tempsTour, tempsMilli)
     val json:String = new Gson().toJson(lap)
     val code:Boolean = Http(BASE_URL.concat("laps")).timeout(10000, 10000).postData(json).asString.is2xx

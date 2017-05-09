@@ -20,6 +20,8 @@ class LapCalculator(blackBox: BlackBox) {
   var timeScanning:Double = 0
   // structure saving all the runners time, id and laps
   val runners:Runners = new Runners
+  // last scanned id
+  var lastScanned:String = _
 
   // phidget variable
   val rFIDPhidget:RFIDPhidget = new RFIDPhidget()
@@ -35,12 +37,11 @@ class LapCalculator(blackBox: BlackBox) {
   // Setting the listener on attach and triggers the normal mode or updates the deteriorated mode
   rFIDPhidget.addAttachListener((_: AttachEvent) => blackBox.currentMode match {
     case DetachedMode(kit, motors, _) =>
-      if (!kit && !motors) NormalMode else DetachedMode(kit, motors, false)
+      if (!kit && !motors) blackBox.currentMode = NormalMode() else blackBox.currentMode = DetachedMode(kit, motors, false)
   })
 
   // Setting the listener on scan + save when it has ben scanned.
   rFIDPhidget.addTagGainListener((tagGainEvent: TagGainEvent) => {
-    println("scannnedekqdsjfmkqsjdflmkzjdfmlkajsdfmlkjadmlkfjazlkdfjqmlskdjf")
     timeScanning = System.currentTimeMillis()
   })
 
@@ -55,6 +56,7 @@ class LapCalculator(blackBox: BlackBox) {
       println("Runner Id     : " + tagLossEvent.getValue +
             "\nRunning Time  : " + (lapTime-lastLapTime)/1000 + "sec" +
             "\nNumber of Laps: " + runners.getIdLapsNumber(tagLossEvent.getValue))
+      lastScanned = tagLossEvent.getValue
     }
     timeScanning = 0.00
   })

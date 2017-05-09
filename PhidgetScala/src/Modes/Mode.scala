@@ -22,6 +22,24 @@ case class Demo_1_Mode() extends Mode(isMatch = true) {
 }
 
 /**
+  * This is the demo mode 2. Every thing in this mode is normal but its snowing and it is -5°c
+  */
+case class Demo_2_Mode() extends Mode(isMatch = false) {
+}
+
+/**
+  * This is the demo mode 3. Every thing in this mode is normal but we're at night.
+  */
+case class Demo_3_Mode() extends Mode(isMatch = false) {
+}
+
+/**
+  * This is the demo mode 4. Everything in this mode is normal but it's 30°C and the weather is sunny
+  */
+case class Demo_4_Mode() extends Mode(isMatch = false) {
+}
+
+/**
   * The detached moe is a reduced mode which must be set at detachment of any phidget. It deteriorates the functionalities in correlation with the detached tools.
   * @param isKitDetached  when the kit is detached
   * @param isRoofDetached when the servo's are detached

@@ -21,6 +21,11 @@ class WeatherStation (interfaceKitPhidget: InterfaceKitPhidget, sensorIndex: Int
 
   //Key in order to access the API
   val API_KEY       = "eff123853edf134ccd86bf1455b57487"
+  val WEATHERAPI_TIMEOUT = 60000
+  val TIMEOUT_API = 10000
+
+  var time:Double = System.currentTimeMillis()-WEATHERAPI_TIMEOUT
+  var body:String = _
 
   /**
     * @return the converted value of the temperature
@@ -96,7 +101,10 @@ class WeatherStation (interfaceKitPhidget: InterfaceKitPhidget, sensorIndex: Int
     * @return the result of a request to the API
     */
   def getWeatherInformation:JSONObject = {
-    val body = Http("http://api.openweathermap.org/data/2.5/weather?id=2790472&APPID=".concat(API_KEY)).timeout(10000, 10000).asString.body
+    if (System.currentTimeMillis()-time > WEATHERAPI_TIMEOUT) {
+      body = Http("http://api.openweathermap.org/data/2.5/weather?id=2790472&APPID=".concat(API_KEY)).timeout(TIMEOUT_API, TIMEOUT_API).asString.body
+      time = System.currentTimeMillis()
+    }
     val rootObject = new JSONObject(body)
     rootObject
   }
