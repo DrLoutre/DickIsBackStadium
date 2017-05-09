@@ -42,7 +42,7 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
   private val INDEX_B:Int                   = 7
 
   // Constants number of Seats
-  private val SEATS_NUMBER:Int              = 8
+  private val SEATS_NUMBER:Int              = 4
 
 
   // List of event of the blackbox.
@@ -79,7 +79,6 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
     //Adding event to the list.
     eventList.add(event)
 
-    println("match mode ? " + currentMode.isMatch)
     if (currentMode.isMatch) {
       field.setWatering(false)
       field.setHeating(false)
@@ -377,7 +376,7 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
     val northStandState:Array[String] = stdNorth.getSeats.zipWithIndex.map{
       case(taken: Boolean, count: Int) => {
         val x = "Seat " + count
-        val y = if (taken) " taken" else " free"
+        val y = if (taken) " taken " else " free "
         x + y
       }
     }
@@ -385,7 +384,7 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
     val southStandState:Array[String] = stdSouth.getSeats.zipWithIndex.map{
       case(taken: Boolean, count: Int) => {
         val x = "Seat " + count
-        val y = if (taken) " taken" else " free"
+        val y = if (taken) " taken " else " free "
         x + y
       }
     }
@@ -530,6 +529,40 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
           filterEvntList
           println("Event Not Recognized")
       }
+    })
+
+    interfaceKitPhidget.addInputChangeListener((inputChangeEvent: InputChangeEvent) => {
+      val time = System.currentTimeMillis
+
+
+      if (inputChangeEvent.getIndex >= 4) {
+        if (inputChangeEvent.getState) {
+          val seatOfConcern = inputChangeEvent.getIndex - stdSouth.getNumberOfSeats
+          if (stdNorth.seats(seatOfConcern)) {
+            stdNorth.seats(seatOfConcern) = false
+            println("Siège n°" + seatOfConcern + " libéré dans la tribune " + stdNorth.getStandName)
+          }
+          else {
+            stdNorth.seats(seatOfConcern) = true
+            println("Siège n°" + seatOfConcern + " occupé dans la tribune " + stdNorth.getStandName)
+          }
+          processEvent(StandEvent(time))
+        }
+      } else  {
+        if (inputChangeEvent.getState) {
+          val seatOfConcern = inputChangeEvent.getIndex
+          if (stdSouth.seats(seatOfConcern)) {
+            stdSouth.seats(seatOfConcern) = false
+            println("Siège n°" + seatOfConcern + " libéré dans la tribune " + stdSouth.getStandName)
+          }
+          else {
+            stdSouth.seats(seatOfConcern) = true
+            println("Siège n°" + seatOfConcern + " occupé dans la tribune " + stdSouth.getStandName)
+          }
+          processEvent(StandEvent(time))
+        }
+      }
+
     })
     }
 }

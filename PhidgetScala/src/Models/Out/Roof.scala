@@ -12,6 +12,7 @@ import com.phidgets.event.{AttachEvent, AttachListener, DetachEvent, DetachListe
   */
 class Roof(blackBox: BlackBox) {
 
+  //Set the phidget values.
   val SERVO1_SERIAL:Int = 305832
   val SERVO2_SERIAL:Int = 305826
   val SERVO_INDEX:Int = 0
@@ -21,10 +22,14 @@ class Roof(blackBox: BlackBox) {
   val VAL_ROOF2_OPEN:Double = 0.00
   val SPEED   = 100.0
 
+  //Initialization
   var open:Boolean = false
   val servo1:AdvancedServoPhidget = new AdvancedServoPhidget
   val servo2:AdvancedServoPhidget = new AdvancedServoPhidget
 
+  /**
+    * In case of detachment
+    */
   def detachServo:Unit = {
     blackBox.currentMode match {
       case DetachedMode(kit, _, rfid) =>
@@ -33,6 +38,9 @@ class Roof(blackBox: BlackBox) {
     }
   }
 
+  /**
+    * In case of re-attachment
+    */
   def attachServo:Unit = {
     blackBox.currentMode match {
       case DetachedMode(kit, _, rfid) =>
@@ -40,6 +48,7 @@ class Roof(blackBox: BlackBox) {
     }
   }
 
+  //Setting the listeners
   servo1.addDetachListener((detachEvent: DetachEvent) => detachServo)
   servo1.addAttachListener((attachEvent: AttachEvent) => attachServo)
   servo2.addDetachListener((detachEvent: DetachEvent) => detachServo)
@@ -58,8 +67,9 @@ class Roof(blackBox: BlackBox) {
   servo2.setPosition(SERVO_INDEX, VAL_ROOF2_CLOSED)
   println("...done")
 
-
-
+  /**
+    * Close the roof, ignore if already done.
+    */
   def closeRoof:Unit = {
     if (open) {
       servo1.setPosition(SERVO_INDEX, VAL_ROOF1_CLOSED)
@@ -70,6 +80,9 @@ class Roof(blackBox: BlackBox) {
       println("      ======> roof already closed")
   }
 
+  /**
+    * Open the roof, ignore if already done
+    */
   def openRoof:Unit = {
     if (!open) {
       servo1.setPosition(SERVO_INDEX, VAL_ROOF1_OPEN)

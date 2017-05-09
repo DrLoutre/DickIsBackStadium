@@ -18,16 +18,22 @@ import scalaj.http.Http
   * The weather station gives the heat, the sun phases, the weather.
   */
 class WeatherStation (interfaceKitPhidget: InterfaceKitPhidget, sensorIndex: Int, blackBox: BlackBox ) {
-  val MILI_INTERVAL = 1000
+
+  //Key in order to access the API
   val API_KEY       = "eff123853edf134ccd86bf1455b57487"
 
-
+  /**
+    * @return the converted value of the temperature
+    */
   def getHeat: Double = {
     val sensorvalue = interfaceKitPhidget.getSensorValue(sensorIndex)
     val roomtemp = (sensorvalue * 0.22222) - 61.11
     roomtemp
   }
 
+  /**
+    * @return the date of today's sunrise
+    */
   def getSunRise():Date = {
     println("Able to gather info? ")
     var sun = getWeatherInformation
@@ -42,6 +48,9 @@ class WeatherStation (interfaceKitPhidget: InterfaceKitPhidget, sensorIndex: Int
     }
   }
 
+  /**
+    * @return the date of today's sunset
+    */
   def getSunSet():Date = {
     var sun = getWeatherInformation
     if (sun != null) {
@@ -54,6 +63,9 @@ class WeatherStation (interfaceKitPhidget: InterfaceKitPhidget, sensorIndex: Int
     }
   }
 
+  /**
+    * @return actual weather
+    */
   def getWeather: Weather = {
     val weatherInfos: JSONObject = getWeatherInformation
     val weather: String = weatherInfos.getJSONArray("weather").getJSONObject(0).getString("main")
@@ -66,6 +78,9 @@ class WeatherStation (interfaceKitPhidget: InterfaceKitPhidget, sensorIndex: Int
     }
   }
 
+  /**
+    * @return if it is day or not
+    */
   def isDay:Boolean = {
     val now     = new Date()
     println("Fletched date ok")
@@ -77,7 +92,9 @@ class WeatherStation (interfaceKitPhidget: InterfaceKitPhidget, sensorIndex: Int
   }
 
 
-
+  /**
+    * @return the result of a request to the API
+    */
   def getWeatherInformation:JSONObject = {
     val body = Http("http://api.openweathermap.org/data/2.5/weather?id=2790472&APPID=".concat(API_KEY)).timeout(10000, 10000).asString.body
     val rootObject = new JSONObject(body)
