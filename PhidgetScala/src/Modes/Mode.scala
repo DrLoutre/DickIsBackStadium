@@ -19,6 +19,7 @@ case class NormalMode() extends Mode(isMatch = false) {
   * This is the demo mode 1. Every this is the same as in normal mode but the match mode is forced in every situation.
   */
 case class Demo_1_Mode() extends Mode(isMatch = true) {
+  override def inGame = true
 }
 
 /**

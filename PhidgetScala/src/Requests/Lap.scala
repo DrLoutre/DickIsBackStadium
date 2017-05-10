@@ -1,6 +1,7 @@
 package Requests
 
-class Lap(rfid:String, nbrLaps:Int, temps:Long, milli:Long) {
-
-
+class Lap(r:String, n:Int, t:String) {
+  val rfid:String = r
+  val nbrLaps:Int = n
+  val temps:String = t
 }

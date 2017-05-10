@@ -1,6 +1,7 @@
 package Models.In
 
 import BlackBox.BlackBox
+import Events.TurnEvent
 import Modes.{DetachedMode, NormalMode}
 import com.phidgets.RFIDPhidget
 import com.phidgets.event._
@@ -14,7 +15,8 @@ class LapCalculator(blackBox: BlackBox) {
 
   // Constants about the phidgets
   val PHIDGET_SERIAL = 335178
-  val MIN_PASS_TIME  = 20
+  val MIN_PASS_TIME  = 10
+
 
   // last time the phidget scanned a RFID
   var timeScanning:Double = 0
@@ -25,6 +27,7 @@ class LapCalculator(blackBox: BlackBox) {
 
   // phidget variable
   val rFIDPhidget:RFIDPhidget = new RFIDPhidget()
+
 
   // Setting the listener on detach and triggers the deteriorated version
   rFIDPhidget.addDetachListener((_: DetachEvent) => blackBox.currentMode match {
@@ -51,7 +54,7 @@ class LapCalculator(blackBox: BlackBox) {
   // Setting the listener on end of scan + juging if goal has happened
   rFIDPhidget.addTagLossListener((tagLossEvent: TagLossEvent) => {
 
-    val now:Double = System.currentTimeMillis()
+    val now:Long = System.currentTimeMillis()
     if(Math.abs(timeScanning-now)>MIN_PASS_TIME){
       runners.scanned(tagLossEvent.getValue)
       val lastLapTime = runners.getIdPerfs(tagLossEvent.getValue).get(runners.getIdLapsNumber(tagLossEvent.getValue) - 1)
@@ -60,6 +63,7 @@ class LapCalculator(blackBox: BlackBox) {
             "\nRunning Time  : " + (lapTime-lastLapTime)/1000 + "sec" +
             "\nNumber of Laps: " + runners.getIdLapsNumber(tagLossEvent.getValue))
       lastScanned = tagLossEvent.getValue
+      blackBox.processEvent(TurnEvent(now))
     }
     timeScanning = 0.00
   })
@@ -67,7 +71,6 @@ class LapCalculator(blackBox: BlackBox) {
   print("\nAttaching RFID reader...")
   rFIDPhidget.open(PHIDGET_SERIAL)
   rFIDPhidget.waitForAttachment()
-
   println(" ...done")
 
 }

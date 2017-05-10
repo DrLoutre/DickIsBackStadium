@@ -24,14 +24,14 @@ import scala.collection.mutable
 class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
 
   // Constants Threshold
-  private val PRECISION_IR_SENSOR_THERSHOLD: Int = 200
+  private val PRECISION_IR_SENSOR_THERSHOLD: Int = 500
 
   // Constants about time
-  private val LIGHT_TIMEOUT:Double     = 1000.0
-  private val TEMP_TIMEOUT:Double      = 1000.0
-  private val PASSAGE_TIMEOUT:Double   = 10.0
-  private val VIBRATION_TIMEOUT:Double = 10.0
-  private val POT_TIMEOUT:Double       = 1000.0
+  private val LIGHT_TIMEOUT:Long     = 2000
+  private val TEMP_TIMEOUT:Long      = 3000
+  private val PASSAGE_TIMEOUT:Long   = 100
+  private val VIBRATION_TIMEOUT:Long = 100
+  private val POT_TIMEOUT:Long       = 3000
 
   // Constants index of sensors and lights
   private val INDEX_LIGHT_SENSOR:Int        = 0
@@ -83,6 +83,7 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
 
 
     log += "Light : " + light.retLightIntensity + " and bright : " + lighting.power + "\n"
+    log += "Match?: " + currentMode.isMatch + "\n"
     log += "Heat  : " + weather.getHeat + "\n"
     log += "Mode  : " + currentMode.toString + "\n"
     log += "StandN: " + stdNorth.getStandPercentage + "\n"
@@ -99,7 +100,7 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
       case _ => log + currentMode.toString + "\n"
     }
 
-    if (currentMode.isMatch) {
+    if (currentMode.inGame) {
       field.setWatering(false)
       field.setHeating(false)
     }
@@ -113,7 +114,7 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
         // In normal mode we check in the match planning in order to update the mode attribute.
         currentMode.isMatch = planning.areWeDuringAMatch
 
-         if (!currentMode.isMatch)
+         if (!currentMode.inGame)
           log += "Proceed Event (mode : " + currentMode.getClass + "): \n"
         else {
           log += "Proceed Event in Match Mode (mode : + " + currentMode.getClass + " : \n"
@@ -148,7 +149,7 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
       }
       case DetachedMode(kitDetached, roofDetached, rfidDetached) => {
         //In detached mode, the system works in altered mode without what is detached.
-        if (!currentMode.isMatch)
+        if (!currentMode.inGame)
           log += "Proceed Event : \n"
         else
           log += "Proceed Event in Match Mode : \n"
@@ -232,11 +233,13 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
       case VibrationEvent(_) => actualClass = classOf[VibrationEvent]
       case _ => actualClass = classOf[Event]
     }
-    println("Getting last event of : " + actualClass)
+    //println("Getting last event of : " + actualClass)
+    print("")
     try {
       val tempList:List[Event] = eventList.toList
       // Create a list in order to optimize the following find
-      println("Checking with  = " + actualClass.toString + "\n for list : " + tempList)
+      print("")
+      //println("Checking with  = " + actualClass.toString + "\n for list : " + tempList)
       tempList.find {(x:Event) => x.getClass == actualClass}
     } catch {
       case e:Exception =>
@@ -304,31 +307,31 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
       case Snow() =>
         roof.closeRoof
         logChanges += "    - Roof closed"
-        if (!currentMode.isMatch) {
+        if (!currentMode.inGame) {
           field.setHeating(temp <= 5)
           if (temp <= 5) logChanges += "    - set Heating."
-          field.setWatering(!currentMode.isMatch && (temp > 15 || !isDay))
-          if (!currentMode.isMatch && (temp > 15 || !isDay)) logChanges += "    - set Watering."
+          field.setWatering(!currentMode.inGame && (temp > 15 || !isDay))
+          if (!currentMode.inGame && (temp > 15 || !isDay)) logChanges += "    - set Watering."
           // In case of rain, we close the roof and, depending on the temperature and the current mode, the field may be watered and/or heated.
         }
       case Rain() =>
         roof.closeRoof
         logChanges += "    Roof closed"
-        if (!currentMode.isMatch) {
+        if (!currentMode.inGame) {
           field.setHeating(temp <= 10)
           if (temp <= 10) logChanges += "    - set Heating."
-          field.setWatering(!currentMode.isMatch && (temp > 20 || !isDay))
-          if (!currentMode.isMatch && (temp > 20 || !isDay)) logChanges += "    - set Watering."
+          field.setWatering(!currentMode.inGame && (temp > 20 || !isDay))
+          if (!currentMode.inGame && (temp > 20 || !isDay)) logChanges += "    - set Watering."
           // In case of sun, we open the roof and, depending on the temperature and the current mode, the field may be watered and/or heated.
         }
       case Sun()   =>
         roof.openRoof
         logChanges += "    Roof opened"
-        if (!currentMode.isMatch) {
+        if (!currentMode.inGame) {
           field.setHeating(temp <= 5)
           if (temp <= 5) logChanges += "    - set Heating."
-          field.setWatering(!currentMode.isMatch && (temp > 15 || !isDay))
-          if (!currentMode.isMatch && (temp > 15 || !isDay)) logChanges += "    - set Watering."
+          field.setWatering(!currentMode.inGame && (temp > 15 || !isDay))
+          if (!currentMode.inGame && (temp > 15 || !isDay)) logChanges += "    - set Watering."
           // In case of cloudy weather, we let the roof as it is and, depending on the temperature and the current mode, the field may be watered and/or heated.
         }
       case Cloud() =>
@@ -339,7 +342,7 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
           roof.closeRoof
           logChanges += "    - Roof closed"
         }
-        if (!currentMode.isMatch) {
+        if (!currentMode.inGame) {
           field.setHeating(temp <= 10)
           if (temp <= 10) logChanges += "    - set Heating."
           println("Condition : " + (temp>10) )
@@ -377,7 +380,7 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
     */
   private def processGoalEvent(event:Event, log: String): _root_.scala.Predef.String = {
     // a goal is only registered if we are during a match
-    if (currentMode.isMatch)
+    if (currentMode.inGame)
       event match {
           // In case of a vibration, it checks the goalCase, if the goalCase decide it is a goal, we increment the goal.
         case VibrationEvent(_) =>
@@ -439,12 +442,14 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
   private def processTurnEvent(log: String): _root_.scala.Predef.String = {
     //Todo : Check if new implementation suits the simple log
     val id:String = lapCntr.lastScanned
+    val idnum = lapCntr.runners.idNumber.get(lapCntr.runners.idList.indexOf(id))
+    val time = lapCntr.runners.time.get(lapCntr.runners.idList.indexOf(id)).getLast
+    val total = lapCntr.runners.getTotal(id)
     ToServer.sendLap(
       id,
-      lapCntr.runners.idNumber.get(lapCntr.runners.idList.indexOf(id)),
-      lapCntr.runners.time.get(lapCntr.runners.idList.indexOf(id)).getLast,
-      lapCntr.runners.getTotal(id))
-    log + "new turn or player \n"
+      idnum,
+      time)
+    log + "new turn or player \nid => " + id + "\nnumber => " + idnum + "\ntime => " + time
   }
 
 
@@ -495,9 +500,10 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
           getLast(LightEvent(time)) match {
               // if it exists, it check that the last light event is not too recent
             case Some(LightEvent(eventTime)) =>
-              if ((time - eventTime) > LIGHT_TIMEOUT)
+              if ((time - eventTime) > LIGHT_TIMEOUT) {
                 println("New Light Event")
                 processEvent(LightEvent(time))
+              }
               // if not create a new one.
             case None =>
               println("First Light Event")
@@ -551,9 +557,10 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
             getLast(VibrationEvent(time)) match {
                 //if it exists, it check that the last light event is not too recent
               case Some(VibrationEvent(eventTime)) =>
-                if (time - eventTime > VIBRATION_TIMEOUT)
+                if ((time - eventTime) > VIBRATION_TIMEOUT) {
                   println("Vibation occured")
                   processEvent(VibrationEvent(time))
+                }
                 //if not create a new one.
               case None =>
                 println("First Vib event")
@@ -564,6 +571,7 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
         case INDEX_MODE_POT =>
           //First of all, filtering of the list.
           filterEvntList
+          Thread.sleep(1000)
           val time = System.currentTimeMillis
           // Getting if existing the last event of that type
           getLast(DemoPhaseEvent(time)) match {
