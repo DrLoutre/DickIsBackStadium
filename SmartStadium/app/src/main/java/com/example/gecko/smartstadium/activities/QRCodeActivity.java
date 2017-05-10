@@ -18,6 +18,11 @@ public class QRCodeActivity extends Activity implements QRCodeReaderView.OnQRCod
     Intent intent;
     private QRCodeReaderView qrCodeReaderView;
 
+    /**
+     * Start the activity
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
