@@ -90,6 +90,10 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
     log += "Goals : " + goal.goal + "\n"
     log += "Field : " + (if(field.is_Heating) "heating " else " not heating" ) + " and "  + (if (field.is_Watering) "watering" else "not watering") + "\n"
     log += "Roof  : " + (if(roof.open) "openned" else "closed") + "\n"
+    log = currentMode match {
+      case DetachedMode(kit, roof, rfid) => log + "Kit is detachd? " + kit + "\nRoof is detached? " + roof + "\nRFID is detached? " + rfid + "\n"
+      case _ => log + currentMode.toString + "\n"
+    }
 
     if (currentMode.isMatch) {
       field.setWatering(false)
