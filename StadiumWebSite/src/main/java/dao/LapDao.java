@@ -24,4 +24,6 @@ public interface LapDao {
 //    Pair<Time,Integer> getTime(int ID) throws NotFoundException;
     
     List<Lap> getLastRace(String athleticNFC) throws NotFoundException;
+    
+    List<Lap> getAllLap(int raceId) throws NotFoundException;
 }
