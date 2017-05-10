@@ -3,12 +3,10 @@ package webServices;
 import beans.Athletic;
 import beans.Lap;
 import beans.Match;
+import beans.Race;
 import beans.custom.Credentials;
 import beans.custom.MatchNotEnded;
-import dao.impl.AthleticDaoImpl;
-import dao.impl.LapDaoImpl;
-import dao.impl.MatchDaoImpl;
-import dao.impl.TeamDaoImpl;
+import dao.impl.*;
 import exceptions.NotFoundException;
 
 import javax.ws.rs.*;
@@ -17,6 +15,9 @@ import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class regroups all WebService associated to Athletics
+ */
 @Produces(MediaType.APPLICATION_JSON)
 @Path("athletics")
 public class AtheleticWebService {
@@ -25,7 +26,12 @@ public class AtheleticWebService {
     private LapDaoImpl lapDao = new LapDaoImpl();
     private MatchDaoImpl matchDao = new MatchDaoImpl();
     private TeamDaoImpl teamDao = new TeamDaoImpl();
+    private RaceDaoImpl raceDao = new RaceDaoImpl();
 
+    /**
+     * Get all athletics
+     * @return ArrayList<Team>
+     */
     @GET
     public Response getAthletics() {
         ArrayList<Athletic> athletics;
@@ -37,6 +43,11 @@ public class AtheleticWebService {
         return  Response.ok(athletics).build();
     }
 
+    /**
+     * Get athletic associated to the id
+     * @param id The athletic's id
+     * @return Athletic
+     */
     @GET
     @Path("/{id}")
     public Response getAthletic(@PathParam("id") String id) {
@@ -49,6 +60,11 @@ public class AtheleticWebService {
         return Response.ok(athletic).build();
     }
 
+    /**
+     * Get laps from the last race from the athletics with the id
+     * @param id The athletic's id
+     * @return ArrayList<Lap>
+     */
     @GET
     @Path("/{id}/races/last/laps")
     public Response getLastRaceAthletic(@PathParam("id") String id) {
@@ -61,6 +77,28 @@ public class AtheleticWebService {
         return Response.ok(laps).build();
     }
 
+    /**
+     * Get all laps from a race with its id
+     * @param id The athletic's id
+     * @param id1 The race's id
+     * @return ArrayList<Lap>
+     */
+    @GET
+    @Path("/{id}/races/{id1}/laps")
+    public Response getlapFromRace(@PathParam("id") String id, @PathParam("id1") int id1) {
+        try {
+            Race race = raceDao.getRace(id1);
+        } catch (NotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok().build();
+    }
+
+    /**
+     * Get all matchs not ended for an athletic with his id
+     * @param id The athletic's id
+     * @return ArrayList<Match>
+     */
     @GET
     @Path("/{id}/matchs/notended")
     public Response getMatchNotEnded(@PathParam("id") String id) {
@@ -80,6 +118,11 @@ public class AtheleticWebService {
         return Response.ok(matchNotEndeds).build();
     }
 
+    /**
+     * Create a new athletic
+     * @param athletic Athletic object
+     * @return Athletic
+     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postAthletic(Athletic athletic) {
@@ -88,6 +131,12 @@ public class AtheleticWebService {
         return Response.status(Response.Status.CREATED).entity(athletic).build();
     }
 
+    /**
+     * Update an athletic with his id and his attributes
+     * @param id The athletic's id
+     * @param athletic1 Athletic object
+     * @return Athletic
+     */
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -116,12 +165,16 @@ public class AtheleticWebService {
         return Response.ok(athletic1).build();
     }
 
+    /**
+     * Method use to login in the Android App
+     * @param credentials The credentials of the user
+     * @return Created if success, Unauthorized otherwise
+     */
     @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postLogin(Credentials credentials) {
         String username = credentials.getId();
-        String password = credentials.getPassword();
 
         //Get athlectics from DB
         Athletic athletic;
@@ -138,6 +191,11 @@ public class AtheleticWebService {
         }
     }
 
+    /**
+     * Delete the athletic with the associated id
+     * @param id The athletic's id
+     * @return 204 NO_CONTENT
+     */
     @DELETE
     @Path("/{id}")
     public Response deleteAthletic(@PathParam("id") String id) {

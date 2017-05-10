@@ -11,6 +11,9 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+/**
+ * This class regroups all WebService associated to Races
+ */
 @Produces(MediaType.APPLICATION_JSON)
 @Path("races")
 public class RaceWebService {
@@ -18,6 +21,11 @@ public class RaceWebService {
     private RaceDaoImpl raceDao = new RaceDaoImpl();
     private LapDaoImpl lapDao = new LapDaoImpl();
 
+    /**
+     * Get a race with a specific id
+     * @param id The race's id
+     * @return Race
+     */
     @GET
     @Path("/{id}")
     public Response getRace(@PathParam("id") int id) {
@@ -30,6 +38,11 @@ public class RaceWebService {
         return Response.ok(race).build();
     }
 
+    /**
+     * Create a new race associated to an athletic
+     * @param race Race object
+     * @return Race
+     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postRace(Race race) {
@@ -42,6 +55,12 @@ public class RaceWebService {
         return Response.status(Response.Status.CREATED).entity(race).build();
     }
 
+    /**
+     * Create a new lap associated to a race
+     * @param id The race's id
+     * @param lap The lap object
+     * @return Lap
+     */
     @POST
     @Path("/{id}/laps")
     @Consumes(MediaType.APPLICATION_JSON)

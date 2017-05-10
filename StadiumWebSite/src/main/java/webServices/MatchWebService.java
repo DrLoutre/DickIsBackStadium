@@ -8,12 +8,20 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+/**
+ * This class regroups all WebService associated to Matchs
+ */
 @Produces(MediaType.APPLICATION_JSON)
 @Path("matchs")
 public class MatchWebService {
 
     private MatchDaoImpl matchDao = new MatchDaoImpl();
 
+    /**
+     * Get a match with a specific attribute
+     * @param id The match's id
+     * @return Match
+     */
     @GET
     @Path("/{id}")
     public Response getMatch(@PathParam("id") int id) {
@@ -26,6 +34,11 @@ public class MatchWebService {
         return Response.ok(match).build();
     }
 
+    /**
+     * Create a new match
+     * @param match Match object
+     * @return Match
+     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postMatch(Match match) {
@@ -39,6 +52,12 @@ public class MatchWebService {
         return Response.status(Response.Status.CREATED).entity(match).build();
     }
 
+    /**
+     * Update the match and all his attributes
+     * @param id The match's id
+     * @param match1 The match object
+     * @return Match
+     */
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -69,6 +88,11 @@ public class MatchWebService {
         return Response.ok(match1).build();
     }
 
+    /**
+     * Delete the match with the specific id
+     * @param id The match's id
+     * @return 204 NO_CONTENT
+     */
     @DELETE
     @Path("/{id}")
     public Response deleteMatch(@PathParam("id") int id) {
@@ -77,6 +101,6 @@ public class MatchWebService {
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.status(Response.Status.CREATED).build();
+        return Response.status(Response.Status.NO_CONTENT).build();
     }
 }

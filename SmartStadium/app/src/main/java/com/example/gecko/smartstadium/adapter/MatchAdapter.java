@@ -8,21 +8,30 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.gecko.smartstadium.R;
-import com.example.gecko.smartstadium.classes.Match;
 import com.example.gecko.smartstadium.classes.custom.MatchNotEnded;
 
 import java.util.ArrayList;
 
 public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> {
 
+
     private ArrayList<MatchNotEnded> mDataset;
 
-
+    /**
+     * initialise mDataset
+     *
+     * @param myDataset
+     */
     public MatchAdapter(ArrayList<MatchNotEnded> myDataset) {
         mDataset = myDataset;
     }
 
-    // Create new views (invoked by the layout manager)
+    /**
+     * Create new views (invoked by the layout manager)
+     * @param parent
+     * @param viewType
+     * @return the views
+     */
     @Override
     public MatchAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
@@ -30,7 +39,12 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> 
         return new ViewHolder(v);
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
+    /**
+     * Replace the contents of a view (invoked by the layout manager)
+     *
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
@@ -41,13 +55,20 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder> 
 
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
+
+    /**
+     * Return the size of your dataset (invoked by the layout manager)
+     *
+     * @return
+     */
     @Override
     public int getItemCount() {
         return mDataset.size();
     }
 
-    // Provide a reference to the views for each data item
+    /**
+     * Provide a reference to the views for each data item
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         CardView card;

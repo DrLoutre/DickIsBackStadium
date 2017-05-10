@@ -9,6 +9,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 
+/**
+ * This class regroups all WebService associated to Spectators
+ */
 @Produces(MediaType.APPLICATION_JSON)
 @Path("/spectators")
 public class SpectatorWebService {
@@ -27,6 +30,10 @@ public class SpectatorWebService {
         return Response.ok(spectator).build();
     }
 
+    /**
+     * Get all spectators
+     * @return ArrayList<Spectator>
+     */
     @GET
     public Response getSpectators() {
         ArrayList<Spectator> spectators;
@@ -38,6 +45,11 @@ public class SpectatorWebService {
         return Response.ok(spectators).build();
     }
 
+    /**
+     * Delete a spectator with a specific id
+     * @param id The spectator's id
+     * @return 204 NO_CONTENT
+     */
     @DELETE
     @Path("/{id}")
     public Response deleteSpectator(@PathParam("id") int id) {
