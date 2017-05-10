@@ -8,12 +8,20 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+/**
+ * This class regroups all WebService associated to Laps
+ */
 @Produces(MediaType.APPLICATION_JSON)
 @Path("laps")
 public class LapWebService {
 
     private LapDaoImpl lapDao = new LapDaoImpl();
 
+    /**
+     * Get a lap with a specific id
+     * @param id The lap's id
+     * @return Lap
+     */
     @GET
     @Path("/{id}")
     public Response getLap(@PathParam("id") int id) {
@@ -26,6 +34,12 @@ public class LapWebService {
         return Response.ok(lap).build();
     }
 
+    /**
+     * Update a lap and his attributes with a specific id
+     * @param id The lap's id
+     * @param lap The lap object
+     * @return Lap
+     */
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)

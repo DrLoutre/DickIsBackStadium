@@ -19,6 +19,9 @@ import javax.ws.rs.core.Response;
 import java.text.DecimalFormat;
 import java.util.*;
 
+/**
+ * This class regroups all WebService associated to Tribunes
+ */
 @Produces(MediaType.APPLICATION_JSON)
 @Path("tribunes")
 public class TribuneWebService {
@@ -26,6 +29,11 @@ public class TribuneWebService {
     private TribuneDaoImpl tribuneDao =  new TribuneDaoImpl();
     private SeatDaoImpl seatDao = new SeatDaoImpl();
 
+    /**
+     * Get a tribune
+     * @param id The tribune's id
+     * @return Tribune
+     */
     @GET
     @Path("/{id}")
     public Response getTribune(@PathParam("id") String id) {
@@ -38,6 +46,10 @@ public class TribuneWebService {
         return Response.ok(tribune).build();
     }
 
+    /**
+     * Get all tribunes
+     * @return ArrayList<Tribune>
+     */
     @GET
     public Response getTribunes() {
         ArrayList<Tribune> tribunes;
@@ -49,6 +61,10 @@ public class TribuneWebService {
         return Response.ok(tribunes).build();
     }
 
+    /**
+     * Get all seats available in each tribune
+     * @return ArrayList<SeatsByTribune>
+     */
     @GET
     @Path("/seats/available")
     public Response getSeatsTribunes() {
@@ -69,6 +85,11 @@ public class TribuneWebService {
         return Response.ok(seatsByTribunes).build();
     }
 
+    /**
+     * Get all seats for a tribune with an id given
+     * @param id The tribune's id
+     * @return ArrayList<Seat>
+     */
     @GET
     @Path("/{id}/seats")
     public Response getTribuneSeats(@PathParam("id") String id) {
@@ -81,6 +102,11 @@ public class TribuneWebService {
         return Response.ok(seats).build();
     }
 
+    /**
+     * Get the occupancy rate from a tribune
+     * @param id The tribune's id
+     * @return OccupancyRate
+     */
     @GET
     @Path("/{id}/rate")
     public Response getTribuneOccupancyRate(@PathParam("id") String id) {
@@ -106,6 +132,11 @@ public class TribuneWebService {
         return Response.ok(occupancyRate).build();
     }
 
+    /**
+     * Get all seats available in a tribune with an id
+     * @param id The tribune's id
+     * @return ArrayList<Seat>
+     */
     @GET
     @Path("/{id}/available")
     public Response getTribuneSeatsAvailable(@PathParam("id") String id) {
@@ -121,6 +152,11 @@ public class TribuneWebService {
         return Response.ok(available).build();
     }
 
+    /**
+     * Filter available seats from a list of seats
+     * @param seats List of seats
+     * @return ArrayList<Seat>
+     */
     private ArrayList<Seat> getAvailable(List<Seat> seats) {
         ArrayList<Seat> available = new ArrayList<>();
 

@@ -15,6 +15,9 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * This class regroups all WebService associated to Refreshments
+ */
 @Produces(MediaType.APPLICATION_JSON)
 @Path("refreshments")
 public class RefreshmentWebService {
@@ -23,6 +26,11 @@ public class RefreshmentWebService {
     private final String IP_ARDUINO = "http://192.168.2.2";
     private RefreshmentDaoImpl refreshmentDao = new RefreshmentDaoImpl();
 
+    /**
+     * Get a refreshment with a specific id
+     * @param id The refreshment's id
+     * @return Refreshment
+     */
     @GET
     @Path("/{id}")
     public Response getRefreshment(@PathParam("id") int id) {
@@ -48,6 +56,10 @@ public class RefreshmentWebService {
         return Response.ok(refreshment).build();
     }
 
+    /**
+     * Get all refreshments
+     * @return ArrayList<Refreshment>
+     */
     @GET
     public Response getRefreshments() {
         ArrayList<Refreshment> refreshments;
@@ -66,6 +78,11 @@ public class RefreshmentWebService {
         return Response.ok(refreshments).build();
     }
 
+    /**
+     * Create a new refreshment
+     * @param refreshment The refreshment object
+     * @return Refreshment
+     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postRefreshment(Refreshment refreshment) {
@@ -74,6 +91,12 @@ public class RefreshmentWebService {
         return Response.status(Response.Status.CREATED).entity(refreshment).build();
     }
 
+    /**
+     * Update a refreshment and all its attributes
+     * @param id The refreshment's id
+     * @param refreshment1 The refreshment object
+     * @return Refreshment
+     */
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -89,6 +112,12 @@ public class RefreshmentWebService {
         return Response.ok(refreshment1).build();
     }
 
+    /**
+     * Not used anymore.
+     * @return
+     * @throws NotFoundException
+     */
+    @Deprecated
     private float[] getFromArduino() throws NotFoundException {
         HttpURLConnection connection = null;
         StringBuilder output = new StringBuilder();
@@ -130,6 +159,12 @@ public class RefreshmentWebService {
         }
     }
 
+    /**
+     * Not used anymore.
+     * @param message
+     * @return
+     */
+    @Deprecated
     private float[] splitMessage(String message) {
         String[] tokens = message.split("[;]+");
         float[] percentage = new float[tokens.length];

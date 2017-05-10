@@ -24,6 +24,9 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class regroups all WebService associated to Communication
+ */
 @Produces(MediaType.APPLICATION_JSON)
 @Path("communication")
 public class CommunicationWebService {
@@ -34,6 +37,11 @@ public class CommunicationWebService {
     private LapDaoImpl lapDao = new LapDaoImpl();
     private MatchDaoImpl matchDao = new MatchDaoImpl();
 
+    /**
+     * Use to update the refreshments in the database.
+     * @param refreshmentsCustom The refreshment
+     * @return CREATED
+     */
     @POST
     @Path("/refreshments")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -60,6 +68,11 @@ public class CommunicationWebService {
         return bd.floatValue();
     }
 
+    /**
+     * Use to create a new lap in the database
+     * @param lapCustom The lap
+     * @return CREATED
+     */
     @POST
     @Path("/laps")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -94,6 +107,11 @@ public class CommunicationWebService {
         return Response.status(Response.Status.CREATED).build();
     }
 
+    /**
+     * Use to update a match in the database
+     * @param goalCustom A goal
+     * @return CREATED
+     */
     @POST
     @Path("/goals")
     @Consumes(MediaType.APPLICATION_JSON)
