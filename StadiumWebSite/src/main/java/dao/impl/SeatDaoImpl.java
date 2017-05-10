@@ -99,7 +99,7 @@ public class SeatDaoImpl extends Dao implements SeatDao{
         if(datas == null || datas.isEmpty()) throw new NotFoundException("There"
                 + " is no seat referenced with this tribune in the database");
         else {
-            List<Integer> IDList = new LinkedList();
+            List<Integer> IDList = new LinkedList<>();
             for(SeatData data : datas){
                 IDList.add(data.getId());
             }
@@ -124,7 +124,7 @@ public class SeatDaoImpl extends Dao implements SeatDao{
         if(datas == null || datas.isEmpty()) throw new NotFoundException("There"
                 + " is no seat referenced with this tribune in the database");
         else {
-            List<Seat> SeatList = new LinkedList();
+            List<Seat> SeatList = new LinkedList<>();
             for(SeatData data : datas){
                 SeatList.add(toSeat(data));
             }

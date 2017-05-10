@@ -120,7 +120,7 @@ public class SpectatorDaoImpl extends Dao implements SpectatorDao{
         if(data == null) throw new NotFoundException("The spectator " 
                 + ID + " does not exists in the database");
         
-        return new Pair(data.getFirstName(),data.getLastName());
+        return new Pair<>(data.getFirstName(),data.getLastName());
     }
 
     @Override

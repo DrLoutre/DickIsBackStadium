@@ -83,6 +83,7 @@ public class CommunicationWebService {
             lap.setTempHour(dateTime.getHourOfDay());
             lap.setTempMin(dateTime.getMinuteOfHour());
             lap.setTempSec(dateTime.getSecondOfMinute());
+            lap.setTempMs(lapCustom.getMilli());
 
             lapDao.addLap(lap.getTempHour(), lap.getTempMin(), lap.getTempSec(), lap.getTempMs(),
                     lap.getIdRace());
