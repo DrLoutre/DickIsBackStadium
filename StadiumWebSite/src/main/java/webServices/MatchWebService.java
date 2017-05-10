@@ -47,12 +47,21 @@ public class MatchWebService {
         try {
             match2 = matchDao.getMatch(id);
 
-            if (match2.getTeamID1() != match1.getTeamID1()) matchDao.setIDTeam1(id, match1.getTeamID1());
-            if (match2.getTeamID2() != match1.getTeamID2()) matchDao.setIDTeam1(id, match1.getTeamID2());
-            if (!match2.getDate().equals(match1.getDate())) matchDao.setDate(id, match1.getDate());
-            if (match2.getGoals1() != match2.getGoals1() ||
-                    match2.getGoals2() != match2.getGoals2()) matchDao.setGoals(id, match1.getGoals1(), match1.getGoals2());
-            if (match2.getEnded() != match1.getEnded()) matchDao.setState(id, match1.getEnded());
+            if (match2.getTeamID1() != match1.getTeamID1()) {
+                matchDao.setIDTeam1(id, match1.getTeamID1());
+            }
+            if (match2.getTeamID2() != match1.getTeamID2()) {
+                matchDao.setIDTeam1(id, match1.getTeamID2());
+            }
+            if (!match2.getDate().equals(match1.getDate())) {
+                matchDao.setDate(id, match1.getDate());
+            }
+            if (match2.getGoals1() != match1.getGoals1() || match2.getGoals2() != match1.getGoals2()) {
+                matchDao.setGoals(id, match1.getGoals1(), match1.getGoals2());
+            }
+            if (match2.getEnded() != match1.getEnded()) {
+                matchDao.setState(id, match1.getEnded());
+            }
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }

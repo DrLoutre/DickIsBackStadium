@@ -139,11 +139,11 @@ public class MatchDaoImpl extends Dao implements MatchDao{
 //        match.setTeamGoals(match.getTeamID1(), goals1);
 //        match.setTeamGoals(match.getTeamID2(), goals2);
         match.setGoals1(goals1);
-        match.setGoals1(goals2);
+        match.setGoals2(goals2);
         MatchsData data = toData(match);
         SQLUpdateClause update = queryFactory.update(MATCH);
         
-        long rows = update.set(MATCH, data).where(MATCH.idMatch.eq(ID))
+        long rows = update.populate(data).where(MATCH.idMatch.eq(ID))
                 .execute();
         closeConnection();
         
@@ -341,7 +341,7 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         data.setIdTeam2(idTeam2);
         data.setGoal1(goals1);
         data.setGoal2(goals2);
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             data.setMatchDate(new Timestamp(format.parse(date).getTime()));
         } catch (ParseException ex){
@@ -364,8 +364,7 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         data.setIdTeam2(idTeam2);
         data.setGoal1(goals1);
         data.setGoal2(goals2);
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        System.out.println(date);
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             data.setMatchDate(new Timestamp(format.parse(date).getTime()));
         } catch (ParseException ex){
@@ -386,9 +385,9 @@ public class MatchDaoImpl extends Dao implements MatchDao{
 //            throw new FailureException(ex.getMessage());
 //        }
         returnValue.setGoals1(data.getGoal1());
-        returnValue.setGoals1(data.getGoal2());
+        returnValue.setGoals2(data.getGoal2());
         returnValue.setID(data.getIdMatch());
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         returnValue.setDate(format.format(data.getMatchDate()));
         returnValue.setEnded(data.getEnded());
         return returnValue;
