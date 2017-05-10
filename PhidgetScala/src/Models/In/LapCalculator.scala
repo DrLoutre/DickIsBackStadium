@@ -14,7 +14,7 @@ class LapCalculator(blackBox: BlackBox) {
 
   // Constants about the phidgets
   val PHIDGET_SERIAL = 335178
-  val MIN_PASS_TIME  = 200
+  val MIN_PASS_TIME  = 20
 
   // last time the phidget scanned a RFID
   var timeScanning:Double = 0
@@ -42,6 +42,9 @@ class LapCalculator(blackBox: BlackBox) {
 
   // Setting the listener on scan + save when it has ben scanned.
   rFIDPhidget.addTagGainListener((tagGainEvent: TagGainEvent) => {
+    println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" +
+          "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+
+          "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     timeScanning = System.currentTimeMillis()
   })
 
