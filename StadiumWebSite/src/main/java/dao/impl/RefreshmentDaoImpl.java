@@ -97,7 +97,7 @@ public class RefreshmentDaoImpl extends Dao implements RefreshmentDao{
         
         SQLUpdateClause update = queryFactory.update(REFRESHMENT);
         
-        long rows = update.set(REFRESHMENT.attendance, attendance)
+        long rows = update.populate(attendance)
                 .where(REFRESHMENT.id.eq(ID))
                 .execute();
         closeConnection();

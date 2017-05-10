@@ -190,7 +190,7 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         MatchsData data = toData(match);
         SQLUpdateClause update = queryFactory.update(MATCH);
         
-        long rows = update.set(MATCH, data).where(MATCH.idMatch.eq(ID))
+        long rows = update.populate(data).where(MATCH.idMatch.eq(ID))
                 .execute();
         closeConnection();
         
@@ -209,7 +209,7 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         MatchsData data = toData(match);
         SQLUpdateClause update = queryFactory.update(MATCH);
         
-        long rows = update.set(MATCH, data).where(MATCH.idMatch.eq(ID))
+        long rows = update.populate(data).where(MATCH.idMatch.eq(ID))
                 .execute();
         closeConnection();
         
@@ -228,7 +228,7 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         MatchsData data = toData(match);
         SQLUpdateClause update = queryFactory.update(MATCH);
         
-        long rows = update.set(MATCH, data).where(MATCH.idMatch.eq(ID))
+        long rows = update.populate(data).where(MATCH.idMatch.eq(ID))
                 .execute();
         closeConnection();
         
@@ -274,7 +274,7 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         MatchsData data = toData(match);
         SQLUpdateClause update = queryFactory.update(MATCH);
         
-        long rows = update.set(MATCH, data).where(MATCH.idMatch.eq(ID))
+        long rows = update.populate(data).where(MATCH.idMatch.eq(ID))
                 .execute();
         closeConnection();
         
@@ -290,7 +290,7 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         MatchsData data = toData(match);
         SQLUpdateClause update = queryFactory.update(MATCH);
         
-        long rows = update.set(MATCH, data).where(MATCH.idMatch.eq(ID))
+        long rows = update.populate(data).where(MATCH.idMatch.eq(ID))
                 .execute();
         closeConnection();
         

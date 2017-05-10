@@ -165,7 +165,7 @@ public class AthleticDaoImpl extends Dao implements AthleticDao {
         AthleticData data = toData(athletic);
         SQLUpdateClause update = queryFactory.update(ATHLETIC);
         
-        long rows = update.set(ATHLETIC, data).where(ATHLETIC.nfc.eq(NFC))
+        long rows = update.populate(data).where(ATHLETIC.nfc.eq(NFC))
                 .execute();
         closeConnection();
         
@@ -185,7 +185,7 @@ public class AthleticDaoImpl extends Dao implements AthleticDao {
         AthleticData data = toData(athletic);
         SQLUpdateClause update = queryFactory.update(ATHLETIC);
         
-        long rows = update.set(ATHLETIC, data).where(ATHLETIC.nfc.eq(NFC))
+        long rows = update.populate(data).where(ATHLETIC.nfc.eq(NFC))
                 .execute();
         closeConnection();
         
@@ -212,7 +212,7 @@ public class AthleticDaoImpl extends Dao implements AthleticDao {
         
         SQLUpdateClause update = queryFactory.update(ATHLETIC);
         
-        long rows = update.set(ATHLETIC, data).where(ATHLETIC.nfc.eq(NFC))
+        long rows = update.populate(data).where(ATHLETIC.nfc.eq(NFC))
                 .execute();
         closeConnection();
         
@@ -230,7 +230,7 @@ public class AthleticDaoImpl extends Dao implements AthleticDao {
         AthleticData data = toData(athletic);
         SQLUpdateClause update = queryFactory.update(ATHLETIC);
         
-        long rows = update.set(ATHLETIC, data).where(ATHLETIC.nfc.eq(NFC))
+        long rows = update.populate(data).where(ATHLETIC.nfc.eq(NFC))
                 .execute();
         closeConnection();
         
@@ -249,7 +249,7 @@ public class AthleticDaoImpl extends Dao implements AthleticDao {
         AthleticData data = toData(athletic);
         SQLUpdateClause update = queryFactory.update(ATHLETIC);
         
-        long rows = update.set(ATHLETIC, data).where(ATHLETIC.nfc.eq(NFC))
+        long rows = update.populate(data).where(ATHLETIC.nfc.eq(NFC))
                 .execute();
         closeConnection();
         
