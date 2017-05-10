@@ -80,7 +80,7 @@ public class RaceDaoImpl extends Dao implements RaceDao{
         
         SQLUpdateClause update = queryFactory.update(RACE);
         
-        long rows = update.set(RACE.nfc, athleticNFC)
+        long rows = update.populate(athleticNFC)
                 .where(RACE.idScore.eq(ID)).execute();
         closeConnection();
         

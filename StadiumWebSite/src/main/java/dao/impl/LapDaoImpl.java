@@ -92,7 +92,7 @@ public class LapDaoImpl extends Dao implements LapDao{
         LapData data = toData(ID, temp_min, temp_sec, temp_ms,getIdRace(ID));
         SQLUpdateClause update = queryFactory.update(LAP);
         
-        long rows = update.set(LAP, data)
+        long rows = update.populate(data)
                 .where(LAP.id.eq(ID)).execute();
         closeConnection();
         

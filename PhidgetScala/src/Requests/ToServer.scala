@@ -7,7 +7,7 @@ import scalaj.http.Http
 object ToServer {
 
   //TODO : Change URL when deploy
-  private val BASE_URL = "http://localhost:8080/StadiumWebSite/api/v1/communication/"
+  private val BASE_URL = "http://192.168.137.18:8080/StadiumWebSite/api/v1/communication/"
 
   /**
     * Send a lap to the server

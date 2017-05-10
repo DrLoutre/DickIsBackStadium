@@ -26,7 +26,7 @@ char ssid[] = "jam";      // your network SSID (name)
 char pass[] = "12345678";   // your network password
 int keyIndex = 0;                 // your network key Index number (needed only for WEP)
 
-String server = "169.254.144.245:8080";
+String server = "192.168.137.18:8080";
 
 int status = WL_IDLE_STATUS;
 

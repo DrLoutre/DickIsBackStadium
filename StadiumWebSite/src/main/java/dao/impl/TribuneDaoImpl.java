@@ -111,7 +111,7 @@ public class TribuneDaoImpl extends Dao implements TribuneDao{
                 + NFC + " does not exists in the database");
         
         long rows = queryFactory.update(TRIBUNE).where(TRIBUNE.nfc.eq(NFC))
-                .set(TRIBUNE.places, places).execute();
+                .populate(places).execute();
         closeConnection();
         
         Assert.isTrue(rows == 1);

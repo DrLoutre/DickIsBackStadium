@@ -76,7 +76,7 @@ public class SeatDaoImpl extends Dao implements SeatDao{
                 + " does not exist in the database");
         
         long rows = queryFactory.update(SEAT).where(SEAT.id.eq(ID))
-                .set(SEAT.occupied, occupied).execute();
+                .populate(occupied).execute();
         closeConnection();
         
         Assert.isTrue(rows == 1);
