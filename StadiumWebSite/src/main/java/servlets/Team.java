@@ -37,6 +37,7 @@ public class Team extends HttpServlet {
      
     boolean nfc;
     boolean time;
+    boolean alreadyteam;
     HashMap<String, String> team;
     
     @Override
@@ -77,15 +78,16 @@ public class Team extends HttpServlet {
                 } catch (ParseException ex) {
                     Logger.getLogger(Team.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                alreadyteam = false;
             } else {
-                time = true;
                 try {
                     playInDao.addEntry((String) request.getParameter("nfc"), Integer.parseInt(request.getParameter("match")));
                 } catch(NotFoundException | IntegrityException e) {
-                    nfc = false;
+                    alreadyteam = true;
                 }
             }
         }
+        request.setAttribute("alreadyteam", alreadyteam);
         request.setAttribute("correct", nfc);
         request.setAttribute("time", time);
         initVar(request, response);

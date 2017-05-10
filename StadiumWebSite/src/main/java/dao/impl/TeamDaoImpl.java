@@ -1,14 +1,16 @@
 package dao.impl;
 
 import beans.Team;
+import com.querydsl.sql.dml.SQLUpdateClause;
 import core.Assert;
 import dao.Dao;
 import dao.TeamDao;
 import exceptions.NotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 import stade.data.QTeam;
 import stade.data.TeamData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TeamDaoImpl extends Dao implements TeamDao{
 
@@ -93,7 +95,25 @@ public class TeamDaoImpl extends Dao implements TeamDao{
                 + " has not been found in the database");
         else return data.getTeamName();
     }
-    
+
+    @Override
+    public void setName(int ID, String name) throws NotFoundException {
+        Assert.isTrue(ID >= 0);
+        Assert.isTrue(name.length() > 0);
+        Assert.notNull(name);
+
+        Team team = getTeam(ID);
+        team.setNom(name);
+        TeamData data = toData(name);
+        SQLUpdateClause update = queryFactory.update(TEAM);
+
+        long rows = update.populate(data).where(TEAM.idTeam.eq(ID))
+                .execute();
+        closeConnection();
+
+        Assert.isTrue(rows == 1);
+    }
+
     private TeamData toData(String Name){
         Assert.notNull(Name);
         Assert.isTrue(Name.length() > 0);

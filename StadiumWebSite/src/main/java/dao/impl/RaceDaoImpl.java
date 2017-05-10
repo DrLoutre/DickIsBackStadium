@@ -105,7 +105,7 @@ public class RaceDaoImpl extends Dao implements RaceDao{
             throw new NotFoundException("There is no race of the Athletic " 
                     + athleticNFC + " in the database");
         
-        List<Race> returnValue = new LinkedList();
+        List<Race> returnValue = new LinkedList<>();
         for(RaceData data : datas){
             returnValue.add(toRace(data));
         }

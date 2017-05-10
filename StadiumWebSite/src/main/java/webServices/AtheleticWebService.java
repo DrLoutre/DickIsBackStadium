@@ -95,11 +95,21 @@ public class AtheleticWebService {
         Athletic athletic;
         try {
             athletic = athleticDao.getAthletic(id);
-            if (!athletic.getPrenom().equals(athletic1.getPrenom())) athleticDao.setFirstName(id, athletic1.getPrenom());
-            if (!athletic.getNom().equals(athletic1.getNom())) athleticDao.setLastName(id, athletic1.getNom());
-            if (athletic.getMDP().equals(athletic1.getMDP())) athleticDao.setPassword(id, athletic1.getMDP());
-            if (athletic.getAge() != athletic1.getAge()) athleticDao.setAge(id, athletic1.getAge());
-            if (athletic.getSex().equals(athletic1.getSex())) athleticDao.setSex(id, athletic1.getSex());
+            if (!athletic.getPrenom().equals(athletic1.getPrenom())) {
+                athleticDao.setFirstName(id, athletic1.getPrenom());
+            }
+            if (!athletic.getNom().equals(athletic1.getNom())) {
+                athleticDao.setLastName(id, athletic1.getNom());
+            }
+            if (athletic.getMDP().equals(athletic1.getMDP())) {
+                athleticDao.setPassword(id, athletic1.getMDP());
+            }
+            if (athletic.getAge() != athletic1.getAge()) {
+                athleticDao.setAge(id, athletic1.getAge());
+            }
+            if (athletic.getSex().equals(athletic1.getSex())) {
+                athleticDao.setSex(id, athletic1.getSex());
+            }
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -121,7 +131,7 @@ public class AtheleticWebService {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        if (athletic.getMDP().equals(credentials.getPassword())) {
+        if (athleticDao.connect(athletic.getMDP(),credentials.getPassword())) {
             return Response.status(Response.Status.CREATED).entity(athletic).build();
         } else {
             return Response.status(Response.Status.UNAUTHORIZED).build();

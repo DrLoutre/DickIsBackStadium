@@ -115,15 +115,15 @@ public class LapDaoImpl extends Dao implements LapDao{
             throw new NotFoundException("There's not lap found "
                     + "for the last race of the Athletics " + athleticNFC);
         
-        List<Lap> returnValue = new LinkedList();
+        List<Lap> returnValue = new LinkedList<>();
         for(LapData data : datas){
             returnValue.add(toLap(data));
         }
         
         return returnValue;
     }
-    
-//    private LapData toData (int ID, int temp_hour, int temp_min, int temp_sec, 
+
+//    private LapData toData (int ID, int temp_hour, int temp_min, int temp_sec,
 //            int temp_ms, int id_race){
 //        Assert.isTrue(ID >= 0);
 //        Assert.isTrue(temp_hour >= 0);
@@ -135,7 +135,7 @@ public class LapDaoImpl extends Dao implements LapDao{
 //        Assert.isTrue(temp_ms >= 0);
 //        Assert.isTrue(temp_ms < 1000);
 //        Assert.isTrue(id_race >= 0);
-//        
+//
 //        LapData data = new LapData();
 //        data.setId(ID);
 //        Time temp = new Time(0,temp_min,temp_sec);

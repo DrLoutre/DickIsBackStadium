@@ -33,13 +33,14 @@ public class RefreshmentWebService {
 
         Refreshment refreshment;
         try {
+            /*
             int i = 0;
             float [] pourcentage = getFromArduino();
             ArrayList<Refreshment> refreshments = refreshmentDao.getAllRefreshment();
             for (Refreshment refresh : refreshments) {
                 refreshmentDao.setAttendance(refresh.getId(), pourcentage[i]);
                 i +=1;
-            }
+            }*/
             refreshment = refreshmentDao.getRefreshment(id);
         } catch (Exception e) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -51,13 +52,13 @@ public class RefreshmentWebService {
     public Response getRefreshments() {
         ArrayList<Refreshment> refreshments;
         try {
-            int i = 0;
+            /*int i = 0;
             float [] pourcentage = getFromArduino();
             refreshments = refreshmentDao.getAllRefreshment();
             for (Refreshment refresh : refreshments) {
                 refreshmentDao.setAttendance(refresh.getId(), pourcentage[i]);
                 i +=1;
-            }
+            }*/
             refreshments = refreshmentDao.getAllRefreshment(); //Get again due to update
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -79,7 +80,9 @@ public class RefreshmentWebService {
     public Response putRefreshment(@PathParam("id") int id, Refreshment refreshment1) {
         try {
             Refreshment refreshment = refreshmentDao.getRefreshment(id);
-            if (refreshment.getAttendance() != refreshment1.getAttendance()) refreshmentDao.setAttendance(id, refreshment1.getAttendance());
+            if (refreshment.getAttendance() != refreshment1.getAttendance()) {
+                refreshmentDao.setAttendance(id, refreshment1.getAttendance());
+            }
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }

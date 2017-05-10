@@ -93,7 +93,7 @@ public class PlaysInDaoImpl extends Dao implements PlaysInDao{
         if(datas == null || datas.isEmpty()) throw new NotFoundException("There"
                 + " is no athletics referenced with this team in the database");
         else {
-            List<String> NFCList = new LinkedList();
+            List<String> NFCList = new LinkedList<>();
             for(PlaysInData data : datas){
                 NFCList.add(data.getNfc());
             }
@@ -115,7 +115,7 @@ public class PlaysInDaoImpl extends Dao implements PlaysInDao{
                 + " is no team referenced for the athletic " + athleticNFC 
                 + " in the database");
         
-        List<Integer> returnValue = new LinkedList();
+        List<Integer> returnValue = new LinkedList<>();
         for(PlaysInData data : datas){
             returnValue.add(data.getIdTeam());
         }

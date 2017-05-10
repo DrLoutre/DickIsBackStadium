@@ -94,7 +94,7 @@
                         <label>Votre mot de passe</label> : <br/> <input type="password" name="MDP" id="MDP" style="width: 500px;" required="true"/> <br/> <br/>
                     <%}%>
                     <label>Veuillez sélectionner votre sexe</label> :<br/> <br/>
-                    <input type="radio" name="Sexe" id="Sexe" value="F" required="true"/> <label for="Dame">Dame</label>    
+                    <input type="radio" name="Sexe" id="Sexe" value="F" required="true"/> <label for="Dame">Femme</label>
                     <input type="radio" name="Sexe" id="Sexe" value="H" required="true"/> <label for="Homme">Homme</label> <br/> <br>
                     <div class="row">
                         <div class="col-lg-offset-9 col-lg-9">

@@ -19,6 +19,7 @@ and open the template in the editor.
         ArrayList<Match> matchs = (ArrayList<Match>) request.getAttribute("matchs");
         HashMap<String, String> team = (HashMap<String, String>) request.getAttribute("team");
         Boolean correct = (Boolean) request.getAttribute("correct");
+        Boolean alreadyteam = (Boolean) request.getAttribute("alreadyteam");
         Boolean time = (Boolean) request.getAttribute("time");
         int i = 0;
     %>
@@ -48,18 +49,24 @@ and open the template in the editor.
                     <h1>Page récapitulative des équipes</h1>
                 </header>
             </div>
-            <% if(correct != null) {
-                if (time || time == null) {
-                    if (!correct) {%>
-                        <div class="alert alert-danger fade in">
-                            <Strong>L'identifiant de l'athlète rentré est incorrect !</strong>
-                        </div>
-                    <%} else {%>
-                        <div class="alert alert-success fade in">
-                            <strong>Vous êtes bien inscrit pour le match demandé !</strong>
-                        </div>
-                    <%}
-                }   
+            <% if (alreadyteam != null && alreadyteam) { %>
+                <div class="alert alert-danger fade in">
+                    <Strong>L'identifiant rentré est déjà inscrit pour ce match !</strong>
+                </div>
+            <%} else {
+                if(correct != null) {
+                    if (time || time == null) {
+                        if (!correct) {%>
+                            <div class="alert alert-danger fade in">
+                                <Strong>L'identifiant de l'athlète rentré est incorrect !</strong>
+                            </div>
+                        <%} else {%>
+                            <div class="alert alert-success fade in">
+                                <strong>Vous êtes bien inscrit pour le match demandé !</strong>
+                            </div>
+                        <%}
+                    }   
+                }
             }%>
             <form method="Post" action="/StadiumWebSite/Team">
                 <fieldset>
@@ -95,15 +102,21 @@ and open the template in the editor.
                             <div class="container">
                                 <div class="row">
                                     <div class="col-lg-3"><u>Match <%=i%> :</u> <%=match.getDate()%></div> <br> <br>
-                                    <div class="col-lg-1 col-lg-offset-1"><%=team.get(Integer.toString(match.getTeamID1()))%></div>
+                                    <div class="col-lg-2 col-lg-offset-1">
+                                        <input type="radio" name=<%=match.getTeamID1()%> id=<%=match.getTeamID1()%> value=<%=match.getTeamID1()%> required="true"/> 
+                                        <label for=<%=match.getTeamID2()%>><%=team.get(Integer.toString(match.getTeamID1()))%></label>
+                                    </div>
                                     <div class="col-lg-1">-</div>
-                                    <div class="col-lg-1"><%=team.get(Integer.toString(match.getTeamID2()))%> </div>
+                                    <div class="col-lg-2">
+                                        <input type="radio" name=<%=match.getTeamID2()%> id=<%=match.getTeamID2()%> value=<%=match.getTeamID2()%> required="true"/>
+                                        <label for=<%=match.getTeamID2()%>><%=team.get(Integer.toString(match.getTeamID2()))%></label>                                    
+                                    </div>
                                 </div>
                             </div> <br>
                             <div class="container">
                                 <div class="row">
-                                    <div class="col-lg-2 col-lg-offset-1"><input type="radio" name="match" id="match" value=<%=match.getTeamID1()%> required="true"/> <label for="match">Domicile</label></div>
-                                    <div class="col-lg-2"><input type="radio" name="match" id="match" value=<%=match.getTeamID2()%> required="true"/> <label for="match">Visiteur</label></div>
+                                    <div class="col-lg-2 col-lg-offset-1"></div>
+                                    <div class="col-lg-2"></div>
                                 </div>
                             </div>
                             <br> <br>

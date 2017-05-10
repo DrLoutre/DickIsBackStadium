@@ -17,4 +17,6 @@ public interface TeamDao {
     void deleteTeam(int ID) throws NotFoundException;
     
     String getName(int ID) throws NotFoundException;
+
+    void setName(int ID, String name) throws NotFoundException;
 }
