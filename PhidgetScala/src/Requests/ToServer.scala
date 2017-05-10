@@ -2,7 +2,7 @@ package Requests
 
 import com.google.gson.Gson
 
-import scalaj.http.Http
+import scalaj.http.{Http, HttpResponse}
 
 object ToServer {
 
@@ -16,10 +16,13 @@ object ToServer {
     * @param tempsTour time of the last lap of the runner
     * @param tempsMilli total time of the run
     */
-  def sendLap(rfid:String, nbrTours:Int, tempsTour:Long, tempsMilli:Long) : Unit = {
-    val lap:Lap = new Lap(rfid, nbrTours, tempsTour, tempsMilli)
+  def sendLap(rfid:String, nbrTours:Int, tempsTour:Long) : Unit = {
+    val lap:Lap = new Lap(rfid, nbrTours, tempsTour.toString)
     val json:String = new Gson().toJson(lap)
-    val code:Boolean = Http(BASE_URL.concat("laps")).timeout(10000, 10000).postData(json).asString.is2xx
+    val code:HttpResponse[String] = Http(BASE_URL.concat("laps")).timeout(10000, 10000).postData(json).header("content-type", "application/json").asString//is2xx
+    println(code.toString + "\n" + lap + "\n" + json)
+    //if (code) println("Goal sent correctly") else println("Error while sending goal")
+
   }
 
   /**
@@ -30,6 +33,7 @@ object ToServer {
   def sendGoal(isDroit:Boolean, nbrGoals:Int) : Unit = {
     val goal:Goal = new Goal(isDroit, nbrGoals)
     val json:String = new Gson().toJson(goal)
-    val code:Boolean = Http(BASE_URL.concat("goals")).timeout(10000, 10000).postData(json).asString.is2xx
+    val code:Boolean = Http(BASE_URL.concat("goals")).timeout(10000, 10000).postData(json).header("content-type", "application/json").asString.is2xx
+    if (code) println("Goal sent correctly") else println("Error while sending goal")
   }
 }

@@ -31,16 +31,16 @@ class DemoModePotentiometer(interfaceKitPhidget: InterfaceKitPhidget, sensorInde
         println("Setting to normal mode ... ")
         NormalMode()
       case 1 => // Normal mode but matches are forced.
-        println("Setting to demo mode 1 ... ")
+        println("Setting to demo mode 1 ... Normal mode but matches are forced. ")
         Demo_1_Mode()
       case 2 => // Normal mode but snow and freezing
-        println("Setting to Demo mode 2 ... ")
+        println("Setting to Demo mode 2 ... Normal mode but snow and freezing.")
         Demo_2_Mode()
       case 3 => // Normal mode but night
-        println("Setting to Demo mode 3 ... ")
+        println("Setting to Demo mode 3 ... Normal mode but night.")
         Demo_3_Mode()
       case 4 => // Normal mode but under the tropics
-        println("Setting to Demo mode 4 ... ")
+        println("Setting to Demo mode 4 ... Normal mode but under the tropics.")
         Demo_4_Mode()
       case _ =>
         println("Demo mode x not yet implemented")

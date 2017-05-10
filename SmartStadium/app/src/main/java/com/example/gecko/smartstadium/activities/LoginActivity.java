@@ -39,6 +39,11 @@ public class LoginActivity extends AppCompatActivity {
     private View mProgressView;
     private View mLoginFormView;
 
+    /**
+     * Create the activity
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,12 +81,18 @@ public class LoginActivity extends AppCompatActivity {
         mProgressView = findViewById(R.id.login_progress);
     }
 
+    /**
+     * add context on the bus
+     */
     @Override
     public void onResume() {
         super.onResume();
         mBus.register(this);
     }
 
+    /**
+     * remove the context on the bus
+     */
     @Override
     public void onPause() {
         super.onPause();
@@ -111,6 +122,12 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * manage the connection to send the credentials
+     *
+     * @param id
+     * @param password
+     */
     private void connection(String id, String password) {
         if (!ConnectionUtils.isOnline(this)) {
             Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Pas de connexion internet", Snackbar.LENGTH_SHORT);
@@ -126,11 +143,17 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    // Check the lenght of the password
+    /**
+     * Check the lenght of the password
+     */
     private boolean isPasswordValid(String password) {
         return password.length() > 4;
     }
 
+    /**
+     * dirve the user to the correct activity
+     * @param loginEvent
+     */
     @Subscribe
     public void onLoginEvent(LoginEvent loginEvent) {
         dialog.dismiss();

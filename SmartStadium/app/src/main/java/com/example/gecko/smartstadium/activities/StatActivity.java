@@ -14,7 +14,6 @@ import com.example.gecko.smartstadium.R;
 import com.example.gecko.smartstadium.adapter.MatchAdapter;
 import com.example.gecko.smartstadium.bus.BusProvider;
 import com.example.gecko.smartstadium.classes.Lap;
-import com.example.gecko.smartstadium.classes.Match;
 import com.example.gecko.smartstadium.classes.custom.MatchNotEnded;
 import com.example.gecko.smartstadium.events.AthleticEvent;
 import com.example.gecko.smartstadium.events.GetLastMatchsNotEndedEvent;
@@ -46,6 +45,11 @@ public class StatActivity extends AppCompatActivity {
 
     private String id;
 
+    /**
+     * Start the activity
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,18 +80,27 @@ public class StatActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Add the contexte to the bus
+     */
     @Override
     public void onResume() {
         super.onResume();
         mBus.register(this);
     }
 
+    /**
+     * remove the contexte from the bus
+     */
     @Override
     public void onPause() {
         super.onPause();
         mBus.unregister(this);
     }
 
+    /**
+     * return to the right activity
+     */
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(StatActivity.this, MainActivity.class);
@@ -95,19 +108,33 @@ public class StatActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * todo
+     */
     private void getAthletic() {
         dialog.show();
         mBus.post(new IdAthleticEvent("1"));
     }
 
+    /**
+     * todo
+     */
     private void getAthleticLap() {
         mBus.post(new GetLastRaceAthleticEvent("1"));
     }
 
+    /**
+     * todo
+     */
     private void getMatchsNotEnded() {
         mBus.post(new GetLastMatchsNotEndedEvent("1"));
     }
 
+    /**
+     * handle the result of the request on a athletic
+     *
+     * @param athleticEvent
+     */
     @Subscribe
     public void onAthleticEvent(AthleticEvent athleticEvent) {
         if (athleticEvent.getAthletic() != null) {
@@ -128,6 +155,10 @@ public class StatActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * handle the result of the request about the lap of an athletic
+     * @param lastRaceAthleticEvent
+     */
     @Subscribe
     public void onAthleticLapEvent(LastRaceAthleticEvent lastRaceAthleticEvent) {
         if (lastRaceAthleticEvent.getLaps() != null) {
@@ -165,6 +196,10 @@ public class StatActivity extends AppCompatActivity {
         dialog.dismiss();
     }
 
+    /**
+     * handle the result of the request about a match
+     * @param matchsEvent
+     */
     @Subscribe
     public void onMatchAthleticEvent(MatchsEvent matchsEvent) {
         if (matchsEvent.getMatchs() != null) {

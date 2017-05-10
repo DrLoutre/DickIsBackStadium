@@ -37,6 +37,11 @@ public class MainActivity extends AppCompatActivity {
     private Button QRButton;
     private Button PlaceButton;
 
+    /**
+     * Start the activity
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,12 +85,18 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Resume the activity
+     */
     @Override
     public void onResume() {
         super.onResume();
         mBus.register(this);
     }
 
+    /**
+     * Pause the activity
+     */
     @Override
     public void onPause() {
         super.onPause();
@@ -110,32 +121,35 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Start the login activity
+     * @param result
+     */
     private void onScanSuccess(final String result) {
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         intent.putExtra("id", result);
         startActivity(intent);
     }
 
+    /**
+     * Retrieve the data about the bars
+     * @param bestOne
+     */
     private void getRefreshments(boolean bestOne) {
         mBus.post(new GetRefreshmentsEvent(bestOne));
     }
 
+    /**
+     * Retrieve the data about the tribunes
+     */
     private void getSeatsTribunes() {
         mBus.post(new GetSeatsTribunesEvent());
     }
 
-    /*@Subscribe
-    public void AthleticEvent(AthleticEvent athleticEvent) {
-        if (athleticEvent.getAthletic() != null) {
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            intent.putExtra("id", athleticEvent.getAthletic().getNFC());
-            startActivity(intent);
-        } else {
-            Snackbar.make(findViewById(android.R.id.content), "Un problème de connexion.", Snackbar.LENGTH_LONG).show();
-        }
-
-    }*/
-
+    /**
+     * Shows the occupations of the bars
+     * @param refreshmentsEvent
+     */
     @Subscribe
     public void RefreshmentsEvent(final RefreshmentsEvent refreshmentsEvent) {
         if (refreshmentsEvent.getRefreshment() != null) {
@@ -177,6 +191,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Shows the occupations of the tribunes
+     * @param seatsTribunesEvent
+     */
     @Subscribe
     public void TribunesEvent(SeatsTribunesEvent seatsTribunesEvent) {
         if (seatsTribunesEvent.getSeatsByTribunes() != null) {
@@ -237,6 +255,11 @@ public class MainActivity extends AppCompatActivity {
                 .requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.INTERNET}, 101);
     }
 
+    /**
+     * Get the less crowed bar
+     * @param refreshments
+     * @return
+     */
     private ArrayList<Refreshment> getFreeRefreshments(ArrayList<Refreshment> refreshments) {
         ArrayList<Refreshment> mins = new ArrayList<>();
         float minimum = refreshments.get(0).getAttendance();
