@@ -471,9 +471,13 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
     /**
       * Set a listener that update the mode status and if everything is plugged in, set the normal mode when the IPK is attached.
       */
-    interfaceKitPhidget.addAttachListener((attachEvent: AttachEvent) => currentMode match {
-      case DetachedMode(_, motors, rfid) =>
-        if (!motors && !rfid) NormalMode else DetachedMode(false, motors, rfid)
+    interfaceKitPhidget.addAttachListener((attachEvent: AttachEvent) => {
+      println("=====================================================================> Connected ! => ")
+      currentMode match {
+        case DetachedMode(_, motors, rfid) =>
+          println("Motors : " + motors + "         RFID = " + rfid)
+          if (!motors && !rfid) currentMode = mode.getCurrentMode else currentMode = DetachedMode(false, motors, rfid)
+      }
     })
 
     /**
