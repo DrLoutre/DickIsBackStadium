@@ -20,6 +20,9 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
+/**
+ * This is all the method available in the RestFul API that the application can call
+ */
 public interface IStadium {
 
     //ATHLETICS

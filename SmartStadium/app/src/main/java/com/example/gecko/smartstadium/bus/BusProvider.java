@@ -7,9 +7,17 @@ public final class BusProvider {
 
     private static final Bus BUS = new Bus(ThreadEnforcer.ANY);
 
+    /**
+     * Get the only instance of the bus
+     * @return
+     */
     public static Bus getInstance() {
         return BUS;
     }
+
+    /**
+     * Private due to singleton.
+     */
     private BusProvider() {
     }
 }

@@ -11,6 +11,10 @@ public class StadiumApplication extends Application {
     private StadiumManager mStadiumManager;
     private Bus mBus = BusProvider.getInstance();
 
+    /**
+     * Initialize all objects used for the client/server style.
+     * Call this method once, at the beginning if the app
+     */
     @Override
     public void onCreate() {
         super.onCreate();

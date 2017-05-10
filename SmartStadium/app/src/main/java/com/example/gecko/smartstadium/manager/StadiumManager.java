@@ -38,12 +38,21 @@ public class StadiumManager {
     private Bus mBus;
     private StadiumClient mStadiumClient;
 
+    /**
+     * Constructor
+     * @param context
+     * @param bus
+     */
     public StadiumManager(Context context, Bus bus) {
         this.mContext = context;
         this.mBus = bus;
         mStadiumClient = StadiumClient.getClient();
     }
 
+    /**
+     * Handle the request to the server to login a athletic
+     * @param postLoginEvent
+     */
     @Subscribe
     public void onLoginEvent(PostLoginEvent postLoginEvent) {
         if (!ConnectionUtils.isOnline(mContext)) {
@@ -69,6 +78,10 @@ public class StadiumManager {
         });
     }
 
+    /**
+     * Handle the request to the server get an athletic
+     * @param idAthleticEvent
+     */
     @Subscribe
     public void onAthleticEvent(IdAthleticEvent idAthleticEvent) {
         if (!ConnectionUtils.isOnline(mContext)) {
@@ -94,6 +107,10 @@ public class StadiumManager {
         });
     }
 
+    /**
+     * Handle the request to the server to all refreshments
+     * @param getRefreshmentsEvent
+     */
     @Subscribe
     public void onRefreshmentsEvent(final GetRefreshmentsEvent getRefreshmentsEvent) {
         if (!ConnectionUtils.isOnline(mContext)) {
@@ -119,6 +136,10 @@ public class StadiumManager {
         });
     }
 
+    /**
+     * Handle the request to the server to get all tribunes
+     * @param getSeatsTribunesEvent
+     */
     @Subscribe
     public void onTribunesEvent(GetSeatsTribunesEvent getSeatsTribunesEvent) {
         if (!ConnectionUtils.isOnline(mContext)) {
@@ -144,6 +165,10 @@ public class StadiumManager {
         });
     }
 
+    /**
+     * Handle the request to the server to get the last race of an athletic
+     * @param getLastRaceAthleticEvent
+     */
     @Subscribe
     public void onGetLastRaceAthleticEvent(GetLastRaceAthleticEvent getLastRaceAthleticEvent) {
         if (!ConnectionUtils.isOnline(mContext)) {
@@ -169,6 +194,10 @@ public class StadiumManager {
         });
     }
 
+    /**
+     * Handle the request to the server to get the match not ended that an athletic is subscribe to
+     * @param getLastMatchsNotEndedEvent
+     */
     @Subscribe
     public void onGetMatchNotEndedEvent(GetLastMatchsNotEndedEvent getLastMatchsNotEndedEvent) {
         if (!ConnectionUtils.isOnline(mContext)) {

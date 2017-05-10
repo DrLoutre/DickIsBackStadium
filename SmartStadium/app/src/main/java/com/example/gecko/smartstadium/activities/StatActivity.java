@@ -109,25 +109,25 @@ public class StatActivity extends AppCompatActivity {
     }
 
     /**
-     * todo
+     * Send an event to the bus to get an athletic with its id
      */
     private void getAthletic() {
         dialog.show();
-        mBus.post(new IdAthleticEvent("1"));
+        mBus.post(new IdAthleticEvent(id));
     }
 
     /**
-     * todo
+     * Send an event to the bus to get the last race of an athletic
      */
     private void getAthleticLap() {
-        mBus.post(new GetLastRaceAthleticEvent("1"));
+        mBus.post(new GetLastRaceAthleticEvent(id));
     }
 
     /**
-     * todo
+     * Send an event to the bus to get its matchs not ended
      */
     private void getMatchsNotEnded() {
-        mBus.post(new GetLastMatchsNotEndedEvent("1"));
+        mBus.post(new GetLastMatchsNotEndedEvent(id));
     }
 
     /**
@@ -156,7 +156,7 @@ public class StatActivity extends AppCompatActivity {
     }
 
     /**
-     * handle the result of the request about the lap of an athletic
+     * handle the result of the request about the race of an athletic
      * @param lastRaceAthleticEvent
      */
     @Subscribe
@@ -197,7 +197,7 @@ public class StatActivity extends AppCompatActivity {
     }
 
     /**
-     * handle the result of the request about a match
+     * handle the result of the request about matchs
      * @param matchsEvent
      */
     @Subscribe
