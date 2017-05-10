@@ -86,12 +86,13 @@ public class AtheleticWebService {
     @GET
     @Path("/{id}/races/{id1}/laps")
     public Response getlapFromRace(@PathParam("id") String id, @PathParam("id1") int id1) {
+        List<Lap> laps;
         try {
-            Race race = raceDao.getRace(id1);
+            laps = lapDao.getAllLap(id1);
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.ok().build();
+        return Response.ok(laps).build();
     }
 
     /**
