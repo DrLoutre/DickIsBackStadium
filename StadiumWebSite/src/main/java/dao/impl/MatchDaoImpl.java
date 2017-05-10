@@ -109,7 +109,7 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         closeConnection();
         Assert.notNull(data);
         
-        return new Pair(data.getGoal1(),data.getGoal2());
+        return new Pair<>(data.getGoal1(),data.getGoal2());
     }
     
     @Override
@@ -305,7 +305,7 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         
         List<Integer> teamIDList = playsInDao.getAllTeamID(athleticNFC);
         ArrayList<Match> notEndedMatchList = getNotEndedMatch();
-        List<Match> returnValue = new LinkedList();
+        List<Match> returnValue = new LinkedList<>();
         for(Match match : notEndedMatchList){
             if(teamIDList.contains(match.getTeamID1()) 
                     || teamIDList.contains(match.getTeamID2()))
@@ -341,7 +341,7 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         data.setIdTeam2(idTeam2);
         data.setGoal1(goals1);
         data.setGoal2(goals2);
-        DateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         try {
             data.setMatchDate(new Timestamp(format.parse(date).getTime()));
         } catch (ParseException ex){
@@ -364,7 +364,8 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         data.setIdTeam2(idTeam2);
         data.setGoal1(goals1);
         data.setGoal2(goals2);
-        DateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        System.out.println(date);
         try {
             data.setMatchDate(new Timestamp(format.parse(date).getTime()));
         } catch (ParseException ex){
@@ -387,7 +388,7 @@ public class MatchDaoImpl extends Dao implements MatchDao{
         returnValue.setGoals1(data.getGoal1());
         returnValue.setGoals1(data.getGoal2());
         returnValue.setID(data.getIdMatch());
-        DateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         returnValue.setDate(format.format(data.getMatchDate()));
         returnValue.setEnded(data.getEnded());
         return returnValue;

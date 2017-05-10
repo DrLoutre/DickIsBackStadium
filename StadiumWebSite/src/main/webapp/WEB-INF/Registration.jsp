@@ -53,7 +53,7 @@
                             </div>
                         <%} else {%>
                             <div class="alert alert-success fade in">
-                                <strong>Success!</strong> Vous êtes bien inscrit dans le stade !
+                                <strong>Vous êtes bien inscrit dans le stade !</strong>
                             </div>
                         <%}
                     }%>
