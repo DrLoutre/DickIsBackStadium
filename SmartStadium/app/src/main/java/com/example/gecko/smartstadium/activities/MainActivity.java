@@ -19,13 +19,10 @@ import com.example.gecko.smartstadium.bus.BusProvider;
 import com.example.gecko.smartstadium.classes.Refreshment;
 import com.example.gecko.smartstadium.classes.Seat;
 import com.example.gecko.smartstadium.classes.custom.SeatsByTribune;
-import com.example.gecko.smartstadium.events.AthleticEvent;
 import com.example.gecko.smartstadium.events.GetRefreshmentsEvent;
 import com.example.gecko.smartstadium.events.GetSeatsTribunesEvent;
-import com.example.gecko.smartstadium.events.IdAthleticEvent;
 import com.example.gecko.smartstadium.events.RefreshmentsEvent;
 import com.example.gecko.smartstadium.events.SeatsTribunesEvent;
-import com.example.gecko.smartstadium.utils.ConnectionUtils;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -35,7 +32,6 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private static final int QR_CODE = 2;
-    CredentialSingletion credential;
     private Bus mBus = BusProvider.getInstance();
     private Button BuvetteButton;
     private Button QRButton;
@@ -46,13 +42,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // manage to have the proper permissions
         int MyVersion = Build.VERSION.SDK_INT;
         if (MyVersion > Build.VERSION_CODES.LOLLIPOP_MR1) {
             if (!checkIfAlreadyHavePermission()) {
                 requestForSpecificPermission();
             }
         }
-        credential = CredentialSingletion.getInstance();
         BuvetteButton = (Button) findViewById(R.id.loginButtonBuvettes);
         QRButton = (Button) findViewById(R.id.loginButtonQRcode);
         PlaceButton = (Button) findViewById(R.id.loginButtonPlaces);
@@ -66,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+        // run the QRcode
         QRButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Shows the avalable seats
         PlaceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
