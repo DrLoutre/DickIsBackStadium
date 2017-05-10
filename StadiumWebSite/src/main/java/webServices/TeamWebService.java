@@ -46,6 +46,21 @@ public class TeamWebService {
         return Response.status(Response.Status.CREATED).entity(team).build();
     }
 
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response putTeam(@PathParam("id") int id, Team team) {
+        try {
+            Team team1 = teamDao.getTeam(id);
+            if (!team.getNom().equals(team1.getNom())) {
+                teamDao.setName(id, team.getNom());
+            }
+        } catch (NotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(team).build();
+    }
+
     @DELETE
     @Path("/{id}")
     public Response deleteTeam(@PathParam("id") int id) {
