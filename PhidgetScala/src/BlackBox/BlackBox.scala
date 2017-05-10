@@ -457,11 +457,14 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
     /**
       * Set a listener that triggers the Detached Mode when the Interface Kit is detached.
       */
-    interfaceKitPhidget.addDetachListener((detachEvent: DetachEvent) => currentMode match {
-      case DetachedMode(_, motors, rfid) =>
-        currentMode = DetachedMode(true, motors, rfid)
-      case _ =>
-        currentMode = DetachedMode(true, false, false)
+    interfaceKitPhidget.addDetachListener((detachEvent: DetachEvent) => {
+      println("===========================================================>>>>>> Detached IFK")
+      currentMode match {
+        case DetachedMode(_, motors, rfid) =>
+          currentMode = DetachedMode(true, motors, rfid)
+        case _ =>
+          currentMode = DetachedMode(true, false, false)
+      }
     }
     )
 
