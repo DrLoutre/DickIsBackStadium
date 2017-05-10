@@ -23,7 +23,7 @@ import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 /**
- * A login screen that offers login via email/password.
+ * A login screen that offers login via email and password.
  */
 public class LoginActivity extends AppCompatActivity {
 
@@ -38,7 +38,6 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private CredentialSingletion credentialSingletion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
 
         id = getIntent().getStringExtra("id");
 
+        // waiting spinner
         dialog = new ProgressDialog(this);
         dialog = new ProgressDialog(this);
         dialog.setIndeterminate(true);
@@ -55,7 +55,6 @@ public class LoginActivity extends AppCompatActivity {
         dialog.setMessage("Chargement de vos données ...");
 
         validationButton = (Button) findViewById(R.id.loginValidationButton);
-        credentialSingletion = CredentialSingletion.getInstance();
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
