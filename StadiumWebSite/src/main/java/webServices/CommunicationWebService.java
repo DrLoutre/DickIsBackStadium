@@ -17,6 +17,8 @@ import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -130,6 +132,8 @@ public class CommunicationWebService {
         try {
             ArrayList<Match> matchs = matchDao.getNotEndedMatch();
             Match match = matchs.get(0);
+
+            Collections.sort(matchs);
 
             DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             DateTime beginning = df.parseDateTime(match.getDate()); //Beginning
