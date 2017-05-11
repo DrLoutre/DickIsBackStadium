@@ -9,6 +9,7 @@ import dao.LapDao;
 import dao.RaceDao;
 import exceptions.NotFoundException;
 import java.sql.Time;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import stade.data.LapData;
@@ -183,6 +184,8 @@ public class LapDaoImpl extends Dao implements LapDao{
         
         LapData data = new LapData();
         Time temp = new Time(temp_hour,temp_min,temp_sec);
+        //Date date = new Date();
+        
         data.setTemp(temp);
         data.setTempMs(temp_ms);
         data.setIsBeginning(isBeginning);

@@ -6,6 +6,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Lap {
     
     private int ID;
+    private int year;
+    private int month;
+    private int day;
     private int temp_hour;
     private int temp_min;
     private int temp_sec;
@@ -17,8 +20,11 @@ public class Lap {
         
     }
 
-    public Lap(int ID, int temp_hour, int temp_min, int temp_sec, int temp_ms, boolean is_beginning, int id_race) {
+    public Lap(int ID, int year, int month, int day, int temp_hour, int temp_min, int temp_sec, int temp_ms, boolean is_beginning, int id_race) {
         this.ID = ID;
+        this.year = year;
+        this.month = month;
+        this.day = day;
         this.temp_hour = temp_hour;
         this.temp_min = temp_min;
         this.temp_sec = temp_sec;
@@ -33,6 +39,18 @@ public class Lap {
     
     public void setID(int id){
         ID = id;
+    }
+    
+    public int getYear(){
+        return year;
+    }
+
+    public int getMonth(){
+        return month;
+    }
+    
+    public int getDay(){
+        return day;
     }
 
     public int getTempHour(){
@@ -49,6 +67,18 @@ public class Lap {
 
     public int getTempMs(){
         return temp_ms;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
     }
 
     public void setTempHour(int temp_hour) {
