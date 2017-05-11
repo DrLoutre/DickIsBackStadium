@@ -31,23 +31,18 @@ class DemoModePotentiometer(interfaceKitPhidget: InterfaceKitPhidget, sensorInde
     println("======================================================<>>>>> Value of pot : " + value)
     value match {
       case 0 => // Normal mode.
-        playTheme("mode0.wav")
         println("Setting to normal mode ... ")
         NormalMode()
       case 1 => // Normal mode but matches are forced.
-        playTheme("mode1.wav")
         println("Setting to demo mode 1 ... Normal mode but matches are forced. ")
         Demo_1_Mode()
       case 2 => // Normal mode but snow and freezing
-        playTheme("mode2.wav")
         println("Setting to Demo mode 2 ... Normal mode but snow and freezing.")
         Demo_2_Mode()
       case 3 => // Normal mode but night
-        playTheme("mode3.wav")
         println("Setting to Demo mode 3 ... Normal mode but night.")
         Demo_3_Mode()
       case 4 => // Normal mode but under the tropics
-        playTheme("mode4.wav")
         println("Setting to Demo mode 4 ... Normal mode but under the tropics.")
         Demo_4_Mode()
       case _ =>
@@ -56,7 +51,18 @@ class DemoModePotentiometer(interfaceKitPhidget: InterfaceKitPhidget, sensorInde
     }
   }
 
-  def playTheme(mode:String):Unit = {
+  def playTheme():Unit = {
+
+    var mode:String = ""
+
+    getCurrentMode match {
+      case NormalMode() => mode = "mode0.wav"
+      case Demo_1_Mode() => mode = "mode1.wav"
+      case Demo_2_Mode() => mode = "mode2.wav"
+      case Demo_3_Mode() => mode = "mode3.wav"
+      case Demo_4_Mode() => mode = "mode4.wav"
+    }
+
     try {
       // open the sound file as a Java input stream
       val gongFile = "/root/Documents/ouptutdir/" + mode

@@ -140,7 +140,11 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
           //add the received match to communication listener
           case DemoPhaseEvent(_) =>
             if (!currentMode.isInstanceOf[DetachedMode]) {
-              currentMode = mode.getCurrentMode
+              val newMode = mode.getCurrentMode
+              if (currentMode.getClass != newMode.getClass) {
+                mode.playTheme()
+                currentMode = newMode
+              }
               println("Mot set, fletching heat data")
               processHeatEvent(log)
               log += "New Mode Set : " + currentMode.toString
@@ -171,7 +175,13 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
           //add the received match to communication listener
           case DemoPhaseEvent(_) =>
             if (!kitDetached) {
-              currentMode = mode.getCurrentMode
+              if (!currentMode.isInstanceOf[DetachedMode]) {
+                val newMode = mode.getCurrentMode
+                if (currentMode.getClass != newMode.getClass) {
+                  mode.playTheme()
+                  currentMode = newMode
+                }
+              }
               log += "New Mode Set : " + currentMode.toString
             } else {
               log += "--PhidgetKit Detached ! \n"
@@ -200,7 +210,12 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
           // Changed the match receiving to cron
           case DemoPhaseEvent(_) =>
             if (!currentMode.isInstanceOf[DetachedMode]) {
-              currentMode = mode.getCurrentMode
+              val newMode = mode.getCurrentMode
+              if (currentMode.getClass != newMode.getClass) {
+                mode.playTheme()
+                currentMode = newMode
+              }
+
               println("Mode set, fletching heat data")
               processHeatEvent(log)
               log += "New Mode Set : " + currentMode.toString
