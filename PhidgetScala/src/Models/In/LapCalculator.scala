@@ -19,7 +19,7 @@ class LapCalculator(blackBox: BlackBox) {
 
 
   // last time the phidget scanned a RFID
-  var timeScanning:Double = 0
+  var timeScanning:Long = 0
   // structure saving all the runners time, id and laps
   val runners:Runners = new Runners
   // last scanned id
@@ -45,9 +45,10 @@ class LapCalculator(blackBox: BlackBox) {
 
   // Setting the listener on scan + save when it has ben scanned.
   rFIDPhidget.addTagGainListener((tagGainEvent: TagGainEvent) => {
-    println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" +
+    println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+
           "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+
           "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    
     timeScanning = System.currentTimeMillis()
   })
 
@@ -65,12 +66,14 @@ class LapCalculator(blackBox: BlackBox) {
       lastScanned = tagLossEvent.getValue
       blackBox.processEvent(TurnEvent(now))
     }
-    timeScanning = 0.00
+    timeScanning = 0
   })
 
   print("\nAttaching RFID reader...")
-  rFIDPhidget.open(PHIDGET_SERIAL)
+  rFIDPhidget.openAny
   rFIDPhidget.waitForAttachment()
+  rFIDPhidget.setAntennaOn(true)
+  rFIDPhidget.setLEDOn(false)
   println(" ...done")
 
 }
