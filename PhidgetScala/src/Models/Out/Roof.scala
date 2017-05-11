@@ -16,8 +16,8 @@ class Roof(blackBox: BlackBox) {
   val SERVO1_SERIAL:Int = 305832
   val SERVO2_SERIAL:Int = 305826
   val SERVO_INDEX:Int = 0
-  val VAL_ROOF1_CLOSED:Double = 180.00
-  val VAL_ROOF2_CLOSED:Double = 0.00
+  val VAL_ROOF1_CLOSED:Double = 100.00
+  val VAL_ROOF2_CLOSED:Double = 80.00
   val VAL_ROOF1_OPEN:Double = 0.00
   val VAL_ROOF2_OPEN:Double = 180.00
   val SPEED   = 50

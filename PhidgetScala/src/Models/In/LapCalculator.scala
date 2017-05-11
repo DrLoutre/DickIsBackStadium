@@ -56,7 +56,7 @@ class LapCalculator(blackBox: BlackBox) {
   rFIDPhidget.addTagLossListener((tagLossEvent: TagLossEvent) => {
 
     val now:Long = System.currentTimeMillis()
-    if(Math.abs(timeScanning-now)>MIN_PASS_TIME){
+    if(Math.abs(now-timeScanning)>MIN_PASS_TIME){
       runners.scanned(tagLossEvent.getValue)
       val lastLapTime = runners.getIdPerfs(tagLossEvent.getValue).get(runners.getIdLapsNumber(tagLossEvent.getValue) - 1)
       val lapTime = runners.getIdPerfs(tagLossEvent.getValue).getLast
