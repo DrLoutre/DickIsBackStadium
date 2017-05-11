@@ -60,9 +60,9 @@ class LapCalculator(blackBox: BlackBox) {
       if (Math.abs(timeScanning - now) > MIN_PASS_TIME) {
         runners.scanned(tagLossEvent.getValue)
         if (runners.idList.contains(tagLossEvent.getValue)) {
-          println("Runner Id     : " + tagLossEvent.getValue +
-            "\nRunning Time  : " +  "sec" +
-            "\nNumber of Laps: " + runners.getIdLapsNumber(tagLossEvent.getValue))
+          println("Runner Id     : " + tagLossEvent.getValue)
+          println("Running Time  : " +  "sec")
+          println("\nNumber of Laps: " + runners.getIdLapsNumber(tagLossEvent.getValue))
         }
         lastScanned = tagLossEvent.getValue
         blackBox.processEvent(TurnEvent(now))

@@ -73,7 +73,7 @@ object ToServer {
         println("Error with Match Request")
       }
     } catch {
-      case e:Exception => println("Error with communication for matches.")
+      case e:Exception => println("Error with communication for matches." + e)
     }
   }
 }
