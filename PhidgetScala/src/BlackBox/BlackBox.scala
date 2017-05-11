@@ -24,7 +24,7 @@ import scala.collection.mutable
 class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
 
   // Constants Threshold
-  private val PRECISION_IR_SENSOR_THERSHOLD: Int = 750
+  private val PRECISION_IR_SENSOR_THERSHOLD: Int = 800
 
   // Constants about time
   private val LIGHT_TIMEOUT:Long     = 20

@@ -9,7 +9,7 @@ import Events.{PassageEvent, VibrationEvent}
 class GoalCase(passageEvent: PassageEvent, var lastGoal:Double) {
 
   val GOAL_MIN_LAP:Long = 8000
-  val TIME_BETWEEN_EVENTs:Long = 4000
+  val TIME_BETWEEN_EVENTs:Long = 440
   println("init")
 
   /**
