@@ -90,7 +90,7 @@ CREATE TABLE Tokens(
 
 INSERT INTO `Refreshment` (`ID`, `Attendance`, `Localisation`) VALUES (1, 0.35, 'Buvette est');
 INSERT INTO `Refreshment` (`ID`, `Attendance`, `Localisation`) VALUES (2, 0.75, 'Buvette ouest');
-INSERT INTO `Athletic` (`NFC`,`LastName`,`FirstName`,`Age`,`Sex`,`Password`,`Salt`) VALUES ('5c005c9229', 'Dupont', 'Jean', 42, 'M', 'A modifier', 'Idem');
+INSERT INTO `Athletic` (`NFC`,`LastName`,`FirstName`,`Age`,`Sex`,`Password`,`Salt`) VALUES ('5c005c9229', 'Dupont', 'Jean', 42, 'M', 'd58a13ba3e97a6e04c423be26c9a2408ecb87af8cd6c2651f046a7ceec3659cd7ff2318f5b364cbfc9981aea7156d76e3465c5c2ff2f683f83285b2fe236180e', 'DbuLwcUwtsFAdB2ShHK4d02B1CQj5M');
 INSERT INTO `Tribune` (`NFC`,`Places`,`Localisation`,`Texte_Explanation`) VALUES (1, 4, 'Tribune Sud', 'Tribune sud');
 INSERT INTO `Tribune` (`NFC`,`Places`,`Localisation`,`Texte_Explanation`) VALUES (2, 4, 'Tribune Nord', 'Tribune nord');
 INSERT INTO `Seat` (`ID`,`TribuneNFC`,`Occupied`) VALUES (1,1,0);
@@ -101,3 +101,5 @@ INSERT INTO `Seat` (`ID`,`TribuneNFC`,`Occupied`) VALUES (5,2,0);
 INSERT INTO `Seat` (`ID`,`TribuneNFC`,`Occupied`) VALUES (6,2,0);
 INSERT INTO `Seat` (`ID`,`TribuneNFC`,`Occupied`) VALUES (7,2,0);
 INSERT INTO `Seat` (`ID`,`TribuneNFC`,`Occupied`) VALUES (8,2,0);
+INSERT INTO `Athletic` (`NFC`, `LastName`, `FirstName`, `Age`, `Sex`, `Password`, `Salt`) VALUES ('1f00d061c8', 'Stadium', 'Dick', 30, 'H', 'd58a13ba3e97a6e04c423be26c9a2408ecb87af8cd6c2651f046a7ceec3659cd7ff2318f5b364cbfc9981aea7156d76e3465c5c2ff2f683f83285b2fe236180e', 'DbuLwcUwtsFAdB2ShHK4d02B1CQj5M');
+INSERT INTO `Athletic` (`NFC`, `LastName`, `FirstName`, `Age`, `Sex`, `Password`, `Salt`) VALUES ('5c005c8aeb', 'Dupont', 'Jean', 45, 'H', '3f1e299c07e692700f851a3d61aec0605912a1891216814a730dbd87eb42a66e8fcbb83a796cbc57f2a73ed0f9d7f29962484a6c396f0c9ac2abc1f8b6cbefdb', 'I8hLOt92C1bsGjhCnIM3LCQBwp2YZ8');
