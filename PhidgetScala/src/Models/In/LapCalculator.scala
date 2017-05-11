@@ -15,11 +15,11 @@ class LapCalculator(blackBox: BlackBox) {
 
   // Constants about the phidgets
   val PHIDGET_SERIAL = 335178
-  val MIN_PASS_TIME:Long  = 10
+  val MIN_PASS_TIME  = 10
 
 
   // last time the phidget scanned a RFID
-  var timeScanning:Long = 0
+  var timeScanning:Double = 0
   // structure saving all the runners time, id and laps
   val runners:Runners = new Runners
   // last scanned id
@@ -45,18 +45,18 @@ class LapCalculator(blackBox: BlackBox) {
 
   // Setting the listener on scan + save when it has ben scanned.
   rFIDPhidget.addTagGainListener((tagGainEvent: TagGainEvent) => {
-    println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+
+    rFIDPhidget.setLEDOn(true)
+    println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" +
           "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+
           "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    rFIDPhidget.setLEDOn(true)
     timeScanning = System.currentTimeMillis()
   })
 
   // Setting the listener on end of scan + juging if goal has happened
   rFIDPhidget.addTagLossListener((tagLossEvent: TagLossEvent) => {
-
+    rFIDPhidget.setLEDOn(false)
     val now:Long = System.currentTimeMillis()
-    if(Math.abs(now-timeScanning)>MIN_PASS_TIME){
+    if(Math.abs(timeScanning-now)>MIN_PASS_TIME){
       runners.scanned(tagLossEvent.getValue)
       val lastLapTime = runners.getIdPerfs(tagLossEvent.getValue).get(runners.getIdLapsNumber(tagLossEvent.getValue) - 1)
       val lapTime = runners.getIdPerfs(tagLossEvent.getValue).getLast
@@ -66,12 +66,11 @@ class LapCalculator(blackBox: BlackBox) {
       lastScanned = tagLossEvent.getValue
       blackBox.processEvent(TurnEvent(now))
     }
-    rFIDPhidget.setLEDOn(false)
-    timeScanning = 0
+    timeScanning = 0.00
   })
 
   print("\nAttaching RFID reader...")
-  rFIDPhidget.openAny
+  rFIDPhidget.openAny()
   rFIDPhidget.waitForAttachment()
   rFIDPhidget.setAntennaOn(true)
   rFIDPhidget.setLEDOn(false)
