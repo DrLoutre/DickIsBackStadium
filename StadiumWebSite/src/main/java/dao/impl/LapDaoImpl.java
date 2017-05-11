@@ -120,7 +120,8 @@ public class LapDaoImpl extends Dao implements LapDao{
         List<Race> raceList = raceDao.getRacesList(athleticNFC);
         
         List<LapData> datas = queryFactory.selectFrom(LAP)
-                .where(LAP.idScore.eq(raceList.get(raceList.size()-1).getId()))
+                .where((LAP.idScore.eq(raceList.get(raceList.size()-1).getId()))
+                        .and(LAP.isBeginning.eq(false)))
                 .fetch();
         closeConnection();
         
@@ -144,7 +145,7 @@ public class LapDaoImpl extends Dao implements LapDao{
                 + raceId + " has not been found in the database");
         
         List<LapData> datas = queryFactory.selectFrom(LAP)
-                .where(LAP.idScore.eq(raceId))
+                .where((LAP.idScore.eq(raceId)).and(LAP.isBeginning.eq(false)))
                 .fetch();
         closeConnection();
         
