@@ -9,14 +9,14 @@ public interface SpectatorDao {
     
     boolean spectatorExists(int ID);
     
-    int addSpetator(String lastName, String firstName, String tribuneNFC, 
+    int addSpetator(String lastName, String firstName, int tribuneNFC, 
             int IDMatch) throws NotFoundException;
     
     Spectator getSpectator(int ID) throws NotFoundException;
 
     void deleteSpectator(int ID) throws NotFoundException;
     
-    String getTribune(int ID) throws NotFoundException;
+    int getTribune(int ID) throws NotFoundException;
     
     Pair<String,String> getName(int ID) throws NotFoundException;
     
@@ -24,11 +24,11 @@ public interface SpectatorDao {
     
     ArrayList<Spectator> getAllSpectator() throws NotFoundException;
     
-    ArrayList<Spectator> getAllSpectator(String tribuneNFC) 
+    ArrayList<Spectator> getAllSpectatorFromTribune(int tribuneNFC) 
             throws NotFoundException;
     
-    ArrayList<Spectator> getAllSpectator(int matchID) throws NotFoundException;
+    ArrayList<Spectator> getAllSpectatorForMatch(int matchID) throws NotFoundException;
     
-    ArrayList<Spectator> getAllSpectator(String tribuneNFC,int matchID) 
+    ArrayList<Spectator> getAllSpectator(int tribuneNFC,int matchID) 
             throws NotFoundException;
 }

@@ -35,10 +35,9 @@ public class SeatDaoImpl extends Dao implements SeatDao{
     }
 
     @Override
-    public int addSeat(String tribuneNFC, boolean occupied) 
+    public int addSeat(int tribuneNFC, boolean occupied) 
             throws NotFoundException {
-        Assert.notNull(tribuneNFC);
-        Assert.isTrue(tribuneNFC.length() > 0);
+        Assert.isTrue(tribuneNFC > 0);
         
         if(!tribuneDao.tribuneExists(tribuneNFC)) 
             throw new NotFoundException("The tribune " + tribuneNFC 
@@ -83,10 +82,9 @@ public class SeatDaoImpl extends Dao implements SeatDao{
     }
 
     @Override
-    public List<Integer> getTribuneSeatsID(String tribuneNFC) 
+    public List<Integer> getTribuneSeatsID(int tribuneNFC) 
             throws NotFoundException {
-        Assert.notNull(tribuneNFC);
-        Assert.isTrue(tribuneNFC.length() > 0);
+        Assert.isTrue(tribuneNFC > 0);
         
         if(!tribuneDao.tribuneExists(tribuneNFC)) 
             throw new NotFoundException("The tribune " + tribuneNFC 
@@ -108,10 +106,9 @@ public class SeatDaoImpl extends Dao implements SeatDao{
     }
     
     @Override
-    public List<Seat> getTribuneSeats(String tribuneNFC) 
+    public List<Seat> getTribuneSeats(int tribuneNFC) 
             throws NotFoundException {
-        Assert.notNull(tribuneNFC);
-        Assert.isTrue(tribuneNFC.length() > 0);
+        Assert.isTrue(tribuneNFC > 0);
         
         if(!tribuneDao.tribuneExists(tribuneNFC)) 
             throw new NotFoundException("The tribune " + tribuneNFC 
@@ -132,10 +129,9 @@ public class SeatDaoImpl extends Dao implements SeatDao{
         }
     }
     
-    SeatData toData(int ID, String tribuneNFC, boolean occupied){
+    SeatData toData(int ID, int tribuneNFC, boolean occupied){
         Assert.isTrue(ID >= 0);
-        Assert.notNull(tribuneNFC);
-        Assert.isTrue(tribuneNFC.length() > 0);
+        Assert.isTrue(tribuneNFC > 0);
         
         SeatData data = new SeatData();
         data.setId(ID);
@@ -144,9 +140,8 @@ public class SeatDaoImpl extends Dao implements SeatDao{
         return data;
     }
     
-    SeatData toData(String tribuneNFC, boolean occupied){
-        Assert.notNull(tribuneNFC);
-        Assert.isTrue(tribuneNFC.length() > 0);
+    SeatData toData(int tribuneNFC, boolean occupied){
+        Assert.isTrue(tribuneNFC > 0);
         
         SeatData data = new SeatData();
         data.setOccupied(occupied);

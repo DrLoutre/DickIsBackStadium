@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Seat {
     
     private int id;
-    private String tribuneNFC;
+    private int tribuneNFC;
     private boolean occupied;
     
     public Seat(){
@@ -21,11 +21,11 @@ public class Seat {
         this.id = id;
     }
     
-    public String getTribuneNFC(){
+    public int getTribuneNFC(){
         return tribuneNFC;
     }
     
-    public void setTribuneNFC(String TribuneNFC){
+    public void setTribuneNFC(int TribuneNFC){
         tribuneNFC = TribuneNFC;
     }
     
