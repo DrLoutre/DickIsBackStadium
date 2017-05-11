@@ -67,7 +67,7 @@ public class RaceWebService {
     public Response postLap(@PathParam("id") int id, Lap lap) {
         try {
             int idLap = lapDao.addLap(lap.getTempHour(), lap.getTempMin(),
-                    lap.getTempSec(), lap.getTempMs(), id);
+                    lap.getTempSec(), lap.getTempMs(), lap.getIsBeginning(), id);
             lap.setID(idLap);
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();

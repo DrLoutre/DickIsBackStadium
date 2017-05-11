@@ -1,13 +1,22 @@
 package com.example.gecko.smartstadium.classes;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Match {
 
+    @SerializedName("id")
     private int ID;
+    @SerializedName("teamID1")
     private int id_team_1;
+    @SerializedName("teamID2")
     private int id_team_2;
+    @SerializedName("goals1")
     private int goals_1;
+    @SerializedName("goals2")
     private int goals_2;
+    @SerializedName("date")
     private String date;
+    @SerializedName("ended")
     private boolean ended;
 
     public int getID() {

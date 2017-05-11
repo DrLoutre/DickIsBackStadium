@@ -9,6 +9,11 @@ public class ConnectionUtils {
     private ConnectionUtils() {
     }
 
+    /**
+     * Check if the internet connection is turn on
+     * @param context
+     * @return
+     */
     public static boolean isOnline(Context context) {
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

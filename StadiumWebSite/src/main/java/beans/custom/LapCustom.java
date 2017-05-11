@@ -8,7 +8,6 @@ public class LapCustom {
     private String rfid;
     private int nbrLaps;
     private String temps;
-    private int milli;
 
     public String getRfid() {
         return rfid;
@@ -32,13 +31,5 @@ public class LapCustom {
 
     public void setTemps(String temps) {
         this.temps = temps;
-    }
-
-    public int getMilli() {
-        return milli;
-    }
-
-    public void setMilli(int milli) {
-        this.milli = milli;
     }
 }

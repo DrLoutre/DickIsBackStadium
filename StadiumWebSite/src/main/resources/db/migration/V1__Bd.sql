@@ -23,9 +23,10 @@ CREATE TABLE Race(
 
 CREATE TABLE Lap(
     ID INTEGER PRIMARY KEY AUTO_INCREMENT,
-    Temp TIME NOT NULL,
+    Temp DATETIME NOT NULL,
     Temp_Ms INTEGER NOT NULL,
     Id_Score INTEGER NOT NULL,
+    IsBeginning BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (Id_Score) REFERENCES Race(Id_Score)
 );
 
@@ -87,5 +88,6 @@ CREATE TABLE Tokens(
     FOREIGN KEY (NFC) REFERENCES Athletic(NFC)
 );
 
-INSERT INTO `Refreshment` (`ID`, `Attendance`, `Localisation`) VALUES (1, 0.35, 'C''est pas ici');
-INSERT INTO `Refreshment` (`ID`, `Attendance`, `Localisation`) VALUES (2, 0.75, 'C''est pas ici non plus');
+INSERT INTO `Refreshment` (`ID`, `Attendance`, `Localisation`) VALUES (1, 0.35, 'Buvette est');
+INSERT INTO `Refreshment` (`ID`, `Attendance`, `Localisation`) VALUES (2, 0.75, 'Buvette ouest');
+INSERT INTO `Athletic` (`NFC`,`LastName`,`FirstName`,`Age`,`Sex`,`Password`,`Salt`) VALUES ('5c005c9229', 'Dupont', 'Jean', '42', 'M', 'A modifier', 'Idem');

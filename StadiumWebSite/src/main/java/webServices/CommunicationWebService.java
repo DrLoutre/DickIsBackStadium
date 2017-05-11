@@ -10,6 +10,7 @@ import beans.custom.RefreshmentsCustom;
 import dao.impl.*;
 import exceptions.NotFoundException;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -91,12 +92,11 @@ public class CommunicationWebService {
 
             Lap lap = new Lap();
             lap.setIdRace(race.getId());
-            DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-            DateTime dateTime = df.parseDateTime(lapCustom.getTemps());
+            DateTime dateTime = new DateTime(Long.valueOf(lapCustom.getTemps()));
             lap.setTempHour(dateTime.getHourOfDay());
             lap.setTempMin(dateTime.getMinuteOfHour());
             lap.setTempSec(dateTime.getSecondOfMinute());
-            lap.setTempMs(lapCustom.getMilli());
+            lap.setTempMs(dateTime.getMillisOfSecond());
 
             lapDao.addLap(lap.getTempHour(), lap.getTempMin(), lap.getTempSec(), lap.getTempMs(),
                     lap.getIdRace());
