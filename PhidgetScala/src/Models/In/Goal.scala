@@ -19,7 +19,7 @@ class Goal(interfaceKitPhidget: InterfaceKitPhidget, indexPassage: Int, indexVib
 
   // Number of goals and time of the last goal.
   var goal:Int = 0
-  var lastGoal:Long = -8000
+  var lastGoal:Long = -10000000
 
   // getters
   def getGoal:Int = goal
