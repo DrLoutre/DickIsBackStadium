@@ -26,7 +26,7 @@ class DemoModePotentiometer(interfaceKitPhidget: InterfaceKitPhidget, sensorInde
   def getCurrentMode:Mode = {
     val value:Int = interfaceKitPhidget.getSensorValue(sensorIndex)/(MAX_CURSVAL/NBR_MODES)
     println("======================================================<>>>>> Value of pot : " + value)
-    value match { //TODO: Create correct modes to test.
+    value match {
       case 0 => // Normal mode.
         println("Setting to normal mode ... ")
         NormalMode()

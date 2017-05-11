@@ -68,6 +68,9 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
   var currentMode:Mode      = mode.getCurrentMode
   //val commu:CommunicationListener = new CommunicationListener
 
+
+  ToServer.askForNewMatches(planning)
+
   setListener
 
   /**
@@ -194,7 +197,7 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
           case VibrationEvent(_) => log = processGoalEvent(event, log)
           case NewMatchPlanEvent(_) =>
             log += "Received new match ! \n"
-          //todo : add the received match to communication listener
+          // Changed the match receiving to cron
           case DemoPhaseEvent(_) =>
             if (!currentMode.isInstanceOf[DetachedMode]) {
               currentMode = mode.getCurrentMode
@@ -410,9 +413,6 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
     * @return full log of the event.
     */
   private def processStandEvent(log: String): _root_.scala.Predef.String = {
-   // val northStandState = for (seat <- stdNorth.getSeats) yield {
-     // if (seat) "Seat taken" else "Seat Free"
-    //}
 
     // displaying the states of the north stand seats
     val northStandState:Array[String] = stdNorth.getSeats.zipWithIndex.map{
@@ -430,6 +430,9 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
         x + y
       }
     }
+
+    ToServer.sendStand(0, stdSouth.getSeats)
+    ToServer.sendStand(1, stdNorth.getSeats)
     log + "Change in Stands : Stand actual State : \n" + "North Stand : \n" + northStandState.mkString + "\n South Stand : \n" + southStandState.mkString + "\n"
   }
 
@@ -440,11 +443,12 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
     * @return full log of the event.
     */
   private def processTurnEvent(log: String): _root_.scala.Predef.String = {
-    //Todo : Check if new implementation suits the simple log
     val id:String = lapCntr.lastScanned
     val idnum = lapCntr.runners.idNumber.get(lapCntr.runners.idList.indexOf(id))
     val time = lapCntr.runners.time.get(lapCntr.runners.idList.indexOf(id)).getLast
     val total = lapCntr.runners.getTotal(id)
+
+
     ToServer.sendLap(
       id,
       idnum,
@@ -626,14 +630,25 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
     })
 
 
-    //In order to get temperature update more often :
-    val ex = new ScheduledThreadPoolExecutor(1)
-    val task = new Runnable {
+    //In order to get temperature update more often (since it changes slowly) :
+    val ex1 = new ScheduledThreadPoolExecutor(1)
+    val task1 = new Runnable {
       def run():Unit = {
         processEvent(HeatEvent(System.currentTimeMillis()))
       }
     }
-    val f = ex.scheduleAtFixedRate(task, 0, 20, TimeUnit.SECONDS)
+    val f1 = ex1.scheduleAtFixedRate(task1, 0, 20, TimeUnit.SECONDS)
     // f.cancel(false)
+
+
+    //In order to get some updates of matches every 10 minutes
+    val ex2 = new ScheduledThreadPoolExecutor(1)
+    val task2 = new Runnable {
+      def run():Unit = {
+        ToServer.askForNewMatches(planning)
+      }
     }
+    val f2 = ex2.scheduleAtFixedRate(task2, 0, 10, TimeUnit.MINUTES)
+  }
+
 }

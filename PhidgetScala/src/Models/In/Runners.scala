@@ -10,19 +10,28 @@ import java.util._
 class Runners {
 
   //The different lists
+  // List of RFID Tags
   var idList:util.LinkedList[String] = new util.LinkedList[String]()
+  // List of number of turns by tags
   var idNumber:util.LinkedList[Integer] = new util.LinkedList[Integer]()
+  // List List of performances by Tags
   var time:util.LinkedList[util.LinkedList[Long]] = new util.LinkedList[util.LinkedList[Long]]()
 
   /**
     * @param id id that was scanned and to witch we will either create a new runner either add a lap
     */
-  def scanned(id: String):Unit = {
+  def scanned(id: String):Unit = {      // Getting the time :
+    val now = System.currentTimeMillis()
+    // getting last infos
+    val index = idList.indexOf(id)
+    val newVal = idNumber.get(index)
+    val perfs:util.LinkedList[Long] = time.get(index)
+    // If the turn lasted more than 5 minutes, we count a new run, so we reset the runner.
+    if (perfs.getLast - now > 300000) {
+      reset(id)
+    }
     if (idList.contains(id)) {
-      // Adding a lap
-      val index = idList.indexOf(id)
-      val newVal = idNumber.get(index)
-      val perfs:util.LinkedList[Long] = time.get(index)
+      // Coutning a new turn
       perfs.addLast(System.currentTimeMillis())
       idNumber.set(index, Predef.Integer2int(newVal) + 1)
       time.set(index, perfs)
