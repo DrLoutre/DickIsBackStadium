@@ -103,8 +103,12 @@ public class TribuneDaoImpl extends Dao implements TribuneDao{
         if(!tribuneExists(NFC)) throw new NotFoundException("The tribune " 
                 + NFC + " does not exists in the database");
         
+        Tribune tribune = getTribune(NFC);
+        TribuneData data = toData(NFC, places, tribune.getLocalisation(), 
+                tribune.getDescription());
+        
         long rows = queryFactory.update(TRIBUNE).where(TRIBUNE.nfc.eq(NFC))
-                .populate(places).execute();
+                .populate(data).execute();
         closeConnection();
         
         Assert.isTrue(rows == 1);

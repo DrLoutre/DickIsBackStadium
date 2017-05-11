@@ -1,6 +1,5 @@
 package dao.impl;
 
-import beans.Team;
 import core.Assert;
 import dao.AthleticDao;
 import dao.Dao;
