@@ -201,7 +201,7 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
           case DemoPhaseEvent(_) =>
             if (!currentMode.isInstanceOf[DetachedMode]) {
               currentMode = mode.getCurrentMode
-              println("Mot set, fletching heat data")
+              println("Mode set, fletching heat data")
               processHeatEvent(log)
               log += "New Mode Set : " + currentMode.toString
             } else {

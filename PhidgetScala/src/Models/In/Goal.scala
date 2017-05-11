@@ -1,9 +1,12 @@
 package Models.In
 
+import java.io.FileInputStream
+
 import BlackBox.BlackBox
 import Events._
 import com.phidgets.InterfaceKitPhidget
 import com.phidgets.event.{SensorChangeEvent, SensorChangeListener}
+import sun.audio.{AudioPlayer, AudioStream}
 
 /**
   * Created by bri_e on 20-04-17.
@@ -28,6 +31,19 @@ class Goal(interfaceKitPhidget: InterfaceKitPhidget, indexPassage: Int, indexVib
   // increments the goal
   def incrementGoal(time:Long):Boolean = {
     if (lastGoal-time < TIMEOUT_BTW_TWO_GOALS) {
+      try {
+        // open the sound file as a Java input stream
+        val gongFile = "/root/Music/goal.wav"
+        val in = new FileInputStream(gongFile)
+
+        // create an audiostream from the inputstream
+        val audioStream = new AudioStream(in)
+
+        // play the audio clip with the audioplayer class
+        AudioPlayer.player.start(audioStream)
+      } catch {
+        case e:Exception => println("Exception while opening theme" + e)
+      }
       println("Gooaaaal !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! the time set :" + time)
       goal += 1
       println("Goal number : " + goal)
