@@ -32,6 +32,8 @@ class Runners {
       reset(id)
     }
     */
+      println("ID : " + id)
+      println("List : " + idList)
       if (idList.contains(id)) {
         val index = idList.indexOf(id)
         println("index : " + index)
