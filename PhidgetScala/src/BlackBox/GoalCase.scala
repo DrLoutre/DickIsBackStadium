@@ -8,8 +8,8 @@ import Events.{PassageEvent, VibrationEvent}
   */
 class GoalCase(passageEvent: PassageEvent, var lastGoal:Double) {
 
-  val GOAL_MIN_LAP:Double = 8000.0
-  val TIME_BETWEEN_EVENTs:Double = 800.0
+  val GOAL_MIN_LAP:Long = 8000
+  val TIME_BETWEEN_EVENTs:Long = 800
   println("init")
 
   /**
@@ -31,7 +31,7 @@ class GoalCase(passageEvent: PassageEvent, var lastGoal:Double) {
     * Get the last time value of a goal in order to compare it with a potential new one.
     * @param last last time value of a goal.
     */
-  def updateLastGoal(last:Double):Unit ={
+  def updateLastGoal(last:Long):Unit ={
     lastGoal = last
   }
 

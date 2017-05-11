@@ -20,7 +20,7 @@ class Roof(blackBox: BlackBox) {
   val VAL_ROOF2_CLOSED:Double = 180.00
   val VAL_ROOF1_OPEN:Double = 180.00
   val VAL_ROOF2_OPEN:Double = 0.00
-  val SPEED   = 100.0
+  val SPEED   = 50
 
   //Initialization
   var open:Boolean = false
