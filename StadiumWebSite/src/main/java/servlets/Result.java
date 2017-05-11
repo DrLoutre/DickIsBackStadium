@@ -13,6 +13,7 @@ import dao.impl.TeamDaoImpl;
 import exceptions.NotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -34,7 +35,9 @@ public class Result extends HttpServlet {
         TeamDao teamDao = new TeamDaoImpl();
         team = new HashMap<>();
         try {
-            request.setAttribute("matchs", resultDao.getEndedMatch());
+            ArrayList<Match> matches = resultDao.getEndedMatch();
+            Collections.sort(matches);
+            request.setAttribute("matchs", matches);
             for (Match match : resultDao.getEndedMatch()) {
                 if(!team.containsKey(Integer.toString(match.getTeamID1())))
                     team.put(Integer.toString(match.getTeamID1()), teamDao.getName(match.getTeamID1()));

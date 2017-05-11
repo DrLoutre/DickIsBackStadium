@@ -1,9 +1,13 @@
 package beans.custom;
 
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class MatchNotEnded {
+public class MatchNotEnded implements Comparable<MatchNotEnded>{
 
     private String team1;
     private String team2;
@@ -31,5 +35,11 @@ public class MatchNotEnded {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    @Override
+    public int compareTo(@NotNull MatchNotEnded m) {
+        DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+        return df.parseDateTime(this.getDate()).compareTo(df.parseDateTime(m.getDate()));
     }
 }
