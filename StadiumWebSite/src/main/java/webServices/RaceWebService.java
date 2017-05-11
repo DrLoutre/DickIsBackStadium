@@ -66,7 +66,7 @@ public class RaceWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postLap(@PathParam("id") int id, Lap lap) {
         try {
-            int idLap = lapDao.addLap(lap.getTempHour(), lap.getTempMin(),
+            int idLap = lapDao.addLap(lap.getYear(), lap.getMonth(), lap.getDay(), lap.getTempHour(), lap.getTempMin(),
                     lap.getTempSec(), lap.getTempMs(), lap.getIsBeginning(), id);
             lap.setID(idLap);
         } catch (NotFoundException e) {
