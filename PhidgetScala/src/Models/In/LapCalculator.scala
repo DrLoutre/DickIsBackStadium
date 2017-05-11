@@ -15,7 +15,7 @@ class LapCalculator(blackBox: BlackBox) {
 
   // Constants about the phidgets
   val PHIDGET_SERIAL = 335178
-  val MIN_PASS_TIME  = 10
+  val MIN_PASS_TIME:Long  = 10
 
 
   // last time the phidget scanned a RFID
@@ -48,7 +48,7 @@ class LapCalculator(blackBox: BlackBox) {
     println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+
           "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+
           "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    
+    rFIDPhidget.setLEDOn(true)
     timeScanning = System.currentTimeMillis()
   })
 
@@ -66,6 +66,7 @@ class LapCalculator(blackBox: BlackBox) {
       lastScanned = tagLossEvent.getValue
       blackBox.processEvent(TurnEvent(now))
     }
+    rFIDPhidget.setLEDOn(false)
     timeScanning = 0
   })
 
