@@ -20,7 +20,9 @@ public class Lap {
         
     }
 
-    public Lap(int ID, int year, int month, int day, int temp_hour, int temp_min, int temp_sec, int temp_ms, boolean is_beginning, int id_race) {
+    public Lap(int ID, int year, int month, int day, int temp_hour, 
+            int temp_min, int temp_sec, int temp_ms, boolean is_beginning, 
+            int id_race) {
         this.ID = ID;
         this.year = year;
         this.month = month;
