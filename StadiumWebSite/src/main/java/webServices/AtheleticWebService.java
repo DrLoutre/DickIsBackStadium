@@ -185,7 +185,9 @@ public class AtheleticWebService {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        if (athleticDao.connect(athletic.getMDP(),credentials.getPassword())) {
+        //Uncomment when in production
+        //athleticDao.connect(credentials.getId(), credentials.getPassword());
+        if (athletic.getMDP().equals(credentials.getPassword())) {
             return Response.status(Response.Status.CREATED).entity(athletic).build();
         } else {
             return Response.status(Response.Status.UNAUTHORIZED).build();
