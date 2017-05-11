@@ -28,6 +28,7 @@ class Runners {
     try {
 
       val index = idList.indexOf(id)
+      println("index : " + index)
       val newVal = idNumber.get(index)
       val perfs: util.LinkedList[Long] = time.get(index)
       /*
