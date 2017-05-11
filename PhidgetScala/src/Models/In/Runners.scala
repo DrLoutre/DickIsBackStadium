@@ -26,11 +26,6 @@ class Runners {
     // getting last infos
 
     try {
-
-      val index = idList.indexOf(id)
-      println("index : " + index)
-      val newVal = idNumber.get(index)
-      val perfs: util.LinkedList[Long] = time.get(index)
       /*
     // If the turn lasted more than 5 minutes, we count a new run, so we reset the runner.
     if (perfs.getLast - now > 300000) {
@@ -38,6 +33,10 @@ class Runners {
     }
     */
       if (idList.contains(id)) {
+        val index = idList.indexOf(id)
+        println("index : " + index)
+        val newVal = idNumber.get(index)
+        val perfs: util.LinkedList[Long] = time.get(index)
         // Coutning a new turn
         perfs.addLast(System.currentTimeMillis())
         idNumber.set(index, Predef.Integer2int(newVal) + 1)
