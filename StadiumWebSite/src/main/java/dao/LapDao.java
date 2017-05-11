@@ -85,4 +85,12 @@ public interface LapDao {
      *      database, or if there is no lap of the race in the database
      */
     List<Lap> getAllLap(int raceId) throws NotFoundException;
+
+    /**
+     * Get all the lap of specific race with beginning laps
+     * @param raceId
+     * @return
+     * @throws NotFoundException
+     */
+    List<Lap> getAllLapWithBeginning(int raceId) throws NotFoundException;
 }

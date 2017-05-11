@@ -161,6 +161,30 @@ public class LapDaoImpl extends Dao implements LapDao{
         return returnValue;
     }
 
+    @Override
+    public List<Lap> getAllLapWithBeginning(int raceId) throws NotFoundException {
+        Assert.isTrue(raceId >= 0);
+
+        if(! raceDao.raceExists(raceId)) throw new NotFoundException("Race "
+                + raceId + " has not been found in the database");
+
+        List<LapData> datas = queryFactory.selectFrom(LAP)
+                .where((LAP.idScore.eq(raceId)))
+                .fetch();
+        closeConnection();
+
+        if(datas == null || datas.isEmpty())
+            throw new NotFoundException("There's not lap found "
+                    + "for the race " + raceId + " in the database");
+
+        List<Lap> returnValue = new LinkedList<>();
+        for(LapData data : datas){
+            returnValue.add(toLap(data));
+        }
+
+        return returnValue;
+    }
+
     private LapData toData (int year, int month, int day, int temp_hour, 
             int temp_min, int temp_sec, int temp_ms, boolean isBeginning, 
             int id_race){
