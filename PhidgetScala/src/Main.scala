@@ -14,7 +14,7 @@ object Main {
 
     try {
       // open the sound file as a Java input stream
-      val gongFile = "/root/Music/begin.wav"
+      val gongFile = "/root/Documents/ouptutdir/begin.wav"
       val in = new FileInputStream(gongFile)
 
       // create an audiostream from the inputstream

@@ -33,7 +33,7 @@ class Goal(interfaceKitPhidget: InterfaceKitPhidget, indexPassage: Int, indexVib
     if (lastGoal-time < TIMEOUT_BTW_TWO_GOALS) {
       try {
         // open the sound file as a Java input stream
-        val gongFile = "/root/Music/goal.wav"
+        val gongFile = "/root/Documents/ouptutdir/goal.wav"
         val in = new FileInputStream(gongFile)
 
         // create an audiostream from the inputstream
