@@ -53,6 +53,7 @@ object ToServer {
     if (code) println("Stand sent correctly") else println("Error while sending Stand")
   }
 
+
   def askForNewMatches(matchPlanning: MatchPlanning):Unit = {
     try {
       val code: HttpResponse[String] = Http(BASE_URL.concat("newMatch")).timeout(TIMEOUT, TIMEOUT).header(CONT_TY, APP_JS).asString

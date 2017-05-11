@@ -28,21 +28,21 @@ class LapCalculator(blackBox: BlackBox) {
   // phidget variable
   val rFIDPhidget:RFIDPhidget = new RFIDPhidget()
 
-
+/*
   // Setting the listener on detach and triggers the deteriorated version
   rFIDPhidget.addDetachListener((_: DetachEvent) => blackBox.currentMode match {
     case DetachedMode(kit, motors, _) =>
       blackBox.currentMode = DetachedMode(kit, motors, true)
     case _ =>
       blackBox.currentMode = DetachedMode(false, false, true)
-  })
-
+  })*/
+/*
   // Setting the listener on attach and triggers the normal mode or updates the deteriorated mode
   rFIDPhidget.addAttachListener((_: AttachEvent) => blackBox.currentMode match {
     case DetachedMode(kit, motors, _) =>
       if (!kit && !motors) blackBox.currentMode = NormalMode() else blackBox.currentMode = DetachedMode(kit, motors, false)
   })
-
+*/
   // Setting the listener on scan + save when it has ben scanned.
   rFIDPhidget.addTagGainListener((tagGainEvent: TagGainEvent) => {
     println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" +
