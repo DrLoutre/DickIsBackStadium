@@ -29,8 +29,8 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
   // Constants about time
   private val LIGHT_TIMEOUT:Long     = 20
   private val TEMP_TIMEOUT:Long      = 3000
-  private val PASSAGE_TIMEOUT:Long   = 100
-  private val VIBRATION_TIMEOUT:Long = 100
+  private val PASSAGE_TIMEOUT:Long   = 10
+  private val VIBRATION_TIMEOUT:Long = 10
   private val POT_TIMEOUT:Long       = 3000
 
   // Constants index of sensors and lights
