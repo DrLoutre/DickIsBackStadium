@@ -6,6 +6,12 @@ public class Lap {
 
     @SerializedName("id")
     private int ID;
+    @SerializedName("year")
+    private int year;
+    @SerializedName("month")
+    private int month;
+    @SerializedName("day")
+    private int day;
     @SerializedName("tempHour")
     private int temp_hour;
     @SerializedName("tempMin")
@@ -14,6 +20,8 @@ public class Lap {
     private int temp_sec;
     @SerializedName("tempMs")
     private int temp_ms;
+    @SerializedName("isBeginning")
+    private boolean isBeginning;
     @SerializedName("idRace")
     private int id_race;
 
@@ -27,6 +35,30 @@ public class Lap {
 
     public void setID(int ID) {
         this.ID = ID;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
     }
 
     public int getTemp_hour() {
@@ -59,6 +91,14 @@ public class Lap {
 
     public void setTemp_ms(int temp_ms) {
         this.temp_ms = temp_ms;
+    }
+
+    public boolean isBeginning() {
+        return isBeginning;
+    }
+
+    public void setBeginning(boolean beginning) {
+        isBeginning = beginning;
     }
 
     public int getId_race() {

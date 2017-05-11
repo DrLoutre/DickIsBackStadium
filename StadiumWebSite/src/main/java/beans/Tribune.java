@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Tribune {
     
-    private String NFC;
+    private int NFC;
     private int places;
     private String localisation;
     private String description;
@@ -14,11 +14,11 @@ public class Tribune {
         
     }
     
-    public String getNFC(){
+    public int getNFC(){
         return NFC;
     }
     
-    public void setNFC(String nfc){
+    public void setNFC(int nfc){
         NFC = nfc;
     }
     

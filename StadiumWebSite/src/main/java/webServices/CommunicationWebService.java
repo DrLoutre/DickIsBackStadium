@@ -1,23 +1,17 @@
 package webServices;
 
-import beans.Lap;
-import beans.Match;
-import beans.Race;
-import beans.Refreshment;
+import beans.*;
 import beans.custom.GoalCustom;
 import beans.custom.LapCustom;
 import beans.custom.RefreshmentsCustom;
+import beans.custom.SeatsCustom;
 import dao.impl.*;
 import exceptions.NotFoundException;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
@@ -37,6 +31,8 @@ public class CommunicationWebService {
     private RaceDaoImpl raceDao = new RaceDaoImpl();
     private LapDaoImpl lapDao = new LapDaoImpl();
     private MatchDaoImpl matchDao = new MatchDaoImpl();
+    private TribuneDaoImpl tribuneDao = new TribuneDaoImpl();
+    private SeatDaoImpl seatDao = new SeatDaoImpl();
 
     /**
      * Use to update the refreshments in the database.
@@ -79,27 +75,41 @@ public class CommunicationWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postCustomLap(LapCustom lapCustom) {
         Race race;
+        DateTime dateTime = new DateTime(Long.valueOf(lapCustom.getTemps()));
+
         try {
-            if (lapCustom.getNbrLaps() == 1) {
+            if (lapCustom.getNbrLaps() - 1 == 0) {
                 race = new Race();
                 race.setNFC(lapCustom.getRfid());
                 int id = raceDao.addRace(lapCustom.getRfid());
                 race.setId(id);
+
+                lapDao.addLap(dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth(),
+                        dateTime.getHourOfDay(), dateTime.getMinuteOfHour(), dateTime.getSecondOfMinute(),
+                        dateTime.getMillisOfSecond(), true, race.getId());
             } else {
                 List<Race> races = raceDao.getRacesList(lapCustom.getRfid());
                 race = races.get(races.size() - 1);
+                List<Lap> laps = lapDao.getAllLap(race.getId());
+                if (laps.size() != 0) {
+                    DateTime baseDate = new DateTime(laps.get(0).getYear(), laps.get(0).getMonth(), laps.get(0).getDay(),
+                            laps.get(0).getTempHour(), laps.get(0).getTempMin(), laps.get(0).getTempSec(), laps.get(0).getTempMs());
+                    for (int i = 1; i < laps.size(); i++) {
+                        baseDate = baseDate.plusHours(laps.get(i).getTempHour());
+                        baseDate = baseDate.plusMinutes(laps.get(i).getTempMin());
+                        baseDate = baseDate.plusSeconds(laps.get(i).getTempSec());
+                        baseDate = baseDate.plusMillis(laps.get(i).getTempMs());
+                    }
+                    dateTime = dateTime.minusHours(baseDate.getHourOfDay());
+                    dateTime = dateTime.minusMinutes(baseDate.getMinuteOfHour());
+                    dateTime = dateTime.minusSeconds(baseDate.getSecondOfMinute());
+                    dateTime = dateTime.minusMillis(baseDate.getMillisOfSecond());
+                }
+
+                lapDao.addLap(dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth(),
+                        dateTime.getHourOfDay(), dateTime.getMinuteOfHour(), dateTime.getSecondOfMinute(),
+                        dateTime.getMillisOfSecond(), false, race.getId());
             }
-
-            Lap lap = new Lap();
-            lap.setIdRace(race.getId());
-            DateTime dateTime = new DateTime(Long.valueOf(lapCustom.getTemps()));
-            lap.setTempHour(dateTime.getHourOfDay());
-            lap.setTempMin(dateTime.getMinuteOfHour());
-            lap.setTempSec(dateTime.getSecondOfMinute());
-            lap.setTempMs(dateTime.getMillisOfSecond());
-
-            lapDao.addLap(lap.getTempHour(), lap.getTempMin(), lap.getTempSec(), lap.getTempMs(),
-                    lap.getIdRace());
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -149,5 +159,35 @@ public class CommunicationWebService {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         return Response.status(Response.Status.CREATED).build();
+    }
+
+    @POST
+    @Path("/tribunes/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response postTribunes(@PathParam("id") int id, SeatsCustom seatsCustom) {
+        try {
+            Tribune tribune = tribuneDao.getTribune(id + 1);
+            List<Seat> seats = seatDao.getTribuneSeats(tribune.getNFC());
+            int i = 0;
+            for (Seat seat : seats) {
+                seatDao.setOccupiedState(seat.getID(), seatsCustom.getOccupArray()[i]);
+                i++;
+            }
+        } catch (NotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.status(Response.Status.CREATED).build();
+    }
+
+    @GET
+    @Path("/newMatch")
+    public Response getNewMatchs() {
+        ArrayList<Match> matches;
+        try {
+            matches = matchDao.getNotEndedMatch();
+        } catch (NotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(matches).build();
     }
 }

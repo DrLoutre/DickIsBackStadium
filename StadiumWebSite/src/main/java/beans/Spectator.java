@@ -8,7 +8,7 @@ public class Spectator {
     private int id;
     private String lastName;
     private String firstName;
-    private String tribuneNFC;
+    private int tribuneNFC;
     private int id_Match;
     
     public Spectator(){
@@ -39,11 +39,11 @@ public class Spectator {
         lastName = LastName;
     }
     
-    public String geTribuneNFC(){
+    public int geTribuneNFC(){
         return tribuneNFC;
     }
     
-    public void setTribuneNFC(String TribuneNFC){
+    public void setTribuneNFC(int TribuneNFC){
         tribuneNFC = TribuneNFC;
     }
     

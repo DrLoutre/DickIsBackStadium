@@ -6,7 +6,6 @@ import dao.Dao;
 import dao.MatchDao;
 import dao.SpectatorDao;
 import dao.TribuneDao;
-import exceptions.IntegrityException;
 import exceptions.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,13 +40,12 @@ public class SpectatorDaoImpl extends Dao implements SpectatorDao{
 
     @Override
     public int addSpetator(String lastName, String firstName, 
-            String tribuneNFC, int IDMatch) throws NotFoundException {
+            int tribuneNFC, int IDMatch) throws NotFoundException {
         Assert.notNull(lastName);
         Assert.isTrue(lastName.length() > 0);
         Assert.notNull(firstName);
         Assert.isTrue(firstName.length() > 0);
-        Assert.notNull(tribuneNFC);
-        Assert.isTrue(tribuneNFC.length() > 0);
+        Assert.isTrue(tribuneNFC >= 0);
         Assert.isTrue(IDMatch >= 0);
         
         if(!tribuneDao.tribuneExists(tribuneNFC)) throw 
@@ -94,7 +92,7 @@ public class SpectatorDaoImpl extends Dao implements SpectatorDao{
     }
 
     @Override
-    public String getTribune(int ID) throws NotFoundException {
+    public int getTribune(int ID) throws NotFoundException {
         Assert.isTrue(ID >= 0);
         
         SpectatorData data = queryFactory.selectFrom(SPECTATOR)
@@ -156,15 +154,15 @@ public class SpectatorDaoImpl extends Dao implements SpectatorDao{
     }
 
     @Override
-    public ArrayList<Spectator> getAllSpectator(String tribuneNFC) 
+    public ArrayList<Spectator> getAllSpectatorFromTribune(int tribuneNFC) 
             throws NotFoundException {
-        Assert.notNull(tribuneNFC);
+        Assert.isTrue(tribuneNFC >= 0);
         
         ArrayList<Spectator> spectators = getAllSpectator();
         
         ArrayList<Spectator> selectedSpectators = new ArrayList<>();
         for (Spectator spectator : spectators) {
-            if(tribuneNFC.equals(spectator.geTribuneNFC())) 
+            if(tribuneNFC == spectator.geTribuneNFC())
                 selectedSpectators.add(spectator);
         }
         
@@ -176,7 +174,7 @@ public class SpectatorDaoImpl extends Dao implements SpectatorDao{
     }
 
     @Override
-    public ArrayList<Spectator> getAllSpectator(int matchID) 
+    public ArrayList<Spectator> getAllSpectatorForMatch(int matchID) 
             throws NotFoundException {
         Assert.isTrue(matchID >= 0);
         
@@ -196,16 +194,16 @@ public class SpectatorDaoImpl extends Dao implements SpectatorDao{
     }
 
     @Override
-    public ArrayList<Spectator> getAllSpectator(String tribuneNFC, int matchID) 
+    public ArrayList<Spectator> getAllSpectator(int tribuneNFC, int matchID) 
             throws NotFoundException {
-        Assert.notNull(tribuneNFC);
+        Assert.isTrue(tribuneNFC >= 0);
         Assert.isTrue(matchID >= 0);
         
         ArrayList<Spectator> spectators = getAllSpectator();
         
         ArrayList<Spectator> selectedSpectators = new ArrayList<>();
         for (Spectator spectator : spectators) {
-            if(tribuneNFC.equals(spectator.geTribuneNFC()) 
+            if(tribuneNFC == spectator.geTribuneNFC() 
                     && matchID == spectator.getIDMatch()) 
                 selectedSpectators.add(spectator);
         }
@@ -218,14 +216,13 @@ public class SpectatorDaoImpl extends Dao implements SpectatorDao{
     }
     
     SpectatorData toData(int ID, String lastName, String firstName, 
-            String tribuneNFC, int IDMatch){
+            int tribuneNFC, int IDMatch){
         Assert.isTrue(ID >= 0);
         Assert.notNull(lastName);
         Assert.isTrue(lastName.length() > 0);
         Assert.notNull(firstName);
         Assert.isTrue(firstName.length() > 0);
-        Assert.notNull(tribuneNFC);
-        Assert.isTrue(tribuneNFC.length() > 0);
+        Assert.isTrue(tribuneNFC >= 0);
         Assert.isTrue(IDMatch >= 0);
         
         SpectatorData data = new SpectatorData();
@@ -238,13 +235,12 @@ public class SpectatorDaoImpl extends Dao implements SpectatorDao{
     }
     
     SpectatorData toData(String lastName, String firstName, 
-            String tribuneNFC, int IDMatch){
+            int tribuneNFC, int IDMatch){
         Assert.notNull(lastName);
         Assert.isTrue(lastName.length() > 0);
         Assert.notNull(firstName);
         Assert.isTrue(firstName.length() > 0);
-        Assert.notNull(tribuneNFC);
-        Assert.isTrue(tribuneNFC.length() > 0);
+        Assert.isTrue(tribuneNFC >= 0);
         Assert.isTrue(IDMatch >= 0);
         
         SpectatorData data = new SpectatorData();

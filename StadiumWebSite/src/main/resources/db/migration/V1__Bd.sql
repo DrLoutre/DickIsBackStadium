@@ -56,7 +56,7 @@ CREATE TABLE Matchs(
 );
 
 CREATE TABLE Tribune(
-    NFC VARCHAR(50) NOT NULL,
+    NFC INTEGER NOT NULL,
     Places INTEGER NOT NULL,
     Localisation VARCHAR(20) NOT NULL,
     Texte_Explanation VARCHAR(100) NOT NULL,
@@ -65,7 +65,7 @@ CREATE TABLE Tribune(
 
 CREATE TABLE Seat(
     ID INTEGER PRIMARY KEY AUTO_INCREMENT,
-    TribuneNFC VARCHAR(50) NOT NULL,
+    TribuneNFC INTEGER NOT NULL,
     Occupied BOOLEAN NOT NULL,
     FOREIGN KEY (TribuneNFC) REFERENCES Tribune(NFC)
 );
@@ -74,7 +74,7 @@ CREATE TABLE Spectator(
     Id_Spec INTEGER PRIMARY KEY AUTO_INCREMENT,
     LastName VARCHAR(30) NOT NULL,
     FirstName VARCHAR(30) NOT NULL,
-    TribuneNFC VARCHAR(50) NOT NULL,
+    TribuneNFC INTEGER NOT NULL,
     Id_Match INTEGER NOT NULL,
     FOREIGN KEY (TribuneNFC) REFERENCES Tribune(NFC),
     FOREIGN KEY (Id_Match) REFERENCES Matchs(Id_Match)
@@ -90,4 +90,14 @@ CREATE TABLE Tokens(
 
 INSERT INTO `Refreshment` (`ID`, `Attendance`, `Localisation`) VALUES (1, 0.35, 'Buvette est');
 INSERT INTO `Refreshment` (`ID`, `Attendance`, `Localisation`) VALUES (2, 0.75, 'Buvette ouest');
-INSERT INTO `Athletic` (`NFC`,`LastName`,`FirstName`,`Age`,`Sex`,`Password`,`Salt`) VALUES ('5c005c9229', 'Dupont', 'Jean', '42', 'M', 'A modifier', 'Idem');
+INSERT INTO `Athletic` (`NFC`,`LastName`,`FirstName`,`Age`,`Sex`,`Password`,`Salt`) VALUES ('5c005c9229', 'Dupont', 'Jean', 42, 'M', 'A modifier', 'Idem');
+INSERT INTO `Tribune` (`NFC`,`Places`,`Localisation`,`Texte_Explanation`) VALUES (1, 4, 'Sud', 'Tribune sud');
+INSERT INTO `Tribune` (`NFC`,`Places`,`Localisation`,`Texte_Explanation`) VALUES (2, 4, 'Nord', 'Tribune nord');
+INSERT INTO `Seat` (`ID`,`TribuneNFC`,`Occupied`) VALUES (1,1,0);
+INSERT INTO `Seat` (`ID`,`TribuneNFC`,`Occupied`) VALUES (2,1,0);
+INSERT INTO `Seat` (`ID`,`TribuneNFC`,`Occupied`) VALUES (3,1,0);
+INSERT INTO `Seat` (`ID`,`TribuneNFC`,`Occupied`) VALUES (4,1,0);
+INSERT INTO `Seat` (`ID`,`TribuneNFC`,`Occupied`) VALUES (5,2,0);
+INSERT INTO `Seat` (`ID`,`TribuneNFC`,`Occupied`) VALUES (6,2,0);
+INSERT INTO `Seat` (`ID`,`TribuneNFC`,`Occupied`) VALUES (7,2,0);
+INSERT INTO `Seat` (`ID`,`TribuneNFC`,`Occupied`) VALUES (8,2,0);

@@ -1,13 +1,11 @@
 package dao.impl;
 
-import beans.Athletic;
 import beans.Tribune;
 import core.Assert;
 import dao.Dao;
 import dao.TribuneDao;
 import exceptions.IntegrityException;
 import exceptions.NotFoundException;
-import stade.data.AthleticData;
 import stade.data.QTribune;
 import stade.data.TribuneData;
 
@@ -19,9 +17,8 @@ public class TribuneDaoImpl extends Dao implements TribuneDao{
     private static final QTribune TRIBUNE = QTribune.tribune;
     
     @Override
-    public boolean tribuneExists(String NFC) {
-        Assert.notNull(NFC);
-        Assert.isTrue(NFC.length() > 0);
+    public boolean tribuneExists(int NFC) {
+        Assert.isTrue(NFC >= 0);
         
         TribuneData data = queryFactory.selectFrom(TRIBUNE)
                 .where(TRIBUNE.nfc.eq(NFC))
@@ -32,10 +29,9 @@ public class TribuneDaoImpl extends Dao implements TribuneDao{
     }
 
     @Override
-    public void addTribune(String NFC, int places, String localisation, 
+    public void addTribune(int NFC, int places, String localisation, 
             String texteExplanation) throws IntegrityException {
-        Assert.notNull(NFC);
-        Assert.isTrue(NFC.length() > 0);
+        Assert.isTrue(NFC >= 0);
         Assert.isTrue(places >= 0);
         Assert.notNull(localisation);
         Assert.isTrue(localisation.length() > 0);
@@ -53,9 +49,8 @@ public class TribuneDaoImpl extends Dao implements TribuneDao{
     }
     
     @Override
-    public Tribune getTribune(String NFC) throws NotFoundException {
-        Assert.notNull(NFC);
-        Assert.isTrue(NFC.length() > 0);
+    public Tribune getTribune(int NFC) throws NotFoundException {
+        Assert.isTrue(NFC >= 0);
         
         TribuneData data = queryFactory.selectFrom(TRIBUNE)
                 .where(TRIBUNE.nfc.eq(NFC))
@@ -86,9 +81,8 @@ public class TribuneDaoImpl extends Dao implements TribuneDao{
     }
 
     @Override
-    public int getPlaces(String NFC) throws NotFoundException {
-        Assert.notNull(NFC);
-        Assert.isTrue(NFC.length() > 0);
+    public int getPlaces(int NFC) throws NotFoundException {
+        Assert.isTrue(NFC >= 0);
         
         TribuneData data = queryFactory.selectFrom(TRIBUNE)
                 .where(TRIBUNE.nfc.eq(NFC))
@@ -102,9 +96,8 @@ public class TribuneDaoImpl extends Dao implements TribuneDao{
     }
 
     @Override
-    public void setPlaces(String NFC, int places) throws NotFoundException {
-        Assert.notNull(NFC);
-        Assert.isTrue(NFC.length() > 0);
+    public void setPlaces(int NFC, int places) throws NotFoundException {
+        Assert.isTrue(NFC >= 0);
         Assert.isTrue(places >= 0);
         
         if(!tribuneExists(NFC)) throw new NotFoundException("The tribune " 
@@ -118,9 +111,8 @@ public class TribuneDaoImpl extends Dao implements TribuneDao{
     }
 
     @Override
-    public String getLocalisation(String NFC) throws NotFoundException {
-        Assert.notNull(NFC);
-        Assert.isTrue(NFC.length() > 0);
+    public String getLocalisation(int NFC) throws NotFoundException {
+        Assert.isTrue(NFC >= 0);
         
         TribuneData data = queryFactory.selectFrom(TRIBUNE)
                 .where(TRIBUNE.nfc.eq(NFC))
@@ -134,9 +126,8 @@ public class TribuneDaoImpl extends Dao implements TribuneDao{
     }
 
     @Override
-    public String getExplanation(String NFC) throws NotFoundException {
-        Assert.notNull(NFC);
-        Assert.isTrue(NFC.length() > 0);
+    public String getExplanation(int NFC) throws NotFoundException {
+        Assert.isTrue(NFC >= 0);
         
         TribuneData data = queryFactory.selectFrom(TRIBUNE)
                 .where(TRIBUNE.nfc.eq(NFC))
@@ -149,10 +140,9 @@ public class TribuneDaoImpl extends Dao implements TribuneDao{
         return data.getTexteExplanation();
     }
     
-    TribuneData toData(String NFC, int places, String localisation, 
+    TribuneData toData(int NFC, int places, String localisation, 
             String texteExplanation){
-        Assert.notNull(NFC);
-        Assert.isTrue(NFC.length() > 0);
+        Assert.isTrue(NFC >= 0);
         Assert.isTrue(places >= 0);
         Assert.notNull(localisation);
         Assert.isTrue(localisation.length() > 0);
