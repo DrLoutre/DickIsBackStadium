@@ -9,7 +9,7 @@ import scalaj.http.{Http, HttpResponse}
 
 object ToServer {
 
-  private val BASE_URL = "http://192.168.42.156:8080/StadiumWebSite/api/v1/communication/"
+  private val BASE_URL = "http://192.168.43.156:8080/StadiumWebSite/api/v1/communication/"
   private val TIMEOUT = 10000
   private val CONT_TY = "content-type"
   private val APP_JS = "application/json"
