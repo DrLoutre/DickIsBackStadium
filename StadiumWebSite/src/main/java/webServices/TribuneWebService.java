@@ -36,7 +36,7 @@ public class TribuneWebService {
      */
     @GET
     @Path("/{id}")
-    public Response getTribune(@PathParam("id") String id) {
+    public Response getTribune(@PathParam("id") int id) {
         Tribune tribune;
         try {
             tribune = tribuneDao.getTribune(id);
@@ -92,7 +92,7 @@ public class TribuneWebService {
      */
     @GET
     @Path("/{id}/seats")
-    public Response getTribuneSeats(@PathParam("id") String id) {
+    public Response getTribuneSeats(@PathParam("id") int id) {
         List<Integer> seats;
         try {
             seats = seatDao.getTribuneSeatsID(id);
@@ -109,7 +109,7 @@ public class TribuneWebService {
      */
     @GET
     @Path("/{id}/rate")
-    public Response getTribuneOccupancyRate(@PathParam("id") String id) {
+    public Response getTribuneOccupancyRate(@PathParam("id") int id) {
         List<Seat> seats;
         try {
             seats = seatDao.getTribuneSeats(id);
@@ -139,7 +139,7 @@ public class TribuneWebService {
      */
     @GET
     @Path("/{id}/available")
-    public Response getTribuneSeatsAvailable(@PathParam("id") String id) {
+    public Response getTribuneSeatsAvailable(@PathParam("id") int id) {
         List<Seat> seats;
         try {
             seats = seatDao.getTribuneSeats(id);

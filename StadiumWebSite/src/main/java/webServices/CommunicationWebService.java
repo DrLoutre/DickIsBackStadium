@@ -164,9 +164,9 @@ public class CommunicationWebService {
     @POST
     @Path("/tribunes/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response postTribunes(@PathParam("id") String id, SeatsCustom seatsCustom) {
+    public Response postTribunes(@PathParam("id") int id, SeatsCustom seatsCustom) {
         try {
-            Tribune tribune = tribuneDao.getTribune(id);
+            Tribune tribune = tribuneDao.getTribune(id + 1);
             List<Seat> seats = seatDao.getTribuneSeats(tribune.getNFC());
             int i = 0;
             for (Seat seat : seats) {
