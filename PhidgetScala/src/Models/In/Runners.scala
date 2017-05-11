@@ -35,6 +35,7 @@ class Runners {
       println("ID : " + id)
       println("List : " + idList)
       if (idList.contains(id)) {
+        println("Contained")
         val index = idList.indexOf(id)
         println("index : " + index)
         val newVal = idNumber.get(index)
@@ -45,6 +46,7 @@ class Runners {
         time.set(index, perfs)
       } else {
         // Creating a new runner
+        println("Creating new runner")
         val tempLinked = new util.LinkedList[Long]()
         tempLinked.addLast(System.currentTimeMillis)
         idList.addLast(id)
