@@ -96,8 +96,10 @@ public class RefreshmentDaoImpl extends Dao implements RefreshmentDao{
                 + ID + " has not been found in the database");
         
         SQLUpdateClause update = queryFactory.update(REFRESHMENT);
-        
-        long rows = update.populate(attendance)
+
+        RefreshmentData data = toData(attendance, getRefreshment(ID).getLocalisation());
+
+        long rows = update.populate(data)
                 .where(REFRESHMENT.id.eq(ID))
                 .execute();
         closeConnection();

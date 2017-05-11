@@ -57,7 +57,8 @@ public class CommunicationWebService {
     }
 
     private float toAttendance(int base) {
-        float value = base/BASE_BUVETTE;
+        float newValue = Math.abs(base - BASE_BUVETTE);
+        float value = newValue/BASE_BUVETTE;
 
         BigDecimal bd = new BigDecimal(value);
         bd = bd.setScale(2, RoundingMode.HALF_UP);
