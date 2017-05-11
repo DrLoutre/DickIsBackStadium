@@ -60,10 +60,8 @@ class LapCalculator(blackBox: BlackBox) {
       if (Math.abs(timeScanning - now) > MIN_PASS_TIME) {
         runners.scanned(tagLossEvent.getValue)
         if (runners.idList.contains(tagLossEvent.getValue)) {
-          val lastLapTime = runners.getIdPerfs(tagLossEvent.getValue).get(runners.getIdLapsNumber(tagLossEvent.getValue) - 1)
-          val lapTime = runners.getIdPerfs(tagLossEvent.getValue).getLast
           println("Runner Id     : " + tagLossEvent.getValue +
-            "\nRunning Time  : " + (lapTime - lastLapTime) / 1000 + "sec" +
+            "\nRunning Time  : " +  "sec" +
             "\nNumber of Laps: " + runners.getIdLapsNumber(tagLossEvent.getValue))
         }
         lastScanned = tagLossEvent.getValue
