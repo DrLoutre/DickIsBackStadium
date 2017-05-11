@@ -103,12 +103,12 @@ and open the template in the editor.
                                 <div class="row">
                                     <div class="col-lg-3"><u>Match <%=i%> :</u> <%=match.getDate()%></div> <br> <br>
                                     <div class="col-lg-2 col-lg-offset-1">
-                                        <input type="radio" name=<%=match.getTeamID1()%> id=<%=match.getTeamID1()%> value=<%=match.getTeamID1()%> required="true"/> 
+                                        <input type="radio" name="match" id="match" value=<%=match.getTeamID1()%> required="true"/> 
                                         <label for=<%=match.getTeamID2()%>><%=team.get(Integer.toString(match.getTeamID1()))%></label>
                                     </div>
                                     <div class="col-lg-1">-</div>
                                     <div class="col-lg-2">
-                                        <input type="radio" name=<%=match.getTeamID2()%> id=<%=match.getTeamID2()%> value=<%=match.getTeamID2()%> required="true"/>
+                                        <input type="radio" name="match" id="match" value=<%=match.getTeamID2()%> required="true"/>
                                         <label for=<%=match.getTeamID2()%>><%=team.get(Integer.toString(match.getTeamID2()))%></label>                                    
                                     </div>
                                 </div>

@@ -83,10 +83,14 @@ public class Team extends HttpServlet {
             } else {
                 try {
                     playInDao.addEntry((String) request.getParameter("nfc"), Integer.parseInt(request.getParameter("match")));
+                    alreadyteam = false;
+                    time = true;
                 } catch(NotFoundException | IntegrityException e) {
                     alreadyteam = true;
                 }
             }
+        } else {
+            time = true;
         }
         request.setAttribute("alreadyteam", alreadyteam);
         request.setAttribute("correct", nfc);
