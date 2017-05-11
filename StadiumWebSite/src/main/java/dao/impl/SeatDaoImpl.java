@@ -74,8 +74,11 @@ public class SeatDaoImpl extends Dao implements SeatDao{
         if(!seatExists(ID)) throw new NotFoundException("The seat " + ID 
                 + " does not exist in the database");
         
+        Seat seat = getSeat(ID);
+        SeatData data = toData(ID, seat.getTribuneNFC(), occupied);
+        
         long rows = queryFactory.update(SEAT).where(SEAT.id.eq(ID))
-                .populate(occupied).execute();
+                .populate(data).execute();
         closeConnection();
         
         Assert.isTrue(rows == 1);
