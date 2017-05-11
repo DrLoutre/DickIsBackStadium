@@ -91,8 +91,8 @@ CREATE TABLE Tokens(
 INSERT INTO `Refreshment` (`ID`, `Attendance`, `Localisation`) VALUES (1, 0.35, 'Buvette est');
 INSERT INTO `Refreshment` (`ID`, `Attendance`, `Localisation`) VALUES (2, 0.75, 'Buvette ouest');
 INSERT INTO `Athletic` (`NFC`,`LastName`,`FirstName`,`Age`,`Sex`,`Password`,`Salt`) VALUES ('5c005c9229', 'Dupont', 'Jean', 42, 'M', 'A modifier', 'Idem');
-INSERT INTO `Tribune` (`NFC`,`Places`,`Localisation`,`Texte_Explanation`) VALUES (1, 4, 'Sud', 'Tribune sud');
-INSERT INTO `Tribune` (`NFC`,`Places`,`Localisation`,`Texte_Explanation`) VALUES (2, 4, 'Nord', 'Tribune nord');
+INSERT INTO `Tribune` (`NFC`,`Places`,`Localisation`,`Texte_Explanation`) VALUES (1, 4, 'Tribune Sud', 'Tribune sud');
+INSERT INTO `Tribune` (`NFC`,`Places`,`Localisation`,`Texte_Explanation`) VALUES (2, 4, 'Tribune Nord', 'Tribune nord');
 INSERT INTO `Seat` (`ID`,`TribuneNFC`,`Occupied`) VALUES (1,1,0);
 INSERT INTO `Seat` (`ID`,`TribuneNFC`,`Occupied`) VALUES (2,1,0);
 INSERT INTO `Seat` (`ID`,`TribuneNFC`,`Occupied`) VALUES (3,1,0);
