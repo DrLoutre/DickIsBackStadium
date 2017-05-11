@@ -131,9 +131,9 @@ public class CommunicationWebService {
     public Response postCustomGoal(GoalCustom goalCustom) {
         try {
             ArrayList<Match> matchs = matchDao.getNotEndedMatch();
-            Match match = matchs.get(0);
-
             Collections.sort(matchs);
+
+            Match match = matchs.get(0);
 
             DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             DateTime beginning = df.parseDateTime(match.getDate()); //Beginning
@@ -171,7 +171,7 @@ public class CommunicationWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postTribunes(@PathParam("id") int id, SeatsCustom seatsCustom) {
         try {
-            Tribune tribune = tribuneDao.getTribune(id + 1);
+            Tribune tribune = tribuneDao.getTribune(id);
             List<Seat> seats = seatDao.getTribuneSeats(tribune.getNFC());
             int i = 0;
             for (Seat seat : seats) {
