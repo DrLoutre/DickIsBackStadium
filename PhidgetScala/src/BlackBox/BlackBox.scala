@@ -446,6 +446,7 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
     println("Sending to Jordan the infos")
     val id:String = lapCntr.lastScanned
 
+
     val idnum = lapCntr.runners.idNumber.get(lapCntr.runners.idList.indexOf(id))
     val time = lapCntr.runners.time.get(lapCntr.runners.idList.indexOf(id)).getLast
     val total = lapCntr.runners.getTotal(id)
