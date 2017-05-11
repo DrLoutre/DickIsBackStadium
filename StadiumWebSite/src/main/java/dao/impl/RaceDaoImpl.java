@@ -78,9 +78,12 @@ public class RaceDaoImpl extends Dao implements RaceDao{
                 new NotFoundException("Athletic "+ athleticNFC 
                 + " has not been found in the database");
         
+        RaceData data = toData(athleticNFC);
+        data.setIdScore(ID);
+        
         SQLUpdateClause update = queryFactory.update(RACE);
         
-        long rows = update.populate(athleticNFC)
+        long rows = update.populate(data)
                 .where(RACE.idScore.eq(ID)).execute();
         closeConnection();
         

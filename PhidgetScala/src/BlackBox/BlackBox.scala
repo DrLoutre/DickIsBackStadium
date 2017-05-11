@@ -141,7 +141,7 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
           case DemoPhaseEvent(_) =>
             if (!currentMode.isInstanceOf[DetachedMode]) {
               currentMode = mode.getCurrentMode
-              Thread.sleep(500)
+              println("Mot set, fletching heat data")
               processHeatEvent(log)
               log += "New Mode Set : " + currentMode.toString
             } else {
@@ -201,7 +201,7 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
           case DemoPhaseEvent(_) =>
             if (!currentMode.isInstanceOf[DetachedMode]) {
               currentMode = mode.getCurrentMode
-              Thread.sleep(500)
+              println("Mot set, fletching heat data")
               processHeatEvent(log)
               log += "New Mode Set : " + currentMode.toString
             } else {
@@ -578,7 +578,7 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
         case INDEX_MODE_POT =>
           //First of all, filtering of the list.
           filterEvntList
-          Thread.sleep(1000)
+          Thread.sleep(500)
           val time = System.currentTimeMillis
           // Getting if existing the last event of that type
           getLast(DemoPhaseEvent(time)) match {

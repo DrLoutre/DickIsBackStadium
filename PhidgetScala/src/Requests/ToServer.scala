@@ -49,7 +49,7 @@ object ToServer {
   def sendStand(standID:Int, occupArray:Array[Boolean]): Unit ={
     val stand:Stand = new Stand(standID, occupArray)
     val json:String = new Gson().toJson(stand)
-    val code:Boolean = Http(BASE_URL.concat("stand")).timeout(TIMEOUT, TIMEOUT).postData(json).header(CONT_TY, APP_JS).asString.is2xx
+    val code:Boolean = Http(BASE_URL.concat("tribunes/" + (standID+1))).timeout(TIMEOUT, TIMEOUT).postData(json).header(CONT_TY, APP_JS).asString.is2xx
     if (code) println("Stand sent correctly") else println("Error while sending Stand")
   }
 
