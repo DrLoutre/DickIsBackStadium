@@ -62,7 +62,7 @@ object ToServer {
       if (code.is2xx) {
         println("Match Request sent correctly")
         val result: List[Game] = new Gson().fromJson(code.body, classOf[List[Game]])
-        println(result.toString)
+        println("Result of Request : " + result.toString)
         //filter all the matches that are finished
         result.filter { case Game(_, ended, _, _, _, _, _) => ended }
         // convert the gson match format to the local match format, filtered from useless info adding them directly to the match list
