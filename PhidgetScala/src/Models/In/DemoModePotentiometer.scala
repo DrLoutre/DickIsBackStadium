@@ -1,10 +1,13 @@
 package Models.In
 
+import java.io.FileInputStream
+
 import BlackBox.BlackBox
 import Events.{DemoPhaseEvent, LightEvent}
 import Modes._
 import com.phidgets.InterfaceKitPhidget
 import com.phidgets.event.{SensorChangeEvent, SensorChangeListener}
+import sun.audio.{AudioPlayer, AudioStream}
 
 
 /**
@@ -45,6 +48,33 @@ class DemoModePotentiometer(interfaceKitPhidget: InterfaceKitPhidget, sensorInde
       case _ =>
         println("Demo mode x not yet implemented")
         NormalMode()
+    }
+  }
+
+  def playTheme():Unit = {
+
+    var mode:String = ""
+
+    getCurrentMode match {
+      case NormalMode() => mode = "mode0.wav"
+      case Demo_1_Mode() => mode = "mode1.wav"
+      case Demo_2_Mode() => mode = "mode2.wav"
+      case Demo_3_Mode() => mode = "mode3.wav"
+      case Demo_4_Mode() => mode = "mode4.wav"
+    }
+
+    try {
+      // open the sound file as a Java input stream
+      val gongFile = "/root/Documents/ouptutdir/" + mode
+      val in = new FileInputStream(gongFile)
+
+      // create an audiostream from the inputstream
+      val audioStream = new AudioStream(in)
+
+      // play the audio clip with the audioplayer class
+      AudioPlayer.player.start(audioStream)
+    } catch {
+      case e:Exception => println("Exception while opening theme" + e)
     }
   }
 

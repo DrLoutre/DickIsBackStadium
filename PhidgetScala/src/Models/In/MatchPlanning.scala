@@ -21,7 +21,7 @@ class MatchPlanning() {
     deleteOldMatches()
     println("Filtered list of matches...")
     planned.add(new Match(start, end))
-    
+
   }
 
   /**
