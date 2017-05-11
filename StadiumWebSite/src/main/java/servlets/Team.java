@@ -19,6 +19,7 @@ import exceptions.NotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -102,8 +103,10 @@ public class Team extends HttpServlet {
         TeamDao teamDao = new TeamDaoImpl();
         team = new HashMap<>();
         try {
-            request.setAttribute("matchs", resultDao.getNotEndedMatch());
-            for (Match match : resultDao.getAllMatch()) {
+            ArrayList<Match> match1 = resultDao.getNotEndedMatch();
+            Collections.sort(match1);
+            request.setAttribute("matchs", match1);
+            for (Match match : match1) {
                 if(!team.containsKey(Integer.toString(match.getTeamID1())))
                     team.put(Integer.toString(match.getTeamID1()), teamDao.getName(match.getTeamID1()));
                 if(!team.containsKey(Integer.toString(match.getTeamID2())))
