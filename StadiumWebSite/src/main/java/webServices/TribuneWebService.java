@@ -8,16 +8,14 @@ import dao.impl.SeatDaoImpl;
 import dao.impl.TribuneDaoImpl;
 import exceptions.NotFoundException;
 
-import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.text.DecimalFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class regroups all WebService associated to Tribunes
