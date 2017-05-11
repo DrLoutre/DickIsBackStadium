@@ -81,7 +81,7 @@ public class CommunicationWebService {
         DateTime dateTime = new DateTime(Long.valueOf(lapCustom.getTemps()));
 
         try {
-            if (lapCustom.getNbrLaps() - 1 == 0) {
+            if (lapCustom.getNbrLaps() == 0) {
                 race = new Race();
                 race.setNFC(lapCustom.getRfid());
                 int id = raceDao.addRace(lapCustom.getRfid());
@@ -93,7 +93,7 @@ public class CommunicationWebService {
             } else {
                 List<Race> races = raceDao.getRacesList(lapCustom.getRfid());
                 race = races.get(races.size() - 1);
-                List<Lap> laps = lapDao.getAllLap(race.getId());
+                List<Lap> laps = lapDao.getAllLapWithBeginning(race.getId());
                 if (laps.size() != 0) {
                     DateTime baseDate = new DateTime(laps.get(0).getYear(), laps.get(0).getMonth(), laps.get(0).getDay(),
                             laps.get(0).getTempHour(), laps.get(0).getTempMin(), laps.get(0).getTempSec(), laps.get(0).getTempMs());
