@@ -51,6 +51,7 @@ class LapCalculator(blackBox: BlackBox) {
           "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     timeScanning = System.currentTimeMillis()
     lastScanned = tagGainEvent.getValue
+    runners.scanned(lastScanned)
     blackBox.processEvent(TurnEvent(timeScanning))
     println("Scanned !!!!!!!!! " + lastScanned)
     rFIDPhidget.setLEDOn(false)
