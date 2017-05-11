@@ -485,7 +485,10 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
       currentMode match {
         case DetachedMode(_, motors, rfid) =>
           println("Motors : " + motors + "         RFID = " + rfid)
-          if (!motors && !rfid) currentMode = mode.getCurrentMode else currentMode = DetachedMode(false, motors, rfid)
+          if (!motors && !rfid)
+            currentMode = mode.getCurrentMode
+          else
+            currentMode = DetachedMode(false, motors, rfid)
       }
     })
 

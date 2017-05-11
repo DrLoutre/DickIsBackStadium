@@ -54,20 +54,25 @@ object ToServer {
   }
 
   def askForNewMatches(matchPlanning: MatchPlanning):Unit = {
-    val code:HttpResponse[String] = Http(BASE_URL.concat("newMatch")).timeout(TIMEOUT,TIMEOUT).header(CONT_TY, APP_JS).asString
-    val format = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-    if (code.is2xx) {
-      println("Match Request sent correctly")
-      val result:List[Game] = new Gson().fromJson(code.body, classOf[List[Game]])
-      println(result.toString)
-      //filter all the matches that are finished
-      result.filter{case Game(_,ended,_,_,_,_,_) => ended}
-      // convert the gson match format to the local match format, filtered from useless info adding them directly to the match list
-      result.foreach {
-        case Game(date,_,_,_,_,_,_) => matchPlanning.addMatchToList(format.parse(date),new Date(format.parse(date).getTime+6000000))
+    try {
+      val code: HttpResponse[String] = Http(BASE_URL.concat("newMatch")).timeout(TIMEOUT, TIMEOUT).header(CONT_TY, APP_JS).asString
+
+      val format = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+      if (code.is2xx) {
+        println("Match Request sent correctly")
+        val result: List[Game] = new Gson().fromJson(code.body, classOf[List[Game]])
+        println(result.toString)
+        //filter all the matches that are finished
+        result.filter { case Game(_, ended, _, _, _, _, _) => ended }
+        // convert the gson match format to the local match format, filtered from useless info adding them directly to the match list
+        result.foreach {
+          case Game(date, _, _, _, _, _, _) => matchPlanning.addMatchToList(format.parse(date), new Date(format.parse(date).getTime + 6000000))
+        }
+      } else {
+        println("Error with Match Request")
       }
-    } else {
-      println("Error with Match Request")
+    } catch {
+      case e:Exception => println("Error with communication for matches.")
     }
   }
 }
