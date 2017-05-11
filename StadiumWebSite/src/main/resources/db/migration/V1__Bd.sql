@@ -56,7 +56,7 @@ CREATE TABLE Matchs(
 );
 
 CREATE TABLE Tribune(
-    NFC VARCHAR(50) NOT NULL,
+    NFC INTEGER NOT NULL,
     Places INTEGER NOT NULL,
     Localisation VARCHAR(20) NOT NULL,
     Texte_Explanation VARCHAR(100) NOT NULL,
@@ -90,4 +90,14 @@ CREATE TABLE Tokens(
 
 INSERT INTO `Refreshment` (`ID`, `Attendance`, `Localisation`) VALUES (1, 0.35, 'Buvette est');
 INSERT INTO `Refreshment` (`ID`, `Attendance`, `Localisation`) VALUES (2, 0.75, 'Buvette ouest');
-INSERT INTO `Athletic` (`NFC`,`LastName`,`FirstName`,`Age`,`Sex`,`Password`,`Salt`) VALUES ('5c005c9229', 'Dupont', 'Jean', '42', 'M', 'A modifier', 'Idem');
+INSERT INTO `Athletic` (`NFC`,`LastName`,`FirstName`,`Age`,`Sex`,`Password`,`Salt`) VALUES ('5c005c9229', 'Dupont', 'Jean', 42, 'M', 'A modifier', 'Idem');
+INSERT INTO `Tribune` (`NFC`,`Places`,`Localisation`,`Texte_Explanation`) VALUES (1, 4, 'Sud', 'Tribune sud');
+INSERT INTO `Tribune` (`NFC`,`Places`,`Localisation`,`Texte_Explanation`) VALUES (2, 4, 'Nord', 'Tribune nord');
+INSERT INTO `Seat` (`ID`,`TribuneNFC`,`Occupied`) VALUES (1,'TribuneSud',0);
+INSERT INTO `Seat` (`ID`,`TribuneNFC`,`Occupied`) VALUES (2,'TribuneSud',0);
+INSERT INTO `Seat` (`ID`,`TribuneNFC`,`Occupied`) VALUES (3,'TribuneSud',0);
+INSERT INTO `Seat` (`ID`,`TribuneNFC`,`Occupied`) VALUES (4,'TribuneSud',0);
+INSERT INTO `Seat` (`ID`,`TribuneNFC`,`Occupied`) VALUES (1,'TribuneNord',0);
+INSERT INTO `Seat` (`ID`,`TribuneNFC`,`Occupied`) VALUES (2,'TribuneNord',0);
+INSERT INTO `Seat` (`ID`,`TribuneNFC`,`Occupied`) VALUES (3,'TribuneNord',0);
+INSERT INTO `Seat` (`ID`,`TribuneNFC`,`Occupied`) VALUES (4,'TribuneNord',0);
