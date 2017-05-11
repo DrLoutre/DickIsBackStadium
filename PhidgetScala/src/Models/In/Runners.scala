@@ -21,15 +21,18 @@ class Runners {
     * @param id id that was scanned and to witch we will either create a new runner either add a lap
     */
   def scanned(id: String):Unit = {      // Getting the time :
+    println("Scanned !!")
     val now = System.currentTimeMillis()
     // getting last infos
+
     val index = idList.indexOf(id)
     val newVal = idNumber.get(index)
-    val perfs:util.LinkedList[Long] = time.get(index)
+    val perfs:util.LinkedList[Long] = time.get(index) /*
     // If the turn lasted more than 5 minutes, we count a new run, so we reset the runner.
     if (perfs.getLast - now > 300000) {
       reset(id)
     }
+    */
     if (idList.contains(id)) {
       // Coutning a new turn
       perfs.addLast(System.currentTimeMillis())
