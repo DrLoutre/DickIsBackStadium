@@ -108,16 +108,45 @@ public interface MatchDao {
     
     /**
      * Get all the ended match of the database
-     * @return all the 
-     * @throws NotFoundException 
+     * @return all the match bean
+     * @throws NotFoundException if there is no ended match in the database
      */
     ArrayList<Match> getEndedMatch() throws NotFoundException;
     
+    /**
+     * Get all the not ended match of the database
+     * @return al the match bean
+     * @throws NotFoundException if the database does not store a not ended 
+     *      match
+     */
     ArrayList<Match> getNotEndedMatch() throws NotFoundException;
     
+    /**
+     * Set the date of a specific match in the database
+     * @param ID : the ID of the specific match
+     * @param date : the date of the match, on the format "yyyy-MM-dd HH:mm:ss"
+     * @throws NotFoundException if the Match has not been found in the 
+     *      database
+     */
     void setDate(int ID, String date) throws NotFoundException;
     
+    /**
+     * Set the state of a specific match in the database
+     * @param ID : the ID of the specific match
+     * @param ended : the new status of the specific match
+     * @throws NotFoundException if the Match has not been found in the 
+     *      database
+     */
     void setState(int ID, boolean ended) throws NotFoundException;
     
+    /**
+     * Get all the not ended match wich involve a specific athletic in at least 
+     *      one of the teams
+     * @param athleticNFC : the NFC (id) of the specific athletic
+     * @return all the not ended match wich involve a specific athletic in at 
+     *      least one of the teams
+     * @throws NotFoundException if there is no match in the database wich  
+     *      justify the conditions
+     */
     List<Match> getNotEndedMatch(String athleticNFC) throws NotFoundException;
 }
