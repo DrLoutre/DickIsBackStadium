@@ -26,8 +26,6 @@ char ssid[] = "jam";      // your network SSID (name)
 char pass[] = "12345678";   // your network password
 int keyIndex = 0;                 // your network key Index number (needed only for WEP)
 
-String server = "192.168.137.18:8080";
-
 int status = WL_IDLE_STATUS;
 
 WiFiClient client;
@@ -62,9 +60,9 @@ void loop() {
 
   data ="";
   
-  if(client.connect("169.254.153.223", 8080)) {
+  if(client.connect("192.168.43.156", 8080)) {
     client.println("POST /StadiumWebSite/api/v1/communication/refreshments HTTP/1.1");
-    client.println("Host: 169.254.153.223:8080");
+    client.println("Host: 192.168.43.156:8080");
     client.println("Content-Type: application/json");
     client.println("Cache-Control: no-cache");
     client.print("Content-Length: "),
@@ -83,6 +81,7 @@ void loop() {
     client.println(data.length());
     client.println();
     client.print(data);
+    Serial.println(data);
   }
 
   while (client.available()) {
