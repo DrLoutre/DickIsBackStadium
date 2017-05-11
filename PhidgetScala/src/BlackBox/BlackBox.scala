@@ -24,13 +24,13 @@ import scala.collection.mutable
 class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
 
   // Constants Threshold
-  private val PRECISION_IR_SENSOR_THERSHOLD: Int = 500
+  private val PRECISION_IR_SENSOR_THERSHOLD: Int = 750
 
   // Constants about time
-  private val LIGHT_TIMEOUT:Long     = 2000
+  private val LIGHT_TIMEOUT:Long     = 20
   private val TEMP_TIMEOUT:Long      = 3000
-  private val PASSAGE_TIMEOUT:Long   = 100
-  private val VIBRATION_TIMEOUT:Long = 100
+  private val PASSAGE_TIMEOUT:Long   = 10
+  private val VIBRATION_TIMEOUT:Long = 10
   private val POT_TIMEOUT:Long       = 3000
 
   // Constants index of sensors and lights
@@ -485,7 +485,10 @@ class BlackBox(interfaceKitPhidget: InterfaceKitPhidget){
       currentMode match {
         case DetachedMode(_, motors, rfid) =>
           println("Motors : " + motors + "         RFID = " + rfid)
-          if (!motors && !rfid) currentMode = mode.getCurrentMode else currentMode = DetachedMode(false, motors, rfid)
+          if (!motors && !rfid)
+            currentMode = mode.getCurrentMode
+          else
+            currentMode = DetachedMode(false, motors, rfid)
       }
     })
 

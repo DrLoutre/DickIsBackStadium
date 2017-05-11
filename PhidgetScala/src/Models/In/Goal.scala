@@ -13,20 +13,20 @@ import com.phidgets.event.{SensorChangeEvent, SensorChangeListener}
 class Goal(interfaceKitPhidget: InterfaceKitPhidget, indexPassage: Int, indexVibration: Int, blackBox: BlackBox) {
 
   // Constants for the goal's sensors.
-  private val TIMEOUT_BTW_TWO_GOALS = 8000.0
+  private val TIMEOUT_BTW_TWO_GOALS:Long = 8000
   private val INDEX_IR = 3
   private val INDEX_VIB = 4
 
   // Number of goals and time of the last goal.
   var goal:Int = 0
-  var lastGoal:Double = -8000.0
+  var lastGoal:Long = 10000000
 
   // getters
   def getGoal:Int = goal
-  def getLastGoal:Double = lastGoal
+  def getLastGoal:Long = lastGoal
 
   // increments the goal
-  def incrementGoal(time:Double):Boolean = {
+  def incrementGoal(time:Long):Boolean = {
     if (lastGoal-time < TIMEOUT_BTW_TWO_GOALS) {
       println("Gooaaaal !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! the time set :" + time)
       goal += 1

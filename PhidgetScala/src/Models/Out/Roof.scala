@@ -20,7 +20,7 @@ class Roof(blackBox: BlackBox) {
   val VAL_ROOF2_CLOSED:Double = 180.00
   val VAL_ROOF1_OPEN:Double = 180.00
   val VAL_ROOF2_OPEN:Double = 0.00
-  val SPEED   = 100.0
+  val SPEED   = 50
 
   //Initialization
   var open:Boolean = false
@@ -97,10 +97,10 @@ class Roof(blackBox: BlackBox) {
   }
 
   def initialize:Unit = {
-    servo1.setEngaged(SERVO_INDEX, true)
-    servo2.setEngaged(SERVO_INDEX, true)
     servo1.setAcceleration(SERVO_INDEX, SPEED)
     servo2.setAcceleration(SERVO_INDEX, SPEED)
+    servo1.setEngaged(SERVO_INDEX, true)
+    servo2.setEngaged(SERVO_INDEX, true)
     servo1.setPosition(SERVO_INDEX, VAL_ROOF1_CLOSED)
     servo2.setPosition(SERVO_INDEX, VAL_ROOF2_CLOSED)
   }
