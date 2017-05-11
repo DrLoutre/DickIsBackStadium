@@ -26,7 +26,7 @@ public class LapDaoImpl extends Dao implements LapDao{
     }
 
     @Override
-    public int addLap(int temp_hour, int temp_min, int temp_sec, int temp_ms, 
+    public int addLap(int temp_hour, int temp_min, int temp_sec, int temp_ms, boolean isBeginning,
             int id_race) throws NotFoundException {
         Assert.isTrue(temp_hour >= 0);
         Assert.isTrue(temp_hour < 24);
@@ -41,7 +41,7 @@ public class LapDaoImpl extends Dao implements LapDao{
         if(!raceDao.raceExists(id_race)) throw new NotFoundException("The race "
                 + "with the id " + id_race + "does not exists in the database");
         
-        LapData data = toData(temp_hour, temp_min, temp_sec, temp_ms, id_race);
+        LapData data = toData(temp_hour, temp_min, temp_sec, temp_ms, isBeginning, id_race);
         int ID = queryFactory.insert(LAP).populate(data).executeWithKey(LAP.id);
         closeConnection();
         
@@ -74,8 +74,8 @@ public class LapDaoImpl extends Dao implements LapDao{
     }
 
     @Override
-    public void setTime(int ID, int temp_hour, int temp_min, int temp_sec, 
-            int temp_ms) throws NotFoundException{
+    public void updateLap(int ID, int temp_hour, int temp_min, int temp_sec,
+            int temp_ms, boolean isBeginning) throws NotFoundException{
         Assert.isTrue(ID >= 0);
         Assert.isTrue(temp_hour >= 0);
         Assert.isTrue(temp_hour < 24);
@@ -89,7 +89,7 @@ public class LapDaoImpl extends Dao implements LapDao{
         if(!lapExists(ID)) throw new NotFoundException("Lap "+ ID 
                 + " has not been found in the database");
         
-        LapData data = toData(ID, temp_min, temp_sec, temp_ms,getIdRace(ID));
+        LapData data = toData(ID, temp_min, temp_sec, temp_ms, isBeginning, getIdRace(ID));
         SQLUpdateClause update = queryFactory.update(LAP);
         
         long rows = update.populate(data)
@@ -169,8 +169,8 @@ public class LapDaoImpl extends Dao implements LapDao{
 //        return data;
 //    }
 
-    private LapData toData (int temp_hour, int temp_min, int temp_sec, 
-            int temp_ms, int id_race){
+    private LapData toData (int temp_hour, int temp_min, int temp_sec,
+            int temp_ms, boolean isBeginning, int id_race){
         Assert.isTrue(temp_hour >= 0);
         Assert.isTrue(temp_hour < 24);
         Assert.isTrue(temp_min >= 0);
@@ -185,6 +185,7 @@ public class LapDaoImpl extends Dao implements LapDao{
         Time temp = new Time(temp_hour,temp_min,temp_sec);
         data.setTemp(temp);
         data.setTempMs(temp_ms);
+        data.setIsBeginning(isBeginning);
         data.setIdScore(id_race);
         return data;
     }

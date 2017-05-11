@@ -26,6 +26,7 @@ CREATE TABLE Lap(
     Temp TIME NOT NULL,
     Temp_Ms INTEGER NOT NULL,
     Id_Score INTEGER NOT NULL,
+    IsBeginning BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (Id_Score) REFERENCES Race(Id_Score)
 );
 

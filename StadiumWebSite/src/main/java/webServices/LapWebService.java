@@ -45,11 +45,7 @@ public class LapWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response putLap(@PathParam("id") int id, Lap lap) {
         try {
-            Lap lap1 = lapDao.getLap(id);
-            if (lap.getTempHour() != lap1.getTempHour() || lap.getTempMin() != lap1.getTempMin() ||
-                    lap.getTempSec() != lap1.getTempSec() || lap.getTempMs() != lap.getTempMs()) {
-                lapDao.setTime(id, lap.getTempHour(), lap.getTempMin(), lap.getTempSec(), lap.getTempMs());
-            }
+            lapDao.updateLap(id, lap.getTempHour(), lap.getTempMin(), lap.getTempSec(), lap.getTempMs(), lap.getIsBeginning());
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
