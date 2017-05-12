@@ -188,6 +188,7 @@ public class AtheleticWebService {
 
         //Uncomment when in production
         //athleticDao.connect(credentials.getId(), credentials.getPassword());
+        //athletic.getMDP().equals(credentials.getPassword())
         if (athletic.getMDP().equals(credentials.getPassword())) {
             return Response.status(Response.Status.CREATED).entity(athletic).build();
         } else {
